@@ -2,27 +2,32 @@ package uk.org.grant.getkanban;
 
 public class Card {
     private final Size size;
+    private final SubscriberProfile profile;
     private int start;
     private int finish;
-
-
-    public Card(Size size) {
+    
+    public Card(Size size, SubscriberProfile profile) {
         this.size = size;
+        this.profile = profile;
     }
 
     public Size getSize() {
         return size;
     }
 
-    public void getSubscribers() {
-        throw new IllegalStateException();
+    public int getSubscribers() {
+        return profile.getSubscribers(getCycleTime());
     }
 
     public int getCycleTime() {
+        checkIsFinished();
+        return finish - start;
+    }
+
+    private void checkIsFinished() {
         if (start == 0 || finish == 0) {
             throw new IllegalStateException();
         }
-        return finish - start;
     }
 
     public void setStartDay(int start) {
