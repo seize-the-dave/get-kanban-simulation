@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 
-public class RollSpecificDiceTest {
+public class RoleSpecificDiceTest {
     @Test
     public void alwaysRollsBetweenOneAndSixForOwnRole() {
         RoleSpecificDice dice = new RoleSpecificDice(Role.DEVELOPMENT, new RandomDice(new Random()));
