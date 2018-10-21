@@ -1,6 +1,6 @@
 package uk.org.grant.getkanban;
 
-public enum Role {
+public enum Activity {
     ANALYSIS,
     DEVELOPMENT,
     TEST
