@@ -1,6 +1,8 @@
-package uk.org.grant.getkanban;
+package uk.org.grant.getkanban.dice;
 
 import org.junit.Test;
+import uk.org.grant.getkanban.dice.Dice;
+import uk.org.grant.getkanban.dice.RandomDice;
 
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package uk.org.grant.getkanban;
+package uk.org.grant.getkanban.dice;
 
 import java.util.Random;
 

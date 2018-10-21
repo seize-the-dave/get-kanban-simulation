@@ -1,6 +1,9 @@
-package uk.org.grant.getkanban;
+package uk.org.grant.getkanban.dice;
 
 import org.junit.Test;
+import uk.org.grant.getkanban.Role;
+import uk.org.grant.getkanban.dice.RandomDice;
+import uk.org.grant.getkanban.dice.RoleSpecificDice;
 
 import java.util.Random;
 

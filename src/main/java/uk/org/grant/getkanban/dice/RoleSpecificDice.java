@@ -1,4 +1,6 @@
-package uk.org.grant.getkanban;
+package uk.org.grant.getkanban.dice;
+
+import uk.org.grant.getkanban.Role;
 
 public class RoleSpecificDice {
     private final Dice dice;
