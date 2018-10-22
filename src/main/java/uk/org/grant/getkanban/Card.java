@@ -1,13 +1,20 @@
 package uk.org.grant.getkanban;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 public class Card {
     private final Size size;
     private final SubscriberProfile profile;
+    private final Map<Activity, Integer> work = new EnumMap<>(Activity.class);
     private int start;
     private int finish;
-    
-    public Card(Size size, SubscriberProfile profile) {
+
+    public Card(Size size, int analysis, int development, int test, SubscriberProfile profile) {
         this.size = size;
+        this.work.put(Activity.ANALYSIS, analysis);
+        this.work.put(Activity.DEVELOPMENT, development);
+        this.work.put(Activity.TEST, test);
         this.profile = profile;
     }
 
@@ -42,6 +49,18 @@ public class Card {
             throw new IllegalStateException();
         }
         this.finish = finish;
+    }
+
+    public int getRemainingWork(Activity activity) {
+        return work.get(activity);
+    }
+
+    public void doWork(Activity activity, int effort) {
+        int remaining = getRemainingWork(activity);
+        if (effort > remaining) {
+            throw new IllegalArgumentException();
+        }
+        work.put(activity, remaining - effort);
     }
 
     public enum Size {

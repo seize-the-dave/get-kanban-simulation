@@ -12,6 +12,38 @@ public class CardTest {
         assertThat(card.getSize(), is(Card.Size.SMALL));
     }
 
+    @Test
+    public void testGetRemainingDevelopmentWork() {
+        Card card = createCard();
+        assertThat(card.getRemainingWork(Activity.DEVELOPMENT), is(10));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testDoingExcessWorkThrowsException() {
+        Card card = createCard();
+        card.doWork(Activity.DEVELOPMENT, 15);
+    }
+
+    @Test
+    public void testDoingWorkReducesRemainingWork() {
+        Card card = createCard();
+        card.doWork(Activity.DEVELOPMENT, 5);
+
+        assertThat(card.getRemainingWork(Activity.DEVELOPMENT), is(5));
+    }
+
+    @Test
+    public void testReducingDevelopmentWorkDoesNotAffectTestOrAnalysis() {
+        Card card = createCard();
+        assertThat(card.getRemainingWork(Activity.TEST), is(5));
+        assertThat(card.getRemainingWork(Activity.ANALYSIS), is(5));
+
+        card.doWork(Activity.DEVELOPMENT, 5);
+
+        assertThat(card.getRemainingWork(Activity.TEST), is(5));
+        assertThat(card.getRemainingWork(Activity.ANALYSIS), is(5));
+    }
+
     @Test(expected = IllegalStateException.class)
     public void testCannotGetCycleTimeForUnstartedCard() {
         Card card = createCard();
@@ -73,6 +105,6 @@ public class CardTest {
     }
 
     private Card createCard() {
-        return new Card(Card.Size.SMALL, new SubscriberProfile(new int[]{30, 20, 10}));
+        return new Card(Card.Size.SMALL, 5, 10, 5, new SubscriberProfile(new int[]{30, 20, 10}));
     }
 }
