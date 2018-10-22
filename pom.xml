@@ -66,5 +66,31 @@
         </plugin>
       </plugins>
     </pluginManagement>
+      <plugins>
+          <plugin>
+              <groupId>org.jacoco</groupId>
+              <artifactId>jacoco-maven-plugin</artifactId>
+              <version>0.8.2</version>
+              <configuration>
+                  <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
+                  <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+              </configuration>
+              <executions>
+                  <execution>
+                      <id>pre-unit-test</id>
+                      <goals>
+                          <goal>prepare-agent</goal>
+                      </goals>
+                  </execution>
+                  <execution>
+                      <id>post-unit-test</id>
+                      <phase>test</phase>
+                      <goals>
+                          <goal>report</goal>
+                      </goals>
+                  </execution>
+              </executions>
+          </plugin>
+      </plugins>
   </build>
 </project>
