@@ -3,7 +3,10 @@ package uk.org.grant.getkanban;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class Card {
+public class Card implements Comparable<Card> {
+    public static final Card S1 = new Card(Size.SMALL, 1, 1, 1, new SubscriberProfile(new int[] {1, 2, 3}));
+    public static final Card S2 = new Card(Size.SMALL, 5, 2, 1, new SubscriberProfile(new int[] {1, 2, 3}));
+
     private final Size size;
     private final SubscriberProfile profile;
     private final Map<Activity, Integer> work = new EnumMap<>(Activity.class);
@@ -61,6 +64,11 @@ public class Card {
             throw new IllegalArgumentException();
         }
         work.put(activity, remaining - effort);
+    }
+
+    @Override
+    public int compareTo(Card o) {
+        return 0;
     }
 
     public enum Size {
