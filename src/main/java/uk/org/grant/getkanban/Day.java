@@ -3,6 +3,8 @@ package uk.org.grant.getkanban;
 import uk.org.grant.getkanban.dice.ActivityDice;
 
 public class Day {
+    private final int ordinal;
+
     // 9 Billing
     // 10 Add Blocker to S10.  Pink Pete Dice (7 Work)
     // 11 Hire Carlos.  Only Testers on Test Items; No Testers on anything else; Ignore WIP
@@ -16,6 +18,10 @@ public class Day {
     // 19 .
     // 20 .
     // 21 .
+    public Day(int ordinal) {
+        this.ordinal = ordinal;
+    }
+    
     public void standUp(Board board) {
         Column analysis = board.getColumn(Column.Type.ANALYSIS);
         analysis.allocateDice(board.getDice().toArray(new ActivityDice[] {}));
@@ -24,5 +30,9 @@ public class Day {
     public void doWork(Board board) {
         ActivityColumn column = (ActivityColumn) board.getColumn(Column.Type.ANALYSIS);
         column.doWork();
+    }
+
+    public int getOrdinal() {
+        return ordinal;
     }
 }

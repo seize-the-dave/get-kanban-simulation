@@ -17,7 +17,7 @@ public class DayTest {
         board.addDice(dice);
         board.setColumn(Column.Type.ANALYSIS, analysis);
 
-        Day day = new Day();
+        Day day = new Day(1);
         day.standUp(board);
 
         assertThat(analysis.getAllocatedDice(), hasItem(dice));
@@ -33,10 +33,16 @@ public class DayTest {
         board.addDice(dice);
         board.setColumn(Column.Type.ANALYSIS, analysis);
 
-        Day day = new Day();
+        Day day = new Day(1);
         day.standUp(board);
         day.doWork(board);
 
         assertThat(card.getRemainingWork(Activity.ANALYSIS), is(0));
+    }
+
+    @Test
+    public void canGetOrdinal() {
+        Day day = new Day(1);
+        assertThat(day.getOrdinal(), is(1));
     }
 }
