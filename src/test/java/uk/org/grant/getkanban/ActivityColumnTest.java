@@ -15,7 +15,7 @@ public class ActivityColumnTest {
         ActivityColumn column = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
         column.addCard(card);
         column.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(6)));
-        column.doWork();
+        column.visit(new Day(1));
 
         assertThat(card.getRemainingWork(Activity.ANALYSIS), is(0));
     }
@@ -25,7 +25,7 @@ public class ActivityColumnTest {
         ActivityColumn column = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
         column.addCard(Card.S1);
         column.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(6)));
-        column.doWork();
+        column.visit(new Day(1));
 
         assertThat(column.pull().get(), is(Card.S1));
     }
@@ -33,15 +33,14 @@ public class ActivityColumnTest {
     @Test
     public void testCanPullFromUpstream() {
         ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
-        ActivityColumn development = new ActivityColumn(Activity.DEVELOPMENT, analysis);
-
         analysis.addCard(Card.S1);
         analysis.addCard(Card.S2);
         analysis.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(1)));
-        development.visit(new Day(1));
+
+        ActivityColumn development = new ActivityColumn(Activity.DEVELOPMENT, analysis);
         assertThat(development.getIncompleteCards(), empty());
 
-        analysis.doWork();
+        analysis.visit(new Day(1));
         development.visit(new Day(1));
 
         assertThat(analysis.getIncompleteCards(), not(hasItem(Card.S1)));

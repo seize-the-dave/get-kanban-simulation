@@ -44,7 +44,14 @@ public class ActivityColumn implements Column {
         return this.dice;
     }
 
-    public void doWork() {
+    public void visit(Day day) {
+        // Pull
+        upstream.visit(day);
+        Optional<Card> optionalCard = upstream.pull();
+        if (optionalCard.isPresent()) {
+            addCard(optionalCard.get());
+        }
+        // Do Work
         for (Iterator<Card> iter = todo.iterator(); iter.hasNext(); ) {
             Card card = iter.next();
             int remaining = card.getRemainingWork(activity);
@@ -57,14 +64,6 @@ public class ActivityColumn implements Column {
             if (sum < 1) {
                 break;
             }
-        }
-    }
-
-    public void visit(Day day) {
-        upstream.visit(day);
-        Optional<Card> card = upstream.pull();
-        if (card.isPresent()) {
-            addCard(card.get());
         }
     }
 }

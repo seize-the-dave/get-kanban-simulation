@@ -35,7 +35,7 @@ public class DayTest {
 
         Day day = new Day(1);
         day.standUp(board);
-        day.doWork(board);
+        day.visit(board);
 
         assertThat(card.getRemainingWork(Activity.ANALYSIS), is(0));
     }

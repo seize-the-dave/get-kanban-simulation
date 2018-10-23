@@ -2,7 +2,7 @@ package uk.org.grant.getkanban;
 
 import uk.org.grant.getkanban.dice.ActivityDice;
 
-public class Day {
+public class Day implements Visitable<Board> {
     private final int ordinal;
 
     // 9 Billing
@@ -27,9 +27,9 @@ public class Day {
         analysis.allocateDice(board.getDice().toArray(new ActivityDice[] {}));
     }
 
-    public void doWork(Board board) {
+    public void visit(Board board) {
         ActivityColumn column = (ActivityColumn) board.getColumn(Column.Type.ANALYSIS);
-        column.doWork();
+        column.visit(this);
     }
 
     public int getOrdinal() {

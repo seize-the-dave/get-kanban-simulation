@@ -27,7 +27,6 @@ public class SelectedColumn implements Column {
 
     @Override
     public void visit(Day day) {
-        upstream.visit(day);
         Optional<Card> optionalCard = upstream.pull();
         if (optionalCard.isPresent()) {
             Card card = optionalCard.get();
