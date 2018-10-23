@@ -14,7 +14,7 @@ public class BacklogColumnTest {
         Column backlog = new BacklogColumn();
 
         backlog.addCard(card);
-        Optional<Card> actual = backlog.pullCard();
+        Optional<Card> actual = backlog.pull();
 
         assertThat(actual.get(), is(card));
     }

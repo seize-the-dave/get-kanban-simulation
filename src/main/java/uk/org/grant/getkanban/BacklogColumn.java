@@ -16,12 +16,12 @@ public class BacklogColumn implements Column {
     }
 
     @Override
-    public Optional<Card> pullCard() {
+    public Optional<Card> pull() {
         return Optional.ofNullable(cards.remove());
     }
 
     @Override
-    public void pullFromUpstream(int day) {
+    public void visit(Day day) {
         //
     }
 

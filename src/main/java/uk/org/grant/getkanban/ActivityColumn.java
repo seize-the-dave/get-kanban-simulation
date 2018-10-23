@@ -6,13 +6,13 @@ import java.util.*;
 
 public class ActivityColumn implements Column {
     private final Activity activity;
-    private final Pullable upstream;
+    private final Column upstream;
     private final Queue<Card> todo;
     private final Queue<Card> done;
     private List<ActivityDice> dice;
     private int sum;
 
-    public ActivityColumn(Activity activity, Pullable upstream) {
+    public ActivityColumn(Activity activity, Column upstream) {
         this.activity = activity;
         this.upstream = upstream;
         this.todo = new PriorityQueue<>(new DefaultPrioritisationStrategy());
@@ -31,7 +31,7 @@ public class ActivityColumn implements Column {
         return todo;
     }
 
-    public Optional<Card> pullCard() {
+    public Optional<Card> pull() {
         return Optional.ofNullable(done.poll());
     }
 
@@ -60,9 +60,9 @@ public class ActivityColumn implements Column {
         }
     }
 
-    public void pullFromUpstream(int day) {
-        upstream.pullFromUpstream(day);
-        Optional<Card> card = upstream.pullCard();
+    public void visit(Day day) {
+        upstream.visit(day);
+        Optional<Card> card = upstream.pull();
         if (card.isPresent()) {
             addCard(card.get());
         }

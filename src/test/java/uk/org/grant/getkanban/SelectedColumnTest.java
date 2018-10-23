@@ -12,7 +12,7 @@ public class SelectedColumnTest {
         backlog.addCard(card);
 
         Column selected = new SelectedColumn(backlog);
-        selected.pullFromUpstream(1);
+        selected.visit(new Day(1));
 
         assertThat(card.getDaySelected(), is(1));
     }

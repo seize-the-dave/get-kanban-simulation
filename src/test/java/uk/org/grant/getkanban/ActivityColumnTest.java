@@ -27,7 +27,7 @@ public class ActivityColumnTest {
         column.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(6)));
         column.doWork();
 
-        assertThat(column.pullCard().get(), is(Card.S1));
+        assertThat(column.pull().get(), is(Card.S1));
     }
 
     @Test
@@ -38,11 +38,11 @@ public class ActivityColumnTest {
         analysis.addCard(Card.S1);
         analysis.addCard(Card.S2);
         analysis.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(1)));
-        development.pullFromUpstream(1);
+        development.visit(new Day(1));
         assertThat(development.getIncompleteCards(), empty());
 
         analysis.doWork();
-        development.pullFromUpstream(1);
+        development.visit(new Day(1));
 
         assertThat(analysis.getIncompleteCards(), not(hasItem(Card.S1)));
         assertThat(development.getIncompleteCards(), hasItem(Card.S1));
@@ -57,7 +57,7 @@ public class ActivityColumnTest {
         ActivityColumn test = new ActivityColumn(Activity.TEST, development);
         analysis.addCard(emptyCard);
 
-        test.pullFromUpstream(1);
+        test.visit(new Day(1));
 
         assertThat(test.getIncompleteCards(), hasItem(emptyCard));
     }

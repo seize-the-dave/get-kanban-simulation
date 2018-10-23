@@ -9,9 +9,9 @@ import java.util.Queue;
 
 public class SelectedColumn implements Column {
     private final Queue<Card> cards = new PriorityQueue<>(new DefaultPrioritisationStrategy());
-    private Pullable upstream;
+    private Column upstream;
 
-    public SelectedColumn(Pullable upstream) {
+    public SelectedColumn(Column upstream) {
         this.upstream = upstream;
     }
 
@@ -21,17 +21,17 @@ public class SelectedColumn implements Column {
     }
 
     @Override
-    public Optional<Card> pullCard() {
+    public Optional<Card> pull() {
         return Optional.ofNullable(cards.remove());
     }
 
     @Override
-    public void pullFromUpstream(int day) {
-        upstream.pullFromUpstream(day);
-        Optional<Card> optionalCard = upstream.pullCard();
+    public void visit(Day day) {
+        upstream.visit(day);
+        Optional<Card> optionalCard = upstream.pull();
         if (optionalCard.isPresent()) {
             Card card = optionalCard.get();
-            card.setDaySelected(day);
+            card.setDaySelected(day.getOrdinal());
             addCard(card);
         }
     }

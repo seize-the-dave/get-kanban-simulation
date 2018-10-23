@@ -12,12 +12,12 @@ public class NullColumn implements Column {
     }
 
     @Override
-    public Optional<Card> pullCard() {
+    public Optional<Card> pull() {
         return Optional.empty();
     }
 
     @Override
-    public void pullFromUpstream(int day) {
+    public void visit(Day day) {
         // No Op
     }
 

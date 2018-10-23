@@ -4,7 +4,7 @@ import uk.org.grant.getkanban.dice.ActivityDice;
 
 import java.util.List;
 
-public interface Column extends Pullable {
+public interface Column extends Pullable, Visitable<Day> {
     void addCard(Card card);
     void allocateDice(ActivityDice... dice);
     List<ActivityDice> getAllocatedDice();
