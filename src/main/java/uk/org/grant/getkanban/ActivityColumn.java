@@ -9,6 +9,7 @@ public class ActivityColumn implements Column {
     private final Column upstream;
     private final Queue<Card> todo;
     private final Queue<Card> done;
+    private List<ActivityDice> dice;
     private int sum;
 
     public ActivityColumn(Activity activity, Column upstream) {
@@ -35,7 +36,12 @@ public class ActivityColumn implements Column {
     }
 
     public void allocateDice(ActivityDice... dice) {
-        this.sum = Arrays.asList(dice).stream().mapToInt(d -> d.rollFor(activity)).sum();
+        this.dice = Arrays.asList(dice);
+        this.sum = this.dice.stream().mapToInt(d -> d.rollFor(activity)).sum();
+    }
+
+    public List<ActivityDice> getAllocatedDice() {
+        return this.dice;
     }
 
     public void doWork() {
