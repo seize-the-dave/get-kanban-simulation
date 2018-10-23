@@ -50,7 +50,7 @@ public class ActivityColumnTest {
 
     @Test
     public void testPullFromUpstreamTraversesBoard() {
-        Card emptyCard = new Card(Card.Size.SMALL, 0, 0, 1, new SubscriberProfile(new int[] {}));
+        Card emptyCard = new Card(Card.Size.LOW, 0, 0, 1, new SubscriberProfile(new int[] {}));
 
         ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
         ActivityColumn development = new ActivityColumn(Activity.DEVELOPMENT, analysis);
