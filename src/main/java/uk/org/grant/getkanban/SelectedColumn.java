@@ -22,7 +22,7 @@ public class SelectedColumn implements Column {
 
     @Override
     public Optional<Card> pull() {
-        return Optional.ofNullable(cards.remove());
+        return Optional.ofNullable(cards.poll());
     }
 
     @Override
