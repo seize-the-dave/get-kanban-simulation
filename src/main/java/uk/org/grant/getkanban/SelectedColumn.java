@@ -9,9 +9,9 @@ import java.util.Queue;
 
 public class SelectedColumn implements Column {
     private final Queue<Card> cards = new PriorityQueue<>(new DefaultPrioritisationStrategy());
-    private Column upstream;
+    private Pullable upstream;
 
-    public SelectedColumn(Column upstream) {
+    public SelectedColumn(Pullable upstream) {
         this.upstream = upstream;
     }
 

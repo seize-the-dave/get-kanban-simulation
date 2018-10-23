@@ -3,12 +3,9 @@ package uk.org.grant.getkanban;
 import uk.org.grant.getkanban.dice.ActivityDice;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface Column {
+public interface Column extends Pullable {
     void addCard(Card card);
-    Optional<Card> pullCard();
-    void pullFromUpstream(int day);
     void allocateDice(ActivityDice... dice);
     List<ActivityDice> getAllocatedDice();
 

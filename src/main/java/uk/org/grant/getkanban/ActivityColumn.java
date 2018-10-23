@@ -6,13 +6,13 @@ import java.util.*;
 
 public class ActivityColumn implements Column {
     private final Activity activity;
-    private final Column upstream;
+    private final Pullable upstream;
     private final Queue<Card> todo;
     private final Queue<Card> done;
     private List<ActivityDice> dice;
     private int sum;
 
-    public ActivityColumn(Activity activity, Column upstream) {
+    public ActivityColumn(Activity activity, Pullable upstream) {
         this.activity = activity;
         this.upstream = upstream;
         this.todo = new PriorityQueue<>(new DefaultPrioritisationStrategy());
