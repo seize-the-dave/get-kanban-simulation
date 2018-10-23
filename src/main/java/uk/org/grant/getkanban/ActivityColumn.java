@@ -60,18 +60,11 @@ public class ActivityColumn implements Column {
         }
     }
 
-    public void pullFromUpstream() {
-        upstream.pullFromUpstream();
+    public void pullFromUpstream(int day) {
+        upstream.pullFromUpstream(day);
         Optional<Card> card = upstream.pullCard();
         if (card.isPresent()) {
             addCard(card.get());
-        }
-    }
-
-    public static class DefaultPrioritisationStrategy implements Comparator<Card> {
-        @Override
-        public int compare(Card o1, Card o2) {
-            return 0;
         }
     }
 }

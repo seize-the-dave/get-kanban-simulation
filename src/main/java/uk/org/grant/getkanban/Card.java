@@ -18,7 +18,7 @@ public class Card {
     private final Size size;
     private final SubscriberProfile profile;
     private final Map<Activity, Integer> work = new EnumMap<>(Activity.class);
-    private int start;
+    private int daySelected;
     private int finish;
 
     public Card(Size size, int analysis, int development, int test, SubscriberProfile profile) {
@@ -39,24 +39,24 @@ public class Card {
 
     public int getCycleTime() {
         checkIsFinished();
-        return finish - start;
+        return finish - daySelected;
     }
 
     private void checkIsFinished() {
-        if (start == 0 || finish == 0) {
+        if (daySelected == 0 || finish == 0) {
             throw new IllegalStateException();
         }
     }
 
     public void setDaySelected(int start) {
-        this.start = start;
+        this.daySelected = start;
     }
 
     public void setFinishDay(int finish) {
-        if (this.start == 0) {
+        if (this.daySelected == 0) {
             throw new IllegalStateException();
         }
-        if (finish < this.start) {
+        if (finish < this.daySelected) {
             throw new IllegalStateException();
         }
         this.finish = finish;
@@ -72,6 +72,10 @@ public class Card {
             throw new IllegalArgumentException();
         }
         work.put(activity, remaining - effort);
+    }
+
+    public int getDaySelected() {
+        return daySelected;
     }
 
     public enum Size {

@@ -4,21 +4,25 @@ import uk.org.grant.getkanban.dice.ActivityDice;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
-public class NullColumn implements Column {
+public class BacklogColumn implements Column {
+    private final Queue<Card> cards = new PriorityQueue<>(new DefaultPrioritisationStrategy());
+
     @Override
     public void addCard(Card card) {
-        throw new UnsupportedOperationException();
+        cards.add(card);
     }
 
     @Override
     public Optional<Card> pullCard() {
-        return Optional.empty();
+        return Optional.ofNullable(cards.remove());
     }
 
     @Override
     public void pullFromUpstream(int day) {
-        // No Op
+        //
     }
 
     @Override
@@ -28,6 +32,6 @@ public class NullColumn implements Column {
 
     @Override
     public List<ActivityDice> getAllocatedDice() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 }

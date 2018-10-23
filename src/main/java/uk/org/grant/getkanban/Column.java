@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface Column {
     void addCard(Card card);
     Optional<Card> pullCard();
-    void pullFromUpstream();
+    void pullFromUpstream(int day);
     void allocateDice(ActivityDice... dice);
     List<ActivityDice> getAllocatedDice();
 
