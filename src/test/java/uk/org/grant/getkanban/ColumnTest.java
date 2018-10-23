@@ -4,6 +4,7 @@ import org.junit.Test;
 import uk.org.grant.getkanban.dice.ActivityDice;
 import uk.org.grant.getkanban.dice.LoadedDice;
 
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -43,9 +44,11 @@ public class ColumnTest {
         analysis.addCard(Card.S1);
         analysis.addCard(Card.S2);
         analysis.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(1)));
-        analysis.rollDice();
-
         Column development = new Column(Activity.DEVELOPMENT, analysis);
+        development.pull();
+        assertThat(development.getCards(), empty());
+
+        analysis.rollDice();
         development.pull();
 
         assertThat(development.getCards(), hasItem(Card.S1));
