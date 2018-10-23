@@ -19,7 +19,7 @@ public class Card {
     private final SubscriberProfile profile;
     private final Map<Activity, Integer> work = new EnumMap<>(Activity.class);
     private int daySelected;
-    private int finish;
+    private int dayDeployed;
 
     public Card(Size size, int analysis, int development, int test, SubscriberProfile profile) {
         this.size = size;
@@ -39,27 +39,27 @@ public class Card {
 
     public int getCycleTime() {
         checkIsFinished();
-        return finish - daySelected;
+        return dayDeployed - daySelected;
     }
 
     private void checkIsFinished() {
-        if (daySelected == 0 || finish == 0) {
+        if (daySelected == 0 || dayDeployed == 0) {
             throw new IllegalStateException();
         }
     }
 
-    public void setDaySelected(int start) {
-        this.daySelected = start;
+    public void setDaySelected(int daySelected) {
+        this.daySelected = daySelected;
     }
 
-    public void setFinishDay(int finish) {
+    public void setDayDeployed(int dayDeployed) {
         if (this.daySelected == 0) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("Cannot deploy unselected card");
         }
-        if (finish < this.daySelected) {
-            throw new IllegalStateException();
+        if (dayDeployed < this.daySelected) {
+            throw new IllegalStateException("Cannot deploy before selection day");
         }
-        this.finish = finish;
+        this.dayDeployed = dayDeployed;
     }
 
     public int getRemainingWork(Activity activity) {
@@ -76,6 +76,10 @@ public class Card {
 
     public int getDaySelected() {
         return daySelected;
+    }
+
+    public int getDayDeployed() {
+        return dayDeployed;
     }
 
     public enum Size {

@@ -60,21 +60,21 @@ public class CardTest {
     @Test(expected = IllegalStateException.class)
     public void testCannotSetFinishBeforeSettingStart() {
         Card card = createCard();
-        card.setFinishDay(1);
+        card.setDayDeployed(1);
     }
 
     @Test(expected = IllegalStateException.class)
     public void testFinishCannotBeBeforeStart() {
         Card card = createCard();
         card.setDaySelected(3);
-        card.setFinishDay(1);
+        card.setDayDeployed(1);
     }
 
     @Test
     public void testCycleTimeIsEndMinusStart() {
         Card card = createCard();
         card.setDaySelected(1);
-        card.setFinishDay(3);
+        card.setDayDeployed(3);
         assertThat(2, is(card.getCycleTime()));
     }
 
@@ -95,12 +95,12 @@ public class CardTest {
     public void testSubscribersDecreaseWithLongerCycleTimes() {
         Card firstCard = createCard();
         firstCard.setDaySelected(1);
-        firstCard.setFinishDay(3);
+        firstCard.setDayDeployed(3);
         assertThat(10, is(firstCard.getSubscribers()));
 
         Card secondCard = createCard();
         secondCard.setDaySelected(1);
-        secondCard.setFinishDay(2);
+        secondCard.setDayDeployed(2);
         assertThat(20, is(secondCard.getSubscribers()));
     }
 
