@@ -3,14 +3,13 @@ package uk.org.grant.getkanban;
 import uk.org.grant.getkanban.dice.ActivityDice;
 
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Column {
     private final Activity activity;
-    private final List<Card> cards = new ArrayList<>();
+    private final SortedSet<Card> cards = new TreeSet<>(new DefaultPrioritisationStrategy());
     private final Column upstream;
-    private List<ActivityDice> dice;
+    private int sum;
 
     public Column(Activity activity, Column upstream) {
         this.activity = activity;
@@ -21,23 +20,19 @@ public class Column {
         cards.add(card);
     }
 
-    public List<Card> getCards() {
+    public Collection<Card> getCards() {
         return cards;
     }
 
-    public List<Card> getCards(Predicate<Card> predicate) {
-        return cards.stream().filter(predicate).collect(Collectors.toList());
+    public List<Card> getCompletedCards() {
+        return cards.stream().filter(p -> p.getRemainingWork(this.activity) == 0).collect(Collectors.toList());
     }
 
     public void allocateDice(ActivityDice... dice) {
-        this.dice = Arrays.asList(dice);
+        this.sum = Arrays.asList(dice).stream().mapToInt(d -> d.rollFor(activity)).sum();
     }
 
-    public void rollDice() {
-        int sum = 0;
-        for (ActivityDice diceItem : dice) {
-            sum += diceItem.rollFor(activity);
-        }
+    public void doWork() {
         for (Card card : cards) {
             int remaining = card.getRemainingWork(activity);
             card.doWork(activity, Math.min(remaining, sum));
@@ -49,10 +44,13 @@ public class Column {
     }
 
     public void pull() {
-        cards.addAll(upstream.getCards(upstream.isPullable()));
+        cards.addAll(upstream.getCompletedCards());
     }
 
-    public Predicate<Card> isPullable() {
-        return p -> p.getRemainingWork(this.activity) == 0;
+    public static class DefaultPrioritisationStrategy implements Comparator<Card> {
+        @Override
+        public int compare(Card o1, Card o2) {
+            return 0;
+        }
     }
 }

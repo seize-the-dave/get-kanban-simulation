@@ -23,9 +23,9 @@ public class ColumnTest {
         Column column = new Column(Activity.ANALYSIS, null);
         column.addCard(Card.S1);
         column.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(6)));
-        column.rollDice();
+        column.doWork();
 
-        assertThat(column.getCards().get(0).getRemainingWork(Activity.ANALYSIS), is(0));
+        assertThat(column.getCards().iterator().next().getRemainingWork(Activity.ANALYSIS), is(0));
     }
 
     @Test
@@ -33,9 +33,9 @@ public class ColumnTest {
         Column column = new Column(Activity.ANALYSIS, null);
         column.addCard(Card.S1);
         column.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(6)));
-        column.rollDice();
+        column.doWork();
 
-        assertThat(column.getCards(column.isPullable()).get(0), is(Card.S1));
+        assertThat(column.getCompletedCards().get(0), is(Card.S1));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class ColumnTest {
         development.pull();
         assertThat(development.getCards(), empty());
 
-        analysis.rollDice();
+        analysis.doWork();
         development.pull();
 
         assertThat(development.getCards(), hasItem(Card.S1));
