@@ -43,7 +43,7 @@ public class BoardRunner {
             b.getColumn(Column.Type.BACKLOG).addCard(Cards.getCard("S14"));
 
             for (int i = 9; i < 22; i++) {
-                Day d = new Day(i);
+                Day d = Days.getDay(i);
 
                 d.standUp(b);
                 d.visit(b);

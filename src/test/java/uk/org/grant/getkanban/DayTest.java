@@ -23,7 +23,7 @@ public class DayTest {
         b.setColumn(Column.Type.READY_TO_DEPLOY, new ReadyToDeployColumn(b.getColumn(Column.Type.TEST)));
         b.setColumn(Column.Type.DEPLOY, new DeployedColumn(b.getColumn(Column.Type.READY_TO_DEPLOY)));
 
-        Day day = new Day(1);
+        Day day = Days.getDay(1);
         day.standUp(b);
 
         assertThat(b.getColumn(Column.Type.ANALYSIS).getAllocatedDice(), hasItem(dice));
@@ -45,7 +45,7 @@ public class DayTest {
         b.setColumn(Column.Type.READY_TO_DEPLOY, new ReadyToDeployColumn(b.getColumn(Column.Type.TEST)));
         b.setColumn(Column.Type.DEPLOY, new DeployedColumn(b.getColumn(Column.Type.READY_TO_DEPLOY)));
 
-        Day day = new Day(1);
+        Day day = Days.getDay(1);
         day.standUp(b);
         day.visit(b);
 
@@ -54,7 +54,7 @@ public class DayTest {
 
     @Test
     public void canGetOrdinal() {
-        Day day = new Day(1);
+        Day day = Days.getDay(1);
         assertThat(day.getOrdinal(), is(1));
     }
 }
