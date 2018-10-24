@@ -12,8 +12,6 @@ public class Card {
     // F1 4; 3; 6 Financial summary
     // F2 + 30 Subscribers
     // S1
-    public static final Card S1 = new Card("S1", Size.LOW, 1, 1, 1, new SubscriberProfile(new int[] {1, 2, 3}));
-    public static final Card S2 = new Card("S2", Size.LOW, 5, 2, 1, new SubscriberProfile(new int[] {1, 2, 3}));
 
     private final Size size;
     private final SubscriberProfile profile;
@@ -90,5 +88,18 @@ public class Card {
 
     public enum Size {
         MEDIUM, HIGH, LOW
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Card == false) {
+            return false;
+        }
+        return this.name.equals(((Card) o).name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }

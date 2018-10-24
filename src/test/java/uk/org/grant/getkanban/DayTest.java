@@ -11,7 +11,7 @@ import static org.junit.Assert.assertThat;
 public class DayTest {
     @Test
     public void daysAllocateDiceDuringStandup() {
-        ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
+        ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, 4, new NullColumn());
         ActivityDice dice = new ActivityDice(Activity.ANALYSIS, new LoadedDice(6));
         Board board = new Board();
         board.addDice(dice);

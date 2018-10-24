@@ -8,8 +8,8 @@ import static org.hamcrest.Matchers.is;
 public class ReadyToDeployColumnTest {
     @Test
     public void testIsOnlyPullableOnBillingDays() {
-        Column selected = new SelectedColumn(new NullColumn());
-        selected.addCard(Card.S1);
+        Column selected = new SelectedColumn(1, new NullColumn());
+        selected.addCard(CardFactory.getCard("S1"));
 
         Column readyToDeploy = new ReadyToDeployColumn(selected);
         readyToDeploy.visit(new Day(1));

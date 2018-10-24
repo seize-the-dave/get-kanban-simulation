@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 public class ActivityColumnTest {
     @Test
     public void testDoingWorkOnColumnReducesCardWork() {
-        Card card = Card.S1;
+        Card card = CardFactory.getCard("S1");
 
         ActivityColumn column = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
         column.addCard(card);
@@ -23,18 +23,18 @@ public class ActivityColumnTest {
     @Test
     public void testFinishingCardMakesItPullable() {
         ActivityColumn column = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
-        column.addCard(Card.S1);
+        column.addCard(CardFactory.getCard("S1"));
         column.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(6)));
         column.visit(new Day(1));
 
-        assertThat(column.pull().get(), is(Card.S1));
+        assertThat(column.pull().get(), is(CardFactory.getCard("S1")));
     }
 
     @Test
     public void testCanPullFromUpstream() {
         ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
-        analysis.addCard(Card.S1);
-        analysis.addCard(Card.S2);
+        analysis.addCard(CardFactory.getCard("S1"));
+        analysis.addCard(CardFactory.getCard("S2"));
         analysis.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(1)));
 
         ActivityColumn development = new ActivityColumn(Activity.DEVELOPMENT, analysis);
@@ -43,21 +43,48 @@ public class ActivityColumnTest {
         analysis.visit(new Day(1));
         development.visit(new Day(1));
 
-        assertThat(analysis.getIncompleteCards(), not(hasItem(Card.S1)));
-        assertThat(development.getIncompleteCards(), hasItem(Card.S1));
+        assertThat(analysis.getIncompleteCards(), not(hasItem(CardFactory.getCard("S1"))));
+        assertThat(development.getIncompleteCards(), hasItem(CardFactory.getCard("S1")));
     }
 
     @Test
     public void testPullFromUpstreamTraversesBoard() {
-        Card emptyCard = new Card("S1", Card.Size.LOW, 0, 0, 1, new SubscriberProfile(new int[] {}));
+        Card s1 = CardFactory.getCard("S1");
 
         ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
         ActivityColumn development = new ActivityColumn(Activity.DEVELOPMENT, analysis);
         ActivityColumn test = new ActivityColumn(Activity.TEST, development);
-        analysis.addCard(emptyCard);
+        analysis.addCard(s1);
 
         test.visit(new Day(1));
 
-        assertThat(test.getIncompleteCards(), hasItem(emptyCard));
+        assertThat(development.getIncompleteCards(), hasItem(s1));
+    }
+
+    @Test
+    public void canGetWipLimit() {
+        ActivityColumn column = new ActivityColumn(Activity.ANALYSIS, 4, new NullColumn());
+
+        assertThat(column.getLimit(), is(4));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void cannotExceedWipLimit() {
+        ActivityColumn column = new ActivityColumn(Activity.ANALYSIS, 1, new NullColumn());
+
+        column.addCard(CardFactory.getCard("S1"));
+        column.addCard(CardFactory.getCard("S2"));
+    }
+
+    @Test
+    public void willNotPullBeyondWipLimit() {
+        ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, 1, new NullColumn());
+        ActivityColumn development = new ActivityColumn(Activity.ANALYSIS, 1, analysis);
+
+        analysis.addCard(CardFactory.getCard("S1"));
+        development.addCard(CardFactory.getCard("S2"));
+
+        development.visit(new Day(1));
+        assertThat(development.getCards().size(), is(1));
     }
 }

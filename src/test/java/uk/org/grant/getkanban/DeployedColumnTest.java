@@ -12,7 +12,7 @@ public class DeployedColumnTest {
         Column backlog = new BacklogColumn();
         backlog.addCard(card);
 
-        Column selected = new SelectedColumn(backlog);
+        Column selected = new SelectedColumn(1, backlog);
         selected.visit(new Day(1));
 
         Column deployed = new DeployedColumn(selected);

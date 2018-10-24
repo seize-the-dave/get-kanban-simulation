@@ -6,22 +6,31 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ActivityColumn implements Column {
+public class ActivityColumn implements Column, Limited {
     private final Activity activity;
     private final Column upstream;
     private final Queue<Card> todo;
     private final Queue<Card> done;
     private List<ActivityDice> dice;
     private int sum;
+    private int limit;
 
-    public ActivityColumn(Activity activity, Column upstream) {
+    public ActivityColumn(Activity activity, int limit, Column upstream) {
         this.activity = activity;
         this.upstream = upstream;
+        this.limit = limit;
         this.todo = new PriorityQueue<>(new DefaultPrioritisationStrategy());
         this.done = new PriorityQueue<>(new DefaultPrioritisationStrategy());
     }
 
+    public ActivityColumn(Activity analysis, Column upstream) {
+        this(analysis, Integer.MAX_VALUE, upstream);
+    }
+
     public void addCard(Card card) {
+        if (getCards().size() == this.limit) {
+            throw new IllegalStateException();
+        }
         if (card.getRemainingWork(this.activity) == 0) {
             done.add(card);
         } else {
@@ -54,9 +63,11 @@ public class ActivityColumn implements Column {
     public void visit(Day day) {
         // Pull
         upstream.visit(day);
-        Optional<Card> optionalCard = upstream.pull();
-        if (optionalCard.isPresent()) {
-            addCard(optionalCard.get());
+        if (getCards().size() < this.limit) {
+            Optional<Card> optionalCard = upstream.pull();
+            if (optionalCard.isPresent()) {
+                addCard(optionalCard.get());
+            }
         }
         // Do Work
         for (Iterator<Card> iter = todo.iterator(); iter.hasNext(); ) {
@@ -72,5 +83,9 @@ public class ActivityColumn implements Column {
                 break;
             }
         }
+    }
+
+    public int getLimit() {
+        return limit;
     }
 }
