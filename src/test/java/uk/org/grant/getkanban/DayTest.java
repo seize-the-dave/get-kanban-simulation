@@ -25,7 +25,7 @@ public class DayTest {
 
     @Test
     public void daysCompleteCardsDuringWork() {
-        Card card = new Card(Card.Size.LOW, 1, 1, 1, new SubscriberProfile(new int[] {}));
+        Card card = new Card("S1", Card.Size.LOW, 1, 1, 1, new SubscriberProfile(new int[] {}));
         ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
         analysis.addCard(card);
         ActivityDice dice = new ActivityDice(Activity.ANALYSIS, new LoadedDice(6));

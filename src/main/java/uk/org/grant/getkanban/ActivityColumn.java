@@ -3,6 +3,8 @@ package uk.org.grant.getkanban;
 import uk.org.grant.getkanban.dice.ActivityDice;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ActivityColumn implements Column {
     private final Activity activity;
@@ -25,6 +27,11 @@ public class ActivityColumn implements Column {
         } else {
             todo.add(card);
         }
+    }
+
+    @Override
+    public Collection<Card> getCards() {
+        return Stream.concat(this.todo.stream(), this.done.stream()).collect(Collectors.toList());
     }
 
     public Collection<Card> getIncompleteCards() {

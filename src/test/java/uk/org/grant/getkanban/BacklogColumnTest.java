@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 public class BacklogColumnTest {
     @Test
     public void testPull() {
-        Card card = new Card(Card.Size.HIGH, 0, 0, 0, new SubscriberProfile(new int[] {}));
+        Card card = new Card("S1", Card.Size.HIGH, 0, 0, 0, new SubscriberProfile(new int[] {}));
         Column backlog = new BacklogColumn();
 
         backlog.addCard(card);

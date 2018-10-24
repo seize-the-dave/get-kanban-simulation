@@ -12,16 +12,18 @@ public class Card {
     // F1 4; 3; 6 Financial summary
     // F2 + 30 Subscribers
     // S1
-    public static final Card S1 = new Card(Size.LOW, 1, 1, 1, new SubscriberProfile(new int[] {1, 2, 3}));
-    public static final Card S2 = new Card(Size.LOW, 5, 2, 1, new SubscriberProfile(new int[] {1, 2, 3}));
+    public static final Card S1 = new Card("S1", Size.LOW, 1, 1, 1, new SubscriberProfile(new int[] {1, 2, 3}));
+    public static final Card S2 = new Card("S2", Size.LOW, 5, 2, 1, new SubscriberProfile(new int[] {1, 2, 3}));
 
     private final Size size;
     private final SubscriberProfile profile;
     private final Map<Activity, Integer> work = new EnumMap<>(Activity.class);
     private int daySelected;
     private int dayDeployed;
+    private final String name;
 
-    public Card(Size size, int analysis, int development, int test, SubscriberProfile profile) {
+    public Card(String name, Size size, int analysis, int development, int test, SubscriberProfile profile) {
+        this.name = name;
         this.size = size;
         this.work.put(Activity.ANALYSIS, analysis);
         this.work.put(Activity.DEVELOPMENT, development);
@@ -80,6 +82,10 @@ public class Card {
 
     public int getDayDeployed() {
         return dayDeployed;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public enum Size {

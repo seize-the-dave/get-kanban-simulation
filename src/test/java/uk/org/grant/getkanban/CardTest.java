@@ -13,6 +13,12 @@ public class CardTest {
     }
 
     @Test
+    public void testGetName() {
+        Card card = createCard();
+        assertThat(card.getName(), is("S1"));
+    }
+
+    @Test
     public void testGetRemainingDevelopmentWork() {
         Card card = createCard();
         assertThat(card.getRemainingWork(Activity.DEVELOPMENT), is(10));
@@ -96,15 +102,15 @@ public class CardTest {
         Card firstCard = createCard();
         firstCard.setDaySelected(1);
         firstCard.setDayDeployed(3);
-        assertThat(10, is(firstCard.getSubscribers()));
+        assertThat(20, is(firstCard.getSubscribers()));
 
         Card secondCard = createCard();
         secondCard.setDaySelected(1);
         secondCard.setDayDeployed(2);
-        assertThat(20, is(secondCard.getSubscribers()));
+        assertThat(30, is(secondCard.getSubscribers()));
     }
 
     private Card createCard() {
-        return new Card(Card.Size.LOW, 5, 10, 5, new SubscriberProfile(new int[]{30, 20, 10}));
+        return new Card("S1", Card.Size.LOW, 5, 10, 5, new SubscriberProfile(new int[]{30, 20, 10}));
     }
 }

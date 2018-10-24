@@ -3,6 +3,8 @@ package uk.org.grant.getkanban;
 import uk.org.grant.getkanban.dice.ActivityDice;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ReadyToDeployColumn implements Column {
     private final Queue<Card> todo = new PriorityQueue<>(new DefaultPrioritisationStrategy());
@@ -18,6 +20,12 @@ public class ReadyToDeployColumn implements Column {
     public void addCard(Card card) {
         todo.add(card);
     }
+
+    @Override
+    public Collection<Card> getCards() {
+        return Stream.concat(this.todo.stream(), this.done.stream()).collect(Collectors.toList());
+    }
+
 
     @Override
     public void allocateDice(ActivityDice... dice) {

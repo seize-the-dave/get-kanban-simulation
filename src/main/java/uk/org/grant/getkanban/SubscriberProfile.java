@@ -9,7 +9,7 @@ public class SubscriberProfile {
 
     public int getSubscribers(int cycleTime) {
         try {
-            return subscribers[cycleTime];
+            return subscribers[cycleTime - 1];
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException();
         }

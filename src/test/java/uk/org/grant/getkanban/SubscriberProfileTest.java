@@ -15,6 +15,6 @@ public class SubscriberProfileTest {
     @Test
     public void testSubscribers() {
         SubscriberProfile profile = new SubscriberProfile(new int[] {20, 10});
-        assertThat(10, is(profile.getSubscribers(1)));
+        assertThat(20, is(profile.getSubscribers(1)));
     }
 }

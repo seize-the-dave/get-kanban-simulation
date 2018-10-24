@@ -2,10 +2,9 @@ package uk.org.grant.getkanban;
 
 import uk.org.grant.getkanban.dice.ActivityDice;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SelectedColumn implements Column {
     private final Queue<Card> cards = new PriorityQueue<>(new DefaultPrioritisationStrategy());
@@ -18,6 +17,11 @@ public class SelectedColumn implements Column {
     @Override
     public void addCard(Card card) {
         cards.add(card);
+    }
+
+    @Override
+    public Collection<Card> getCards() {
+        return Collections.unmodifiableCollection(cards);
     }
 
     @Override
