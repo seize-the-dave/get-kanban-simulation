@@ -4,6 +4,7 @@ import uk.org.grant.getkanban.dice.ActivityDice;
 
 public class Day implements Visitable<Board> {
     private final int ordinal;
+    private final Instruction[] instructions;
 
     // 9 Billing
     // 10 Add Blocker to S10.  Pink Pete Dice (7 Work)
@@ -19,9 +20,15 @@ public class Day implements Visitable<Board> {
     // 20 .
     // 21 .
     public Day(int ordinal) {
-        this.ordinal = ordinal;
+        this(ordinal, new Instruction[]{});
+
     }
-    
+
+    public Day(int ordinal, Instruction... instructions) {
+        this.ordinal = ordinal;
+        this.instructions = instructions;
+    }
+
     public void standUp(Board board) {
         board.getColumn(Column.Type.ANALYSIS).allocateDice(board.getDice(Activity.ANALYSIS).toArray(new ActivityDice[] {}));
         board.getColumn(Column.Type.DEVELOPMENT).allocateDice(board.getDice(Activity.DEVELOPMENT).toArray(new ActivityDice[] {}));
@@ -40,5 +47,11 @@ public class Day implements Visitable<Board> {
 
     public int getOrdinal() {
         return ordinal;
+    }
+
+    public void endOfDay(Board b) {
+        for (Instruction instruction : instructions) {
+            instruction.execute(b);
+        }
     }
 }

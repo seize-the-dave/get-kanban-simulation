@@ -57,4 +57,15 @@ public class DayTest {
         Day day = Days.getDay(1);
         assertThat(day.getOrdinal(), is(1));
     }
+
+    @Test
+    public void executesInstructionsAtEndOfDay() {
+        Board b = new Board();
+        b.setColumn(Column.Type.ANALYSIS, new ActivityColumn(Activity.ANALYSIS, new NullColumn()));
+        assertThat(((Limited) b.getColumn(Column.Type.ANALYSIS)).getLimit(), is(Integer.MAX_VALUE));
+
+        Day d = new Day(1, board -> ((Limited) board.getColumn(Column.Type.ANALYSIS)).setLimit(1));
+        d.endOfDay(b);
+        assertThat(((Limited) b.getColumn(Column.Type.ANALYSIS)).getLimit(), is(1));
+    }
 }
