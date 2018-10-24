@@ -19,31 +19,31 @@ public class FinancialSummaryTest {
     }
 
     private Column buildDeployedColumn() {
-        Card s1 = new Card("S1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 2, 3, 4}));
+        Card s1 = new Card("S1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         s1.setDaySelected(1);
         s1.setDayDeployed(3);
 
-        Card s2 = new Card("S2", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 3, 4, 5}));
+        Card s2 = new Card("S2", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         s2.setDaySelected(9);
         s2.setDayDeployed(11);
 
-        Card s3 = new Card("S3", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 4, 5, 6}));
+        Card s3 = new Card("S3", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         s3.setDaySelected(12);
         s3.setDayDeployed(14);
 
-        Card s4 = new Card("S4", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 5, 6, 7}));
+        Card s4 = new Card("S4", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         s4.setDaySelected(14);
         s4.setDayDeployed(17);
 
-        Card e1 = new Card("E1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {0, 0, 0, 0}));
+        Card e1 = new Card("E1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         e1.setDaySelected(16);
         e1.setDayDeployed(18);
 
-        Card f2 = new Card("F2", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {0, 0, 0, 0}));
+        Card f2 = new Card("F2", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         f2.setDaySelected(19);
         f2.setDayDeployed(21);
 
-        Card s5 = new Card("S5", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 5, 6, 7}));
+        Card s5 = new Card("S5", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         s5.setDaySelected(16);
         s5.setDayDeployed(20);
 
@@ -82,7 +82,7 @@ public class FinancialSummaryTest {
 
     @Test
     public void testNoFineForF1WhenDelivered() {
-        Card f1 = new Card("F1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[]{0,0,0,0,0,0}));
+        Card f1 = new Card("F1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
         f1.setDaySelected(10);
         f1.setDayDeployed(15);
 
@@ -95,7 +95,7 @@ public class FinancialSummaryTest {
 
     @Test
     public void testFineForF1WhenLate() {
-        Card f1 = new Card("F1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[]{0,0,0,0,0,0}));
+        Card f1 = new Card("F1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
         f1.setDaySelected(10);
         f1.setDayDeployed(16);
 
@@ -108,7 +108,7 @@ public class FinancialSummaryTest {
 
     @Test
     public void testNoPaymentForE1WhenLate() {
-        Card e1 = new Card("E1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[]{0,0,0,0,0,0}));
+        Card e1 = new Card("E1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
         e1.setDaySelected(15);
         e1.setDayDeployed(19);
 

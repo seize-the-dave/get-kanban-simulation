@@ -61,7 +61,6 @@ public class ActivityColumn implements Column, Limited {
     }
 
     public void visit(Day day) {
-        // Pull
         upstream.visit(day);
         if (getCards().size() < this.limit) {
             Optional<Card> optionalCard = upstream.pull();
@@ -87,5 +86,9 @@ public class ActivityColumn implements Column, Limited {
 
     public int getLimit() {
         return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 }

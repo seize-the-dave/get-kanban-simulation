@@ -2,6 +2,8 @@ package uk.org.grant.getkanban;
 
 import uk.org.grant.getkanban.dice.ActivityDice;
 
+import static uk.org.grant.getkanban.Activity.ANALYSIS;
+
 public class Day implements Visitable<Board> {
     private final int ordinal;
 
@@ -23,13 +25,19 @@ public class Day implements Visitable<Board> {
     }
     
     public void standUp(Board board) {
-        Column analysis = board.getColumn(Column.Type.ANALYSIS);
-        analysis.allocateDice(board.getDice().toArray(new ActivityDice[] {}));
+        board.getColumn(Column.Type.ANALYSIS).allocateDice(board.getDice(Activity.ANALYSIS).toArray(new ActivityDice[] {}));
+        board.getColumn(Column.Type.DEVELOPMENT).allocateDice(board.getDice(Activity.DEVELOPMENT).toArray(new ActivityDice[] {}));
+        board.getColumn(Column.Type.TEST).allocateDice(board.getDice(Activity.TEST).toArray(new ActivityDice[] {}));
     }
 
     public void visit(Board board) {
-        ActivityColumn column = (ActivityColumn) board.getColumn(Column.Type.ANALYSIS);
-        column.visit(this);
+        board.getColumn(Column.Type.DEPLOY).visit(this);
+        board.getColumn(Column.Type.READY_TO_DEPLOY).visit(this);
+        board.getColumn(Column.Type.TEST).visit(this);
+        board.getColumn(Column.Type.DEVELOPMENT).visit(this);
+        board.getColumn(Column.Type.ANALYSIS).visit(this);
+        board.getColumn(Column.Type.SELECTED).visit(this);
+        board.getColumn(Column.Type.BACKLOG).visit(this);
     }
 
     public int getOrdinal() {

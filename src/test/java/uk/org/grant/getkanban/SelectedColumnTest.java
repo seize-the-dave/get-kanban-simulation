@@ -7,7 +7,7 @@ import static org.junit.Assert.assertThat;
 public class SelectedColumnTest {
     @Test
     public void marksSelectedDayOnPull() {
-        Card card = new Card("S1", Card.Size.HIGH, 1, 1, 1, new SubscriberProfile(new int[]{}));
+        Card card = CardFactory.getCard("S10");
         BacklogColumn backlog = new BacklogColumn();
         backlog.addCard(card);
 

@@ -11,6 +11,10 @@ public class ActivityDice {
         this.dice = dice;
     }
 
+    public Activity getActivity() {
+        return this.activity;
+    }
+
     public int rollFor(Activity activity) {
         if (this.activity == activity) {
             return dice.roll();

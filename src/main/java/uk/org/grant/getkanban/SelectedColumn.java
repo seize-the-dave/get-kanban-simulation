@@ -58,4 +58,9 @@ public class SelectedColumn implements Column, Limited {
     public int getLimit() {
         return limit;
     }
+
+    @Override
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
 }

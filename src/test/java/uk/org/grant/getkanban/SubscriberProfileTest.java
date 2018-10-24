@@ -14,7 +14,7 @@ public class SubscriberProfileTest {
 
     @Test
     public void testSubscribers() {
-        SubscriberProfile profile = new SubscriberProfile(new int[] {20, 10});
+        SubscriberProfile profile = new SubscriberProfile(new int[]{20,10,0,0,0,0,0,0,0,0,0,0,0,0,0});
         assertThat(20, is(profile.getSubscribers(1)));
     }
 }

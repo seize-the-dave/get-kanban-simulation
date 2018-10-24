@@ -102,4 +102,9 @@ public class Card {
     public int hashCode() {
         return name.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Card [" + name.toString() + "]";
+    }
 }

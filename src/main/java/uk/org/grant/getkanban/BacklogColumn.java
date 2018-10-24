@@ -14,12 +14,12 @@ public class BacklogColumn implements Column {
 
     @Override
     public Collection<Card> getCards() {
-        return Collections.unmodifiableCollection(cards);
+        return cards;
     }
 
     @Override
     public Optional<Card> pull() {
-        return Optional.ofNullable(cards.remove());
+        return Optional.ofNullable(cards.poll());
     }
 
     @Override

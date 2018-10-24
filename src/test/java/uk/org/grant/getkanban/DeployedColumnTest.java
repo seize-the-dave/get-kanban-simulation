@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
 public class DeployedColumnTest {
     @Test
     public void marksDeployedDayOnPull() {
-        Card card = new Card("S1", Card.Size.HIGH, 1, 1, 1, new SubscriberProfile(new int[]{}));
+        Card card = CardFactory.getCard("S10");
         Column backlog = new BacklogColumn();
         backlog.addCard(card);
 

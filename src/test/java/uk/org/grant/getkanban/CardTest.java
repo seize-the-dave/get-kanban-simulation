@@ -20,8 +20,8 @@ public class CardTest {
 
     @Test
     public void testGetRemainingDevelopmentWork() {
-        Card card = createCard();
-        assertThat(card.getRemainingWork(Activity.DEVELOPMENT), is(10));
+        Card card = CardFactory.getCard("S1");
+        assertThat(card.getRemainingWork(Activity.DEVELOPMENT), is(0));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -32,22 +32,22 @@ public class CardTest {
 
     @Test
     public void testDoingWorkReducesRemainingWork() {
-        Card card = createCard();
+        Card card = CardFactory.getCard("S6");
         card.doWork(Activity.DEVELOPMENT, 5);
 
-        assertThat(card.getRemainingWork(Activity.DEVELOPMENT), is(5));
+        assertThat(card.getRemainingWork(Activity.DEVELOPMENT), is(2));
     }
 
     @Test
     public void testReducingDevelopmentWorkDoesNotAffectTestOrAnalysis() {
-        Card card = createCard();
-        assertThat(card.getRemainingWork(Activity.TEST), is(5));
-        assertThat(card.getRemainingWork(Activity.ANALYSIS), is(5));
+        Card card = CardFactory.getCard("S10");
+        assertThat(card.getRemainingWork(Activity.TEST), is(9));
+        assertThat(card.getRemainingWork(Activity.ANALYSIS), is(2));
 
-        card.doWork(Activity.DEVELOPMENT, 5);
+        card.doWork(Activity.DEVELOPMENT, 6);
 
-        assertThat(card.getRemainingWork(Activity.TEST), is(5));
-        assertThat(card.getRemainingWork(Activity.ANALYSIS), is(5));
+        assertThat(card.getRemainingWork(Activity.TEST), is(9));
+        assertThat(card.getRemainingWork(Activity.ANALYSIS), is(2));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -65,7 +65,7 @@ public class CardTest {
 
     @Test(expected = IllegalStateException.class)
     public void testCannotSetFinishBeforeSettingStart() {
-        Card card = createCard();
+        Card card = CardFactory.getCard("S10");
         card.setDayDeployed(1);
     }
 
@@ -99,18 +99,18 @@ public class CardTest {
 
     @Test
     public void testSubscribersDecreaseWithLongerCycleTimes() {
-        Card firstCard = createCard();
+        Card firstCard = CardFactory.getCard("S10");
         firstCard.setDaySelected(1);
         firstCard.setDayDeployed(3);
-        assertThat(20, is(firstCard.getSubscribers()));
+        assertThat(16, is(firstCard.getSubscribers()));
 
-        Card secondCard = createCard();
+        Card secondCard = CardFactory.getCard("S10");
         secondCard.setDaySelected(1);
         secondCard.setDayDeployed(2);
-        assertThat(30, is(secondCard.getSubscribers()));
+        assertThat(17, is(secondCard.getSubscribers()));
     }
 
     private Card createCard() {
-        return new Card("S1", Card.Size.LOW, 5, 10, 5, new SubscriberProfile(new int[]{30, 20, 10}));
+        return CardFactory.getCard("S1");
     }
 }

@@ -33,23 +33,23 @@ public class ActivityColumnTest {
     @Test
     public void testCanPullFromUpstream() {
         ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
-        analysis.addCard(CardFactory.getCard("S1"));
-        analysis.addCard(CardFactory.getCard("S2"));
-        analysis.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(1)));
+        analysis.addCard(CardFactory.getCard("S8"));
+//        analysis.addCard(CardFactory.getCard("S2"));
 
         ActivityColumn development = new ActivityColumn(Activity.DEVELOPMENT, analysis);
         assertThat(development.getIncompleteCards(), empty());
 
+        analysis.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(6)));
         analysis.visit(new Day(1));
         development.visit(new Day(1));
 
-        assertThat(analysis.getIncompleteCards(), not(hasItem(CardFactory.getCard("S1"))));
-        assertThat(development.getIncompleteCards(), hasItem(CardFactory.getCard("S1")));
+        assertThat(analysis.getIncompleteCards(), not(hasItem(CardFactory.getCard("S8"))));
+        assertThat(development.getIncompleteCards(), hasItem(CardFactory.getCard("S8")));
     }
 
     @Test
     public void testPullFromUpstreamTraversesBoard() {
-        Card s1 = CardFactory.getCard("S1");
+        Card s1 = CardFactory.getCard("S6");
 
         ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
         ActivityColumn development = new ActivityColumn(Activity.DEVELOPMENT, analysis);
