@@ -2,8 +2,6 @@ package uk.org.grant.getkanban;
 
 import uk.org.grant.getkanban.dice.ActivityDice;
 
-import static uk.org.grant.getkanban.Activity.ANALYSIS;
-
 public class Day implements Visitable<Board> {
     private final int ordinal;
 

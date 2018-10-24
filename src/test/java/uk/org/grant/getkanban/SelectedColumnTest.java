@@ -7,7 +7,7 @@ import static org.junit.Assert.assertThat;
 public class SelectedColumnTest {
     @Test
     public void marksSelectedDayOnPull() {
-        Card card = CardFactory.getCard("S10");
+        Card card = Cards.getCard("S10");
         BacklogColumn backlog = new BacklogColumn();
         backlog.addCard(card);
 
@@ -28,8 +28,8 @@ public class SelectedColumnTest {
     public void cannotExceedWipLimit() {
         SelectedColumn column = new SelectedColumn(1, new NullColumn());
 
-        column.addCard(CardFactory.getCard("S1"));
-        column.addCard(CardFactory.getCard("S2"));
+        column.addCard(Cards.getCard("S1"));
+        column.addCard(Cards.getCard("S2"));
     }
 
     @Test
@@ -37,8 +37,8 @@ public class SelectedColumnTest {
         Column backlog = new BacklogColumn();
         SelectedColumn selected = new SelectedColumn(1, backlog);
 
-        backlog.addCard(CardFactory.getCard("S1"));
-        selected.addCard(CardFactory.getCard("S2"));
+        backlog.addCard(Cards.getCard("S1"));
+        selected.addCard(Cards.getCard("S2"));
 
         selected.visit(new Day(1));
         assertThat(selected.getCards().size(), is(1));

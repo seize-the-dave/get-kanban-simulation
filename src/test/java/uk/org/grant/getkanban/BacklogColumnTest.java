@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 public class BacklogColumnTest {
     @Test
     public void testPull() {
-        Card card = CardFactory.getCard("S1");
+        Card card = Cards.getCard("S1");
         Column backlog = new BacklogColumn();
 
         backlog.addCard(card);

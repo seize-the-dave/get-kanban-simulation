@@ -20,7 +20,7 @@ public class CardTest {
 
     @Test
     public void testGetRemainingDevelopmentWork() {
-        Card card = CardFactory.getCard("S1");
+        Card card = Cards.getCard("S1");
         assertThat(card.getRemainingWork(Activity.DEVELOPMENT), is(0));
     }
 
@@ -32,7 +32,7 @@ public class CardTest {
 
     @Test
     public void testDoingWorkReducesRemainingWork() {
-        Card card = CardFactory.getCard("S6");
+        Card card = Cards.getCard("S6");
         card.doWork(Activity.DEVELOPMENT, 5);
 
         assertThat(card.getRemainingWork(Activity.DEVELOPMENT), is(2));
@@ -40,7 +40,7 @@ public class CardTest {
 
     @Test
     public void testReducingDevelopmentWorkDoesNotAffectTestOrAnalysis() {
-        Card card = CardFactory.getCard("S10");
+        Card card = Cards.getCard("S10");
         assertThat(card.getRemainingWork(Activity.TEST), is(9));
         assertThat(card.getRemainingWork(Activity.ANALYSIS), is(2));
 
@@ -65,7 +65,7 @@ public class CardTest {
 
     @Test(expected = IllegalStateException.class)
     public void testCannotSetFinishBeforeSettingStart() {
-        Card card = CardFactory.getCard("S10");
+        Card card = Cards.getCard("S10");
         card.setDayDeployed(1);
     }
 
@@ -99,18 +99,18 @@ public class CardTest {
 
     @Test
     public void testSubscribersDecreaseWithLongerCycleTimes() {
-        Card firstCard = CardFactory.getCard("S10");
+        Card firstCard = Cards.getCard("S10");
         firstCard.setDaySelected(1);
         firstCard.setDayDeployed(3);
         assertThat(16, is(firstCard.getSubscribers()));
 
-        Card secondCard = CardFactory.getCard("S10");
+        Card secondCard = Cards.getCard("S10");
         secondCard.setDaySelected(1);
         secondCard.setDayDeployed(2);
         assertThat(17, is(secondCard.getSubscribers()));
     }
 
     private Card createCard() {
-        return CardFactory.getCard("S1");
+        return Cards.getCard("S1");
     }
 }

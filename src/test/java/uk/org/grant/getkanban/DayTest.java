@@ -31,7 +31,7 @@ public class DayTest {
 
     @Test
     public void daysCompleteCardsDuringWork() {
-        Card card = CardFactory.getCard("S1");
+        Card card = Cards.getCard("S1");
         ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
         analysis.addCard(card);
         ActivityDice dice = new ActivityDice(Activity.ANALYSIS, new LoadedDice(6));

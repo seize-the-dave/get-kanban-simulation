@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 public class ActivityColumnTest {
     @Test
     public void testDoingWorkOnColumnReducesCardWork() {
-        Card card = CardFactory.getCard("S1");
+        Card card = Cards.getCard("S1");
 
         ActivityColumn column = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
         column.addCard(card);
@@ -23,18 +23,18 @@ public class ActivityColumnTest {
     @Test
     public void testFinishingCardMakesItPullable() {
         ActivityColumn column = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
-        column.addCard(CardFactory.getCard("S1"));
+        column.addCard(Cards.getCard("S1"));
         column.allocateDice(new ActivityDice(Activity.ANALYSIS, new LoadedDice(6)));
         column.visit(new Day(1));
 
-        assertThat(column.pull().get(), is(CardFactory.getCard("S1")));
+        assertThat(column.pull().get(), is(Cards.getCard("S1")));
     }
 
     @Test
     public void testCanPullFromUpstream() {
         ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
-        analysis.addCard(CardFactory.getCard("S8"));
-//        analysis.addCard(CardFactory.getCard("S2"));
+        analysis.addCard(Cards.getCard("S8"));
+//        analysis.addCard(Cards.getCard("S2"));
 
         ActivityColumn development = new ActivityColumn(Activity.DEVELOPMENT, analysis);
         assertThat(development.getIncompleteCards(), empty());
@@ -43,13 +43,13 @@ public class ActivityColumnTest {
         analysis.visit(new Day(1));
         development.visit(new Day(1));
 
-        assertThat(analysis.getIncompleteCards(), not(hasItem(CardFactory.getCard("S8"))));
-        assertThat(development.getIncompleteCards(), hasItem(CardFactory.getCard("S8")));
+        assertThat(analysis.getIncompleteCards(), not(hasItem(Cards.getCard("S8"))));
+        assertThat(development.getIncompleteCards(), hasItem(Cards.getCard("S8")));
     }
 
     @Test
     public void testPullFromUpstreamTraversesBoard() {
-        Card s1 = CardFactory.getCard("S6");
+        Card s1 = Cards.getCard("S6");
 
         ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
         ActivityColumn development = new ActivityColumn(Activity.DEVELOPMENT, analysis);
@@ -72,8 +72,8 @@ public class ActivityColumnTest {
     public void cannotExceedWipLimit() {
         ActivityColumn column = new ActivityColumn(Activity.ANALYSIS, 1, new NullColumn());
 
-        column.addCard(CardFactory.getCard("S1"));
-        column.addCard(CardFactory.getCard("S2"));
+        column.addCard(Cards.getCard("S1"));
+        column.addCard(Cards.getCard("S2"));
     }
 
     @Test
@@ -81,8 +81,8 @@ public class ActivityColumnTest {
         ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, 1, new NullColumn());
         ActivityColumn development = new ActivityColumn(Activity.ANALYSIS, 1, analysis);
 
-        analysis.addCard(CardFactory.getCard("S1"));
-        development.addCard(CardFactory.getCard("S2"));
+        analysis.addCard(Cards.getCard("S1"));
+        development.addCard(Cards.getCard("S2"));
 
         development.visit(new Day(1));
         assertThat(development.getCards().size(), is(1));

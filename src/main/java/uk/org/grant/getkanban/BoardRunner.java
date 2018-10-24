@@ -27,20 +27,20 @@ public class BoardRunner {
             b.setColumn(Column.Type.READY_TO_DEPLOY, new ReadyToDeployColumn(b.getColumn(Column.Type.TEST)));
             b.setColumn(Column.Type.DEPLOY, new DeployedColumn(b.getColumn(Column.Type.READY_TO_DEPLOY)));
 
-            b.getColumn(Column.Type.READY_TO_DEPLOY).addCard(CardFactory.getCard("S1"));
-            b.getColumn(Column.Type.TEST).addCard(CardFactory.getCard("S2"));
-            b.getColumn(Column.Type.DEVELOPMENT).addCard(CardFactory.getCard("S3"));
-            b.getColumn(Column.Type.DEVELOPMENT).addCard(CardFactory.getCard("S4"));
-            b.getColumn(Column.Type.DEVELOPMENT).addCard(CardFactory.getCard("S5"));
-            b.getColumn(Column.Type.DEVELOPMENT).addCard(CardFactory.getCard("S6"));
-            b.getColumn(Column.Type.ANALYSIS).addCard(CardFactory.getCard("S7"));
-            b.getColumn(Column.Type.ANALYSIS).addCard(CardFactory.getCard("S8"));
-            b.getColumn(Column.Type.SELECTED).addCard(CardFactory.getCard("S9"));
-            b.getColumn(Column.Type.SELECTED).addCard(CardFactory.getCard("S10"));
-            b.getColumn(Column.Type.BACKLOG).addCard(CardFactory.getCard("S11"));
-            b.getColumn(Column.Type.BACKLOG).addCard(CardFactory.getCard("S12"));
-            b.getColumn(Column.Type.BACKLOG).addCard(CardFactory.getCard("S13"));
-            b.getColumn(Column.Type.BACKLOG).addCard(CardFactory.getCard("S14"));
+            b.getColumn(Column.Type.READY_TO_DEPLOY).addCard(Cards.getCard("S1"));
+            b.getColumn(Column.Type.TEST).addCard(Cards.getCard("S2"));
+            b.getColumn(Column.Type.DEVELOPMENT).addCard(Cards.getCard("S3"));
+            b.getColumn(Column.Type.DEVELOPMENT).addCard(Cards.getCard("S4"));
+            b.getColumn(Column.Type.DEVELOPMENT).addCard(Cards.getCard("S5"));
+            b.getColumn(Column.Type.DEVELOPMENT).addCard(Cards.getCard("S6"));
+            b.getColumn(Column.Type.ANALYSIS).addCard(Cards.getCard("S7"));
+            b.getColumn(Column.Type.ANALYSIS).addCard(Cards.getCard("S8"));
+            b.getColumn(Column.Type.SELECTED).addCard(Cards.getCard("S9"));
+            b.getColumn(Column.Type.SELECTED).addCard(Cards.getCard("S10"));
+            b.getColumn(Column.Type.BACKLOG).addCard(Cards.getCard("S11"));
+            b.getColumn(Column.Type.BACKLOG).addCard(Cards.getCard("S12"));
+            b.getColumn(Column.Type.BACKLOG).addCard(Cards.getCard("S13"));
+            b.getColumn(Column.Type.BACKLOG).addCard(Cards.getCard("S14"));
 
             for (int i = 9; i < 22; i++) {
                 Day d = new Day(i);

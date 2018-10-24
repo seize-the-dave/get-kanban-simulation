@@ -1,6 +1,6 @@
 package uk.org.grant.getkanban;
 
-public class CardFactory {
+public class Cards {
     public static Card getCard(String name) {
         switch (name) {
             case "S1":
