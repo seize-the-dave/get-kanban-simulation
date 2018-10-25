@@ -71,6 +71,7 @@ public class BoardRunner {
         for (Future<Integer> result : results) {
             profitsList.add(result.get());
         }
+        service.shutdown();
 
         Collections.sort(profitsList);
 
@@ -78,7 +79,5 @@ public class BoardRunner {
         System.out.println("70%: " + profitsList.get(RUNS * 3 / 10));
         System.out.println("85%: " + profitsList.get(RUNS * 3 / 20));
         System.out.println("95%: " + profitsList.get(RUNS / 20));
-
-        service.shutdown();
     }
 }
