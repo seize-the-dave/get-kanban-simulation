@@ -2,15 +2,15 @@ package uk.org.grant.getkanban.column;
 
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.Day;
-import uk.org.grant.getkanban.DefaultPrioritisationStrategy;
+import uk.org.grant.getkanban.BusinessValuePrioritisationStrategy;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ReadyToDeployColumn extends AbstractColumn {
-    private final Queue<Card> todo = new PriorityQueue<>(new DefaultPrioritisationStrategy());
-    private final Queue<Card> done = new PriorityQueue<>(new DefaultPrioritisationStrategy());
+    private final Queue<Card> todo = new PriorityQueue<>(new BusinessValuePrioritisationStrategy());
+    private final Queue<Card> done = new PriorityQueue<>(new BusinessValuePrioritisationStrategy());
     private final Column upstream;
 
     public ReadyToDeployColumn(Column upstream) {

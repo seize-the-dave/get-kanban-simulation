@@ -90,7 +90,7 @@ public class Card {
     }
 
     public enum Size {
-        MEDIUM, HIGH, LOW
+        HIGH, MEDIUM, LOW
     }
 
     @Override

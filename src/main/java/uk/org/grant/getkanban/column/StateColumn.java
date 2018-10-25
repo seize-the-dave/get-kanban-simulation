@@ -2,7 +2,7 @@ package uk.org.grant.getkanban.column;
 
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.Day;
-import uk.org.grant.getkanban.DefaultPrioritisationStrategy;
+import uk.org.grant.getkanban.BusinessValuePrioritisationStrategy;
 import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.dice.StateDice;
 
@@ -23,8 +23,8 @@ public class StateColumn implements Column {
         this.state = state;
         this.upstream = upstream;
         this.limit = limit;
-        this.todo = new PriorityQueue<>(new DefaultPrioritisationStrategy());
-        this.done = new PriorityQueue<>(new DefaultPrioritisationStrategy());
+        this.todo = new PriorityQueue<>(new BusinessValuePrioritisationStrategy());
+        this.done = new PriorityQueue<>(new BusinessValuePrioritisationStrategy());
     }
 
     public StateColumn(State state, Column upstream) {

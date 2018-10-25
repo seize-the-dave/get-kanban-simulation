@@ -1,13 +1,13 @@
 package uk.org.grant.getkanban.column;
 
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.DefaultPrioritisationStrategy;
+import uk.org.grant.getkanban.BusinessValuePrioritisationStrategy;
 
 import java.util.*;
 
 public abstract class UnbufferedColumn extends AbstractColumn {
     protected final Column upstream;
-    private final Queue<Card> cards = new PriorityQueue<>(new DefaultPrioritisationStrategy());
+    private final Queue<Card> cards = new PriorityQueue<>(new BusinessValuePrioritisationStrategy());
 
     public UnbufferedColumn(Column upstream) {
         this.upstream = upstream;
