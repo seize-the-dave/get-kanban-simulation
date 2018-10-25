@@ -25,7 +25,7 @@ public class CarlosFired implements Instruction {
     }
 
     private void restoreWipLimitsToTest(Board b) {
-        Limited c = (Limited) b.getColumn(State.TEST);
+        Column c = b.getColumn(State.TEST);
         c.setLimit(store.get());
     }
 }

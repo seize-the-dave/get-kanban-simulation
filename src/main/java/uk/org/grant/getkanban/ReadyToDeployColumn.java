@@ -1,12 +1,10 @@
 package uk.org.grant.getkanban;
 
-import uk.org.grant.getkanban.dice.StateDice;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ReadyToDeployColumn implements Column {
+public class ReadyToDeployColumn extends AbstractColumn {
     private final Queue<Card> todo = new PriorityQueue<>(new DefaultPrioritisationStrategy());
     private final Queue<Card> done = new PriorityQueue<>(new DefaultPrioritisationStrategy());
     private final Column upstream;
@@ -24,17 +22,6 @@ public class ReadyToDeployColumn implements Column {
     @Override
     public Collection<Card> getCards() {
         return Stream.concat(this.todo.stream(), this.done.stream()).collect(Collectors.toList());
-    }
-
-
-    @Override
-    public void allocateDice(StateDice... dice) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public List<StateDice> getAllocatedDice() {
-        throw new UnsupportedOperationException();
     }
 
     @Override

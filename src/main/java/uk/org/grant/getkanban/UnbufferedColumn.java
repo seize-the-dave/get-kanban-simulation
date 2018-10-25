@@ -2,11 +2,12 @@ package uk.org.grant.getkanban;
 
 import java.util.*;
 
-public class BacklogColumn extends UnbufferedColumn {
+public abstract class UnbufferedColumn extends AbstractColumn {
+    protected final Column upstream;
     private final Queue<Card> cards = new PriorityQueue<>(new DefaultPrioritisationStrategy());
 
-    public BacklogColumn() {
-        super(new NullColumn());
+    public UnbufferedColumn(Column upstream) {
+        this.upstream = upstream;
     }
 
     @Override
@@ -16,16 +17,11 @@ public class BacklogColumn extends UnbufferedColumn {
 
     @Override
     public Collection<Card> getCards() {
-        return cards;
+        return Collections.unmodifiableCollection(cards);
     }
 
     @Override
     public Optional<Card> pull() {
-        return Optional.ofNullable(cards.poll());
-    }
-
-    @Override
-    public void visit(Day day) {
-        //
+        return Optional.ofNullable(cards.remove());
     }
 }

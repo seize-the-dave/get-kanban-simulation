@@ -18,10 +18,4 @@ public class BacklogColumnTest {
 
         assertThat(actual.get(), is(card));
     }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testAllocatingDiceIsUnsupported() {
-        Column backlog = new BacklogColumn();
-        backlog.allocateDice();
-    }
 }
