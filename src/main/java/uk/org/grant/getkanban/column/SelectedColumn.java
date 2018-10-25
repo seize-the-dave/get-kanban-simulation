@@ -1,14 +1,14 @@
 package uk.org.grant.getkanban.column;
 
+import uk.org.grant.getkanban.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.Day;
-import uk.org.grant.getkanban.BusinessValuePrioritisationStrategy;
 import uk.org.grant.getkanban.dice.StateDice;
 
 import java.util.*;
 
 public class SelectedColumn implements Column, Limited {
-    private final Queue<Card> cards = new PriorityQueue<>(new BusinessValuePrioritisationStrategy());
+    private final Queue<Card> cards = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
     private Column upstream;
     private int limit;
 
