@@ -13,11 +13,14 @@ public class DeployedColumn extends UnbufferedColumn {
 
     @Override
     public void visit(Day day) {
-        Optional<Card> optionalCard = upstream.pull();
-        if (optionalCard.isPresent()) {
-            Card card = optionalCard.get();
-            card.setDayDeployed(day.getOrdinal());
-            addCard(card);
+        while (true) {
+            Optional<Card> optionalCard = upstream.pull();
+            if (optionalCard.isPresent()) {
+                optionalCard.get().setDayDeployed(day.getOrdinal());
+                addCard(optionalCard.get());
+            } else {
+                break;
+            }
         }
     }
 }

@@ -37,12 +37,13 @@ public class SelectedColumn implements Column, Limited {
 
     @Override
     public void visit(Day day) {
-        if (cards.size() < this.limit) {
+        while (getCards().size() < this.limit) {
             Optional<Card> optionalCard = upstream.pull();
             if (optionalCard.isPresent()) {
-                Card card = optionalCard.get();
-                card.setDaySelected(day.getOrdinal());
-                addCard(card);
+                optionalCard.get().setDaySelected(day.getOrdinal());
+                addCard(optionalCard.get());
+            } else {
+                break;
             }
         }
     }

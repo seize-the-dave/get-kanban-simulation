@@ -66,10 +66,12 @@ public class StateColumn implements Column {
 
     public void visit(Day day) {
         upstream.visit(day);
-        if (getCards().size() < this.limit) {
+        while (getCards().size() < this.limit) {
             Optional<Card> optionalCard = upstream.pull();
             if (optionalCard.isPresent()) {
                 addCard(optionalCard.get());
+            } else {
+                break;
             }
         }
         // Do Work

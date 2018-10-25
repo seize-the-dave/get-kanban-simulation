@@ -36,9 +36,13 @@ public class ReadyToDeployColumn extends AbstractColumn {
 
     @Override
     public void visit(Day day) {
-        Optional<Card> optionalCard = upstream.pull();
-        if (optionalCard.isPresent()) {
-            addCard(optionalCard.get());
+        while (true) {
+            Optional<Card> optionalCard = upstream.pull();
+            if (optionalCard.isPresent()) {
+                addCard(optionalCard.get());
+            } else {
+                break;
+            }
         }
         if (day.getOrdinal() % 3 == 0) {
             done.addAll(todo);
