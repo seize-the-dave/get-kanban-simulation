@@ -10,10 +10,10 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 
-public class ActivityDiceTest {
+public class StateDiceTest {
     @Test
     public void alwaysRollsBetweenOneAndSixForOwnActivity() {
-        ActivityDice dice = new ActivityDice(State.DEVELOPMENT, new RandomDice(new Random()));
+        StateDice dice = new StateDice(State.DEVELOPMENT, new RandomDice(new Random()));
         for (int i = 0; i < 10000; i++) {
             assertThat(dice.rollFor(State.DEVELOPMENT), allOf(greaterThan(0), lessThan(7)));
         }
@@ -21,7 +21,7 @@ public class ActivityDiceTest {
 
     @Test
     public void alwaysRollsBetweenOneAndThreeForDifferentActivity() {
-        ActivityDice dice = new ActivityDice(State.ANALYSIS, new RandomDice(new Random()));
+        StateDice dice = new StateDice(State.ANALYSIS, new RandomDice(new Random()));
         for (int i = 0; i < 10000; i++) {
             assertThat(dice.rollFor(State.TEST), allOf(greaterThan(0), lessThan(4)));
         }

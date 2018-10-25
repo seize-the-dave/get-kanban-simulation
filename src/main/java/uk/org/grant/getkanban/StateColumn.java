@@ -1,21 +1,21 @@
 package uk.org.grant.getkanban;
 
-import uk.org.grant.getkanban.dice.ActivityDice;
+import uk.org.grant.getkanban.dice.StateDice;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ActivityColumn implements Column, Limited {
+public class StateColumn implements Column, Limited {
     private final State state;
     private final Column upstream;
     private final Queue<Card> todo;
     private final Queue<Card> done;
-    private List<ActivityDice> dice;
+    private List<StateDice> dice;
     private int sum;
     private int limit;
 
-    public ActivityColumn(State state, int limit, Column upstream) {
+    public StateColumn(State state, int limit, Column upstream) {
         this.state = state;
         this.upstream = upstream;
         this.limit = limit;
@@ -23,7 +23,7 @@ public class ActivityColumn implements Column, Limited {
         this.done = new PriorityQueue<>(new DefaultPrioritisationStrategy());
     }
 
-    public ActivityColumn(State state, Column upstream) {
+    public StateColumn(State state, Column upstream) {
         this(state, Integer.MAX_VALUE, upstream);
     }
 
@@ -51,12 +51,12 @@ public class ActivityColumn implements Column, Limited {
         return Optional.ofNullable(done.poll());
     }
 
-    public void allocateDice(ActivityDice... dice) {
+    public void allocateDice(StateDice... dice) {
         this.dice = Arrays.asList(dice);
         this.sum = this.dice.stream().mapToInt(d -> d.rollFor(this.state)).sum();
     }
 
-    public List<ActivityDice> getAllocatedDice() {
+    public List<StateDice> getAllocatedDice() {
         return this.dice;
     }
 

@@ -1,6 +1,6 @@
 package uk.org.grant.getkanban;
 
-import uk.org.grant.getkanban.dice.ActivityDice;
+import uk.org.grant.getkanban.dice.StateDice;
 
 import java.util.*;
 
@@ -28,12 +28,12 @@ public class BacklogColumn implements Column {
     }
 
     @Override
-    public void allocateDice(ActivityDice... dice) {
+    public void allocateDice(StateDice... dice) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<ActivityDice> getAllocatedDice() {
+    public List<StateDice> getAllocatedDice() {
         return null;
     }
 }

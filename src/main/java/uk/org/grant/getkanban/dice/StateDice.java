@@ -2,11 +2,11 @@ package uk.org.grant.getkanban.dice;
 
 import uk.org.grant.getkanban.State;
 
-public class ActivityDice {
+public class StateDice {
     private final Dice dice;
     private final State state;
 
-    public ActivityDice(State state, Dice dice) {
+    public StateDice(State state, Dice dice) {
         this.state = state;
         this.dice = dice;
     }

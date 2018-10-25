@@ -1,7 +1,7 @@
 package uk.org.grant.getkanban.instructions;
 
 import uk.org.grant.getkanban.*;
-import uk.org.grant.getkanban.dice.ActivityDice;
+import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.RandomDice;
 
 import java.util.Random;
@@ -21,7 +21,7 @@ public class CarlosFired implements Instruction {
     }
 
     private void hireAnotherTester(Board b) {
-        b.addDice(new ActivityDice(State.TEST, new RandomDice(new Random())));
+        b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
     }
 
     private void restoreWipLimitsToTest(Board b) {

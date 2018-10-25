@@ -12,14 +12,14 @@ public class CarlosHiredTest {
     @Test
     public void wipOnTestRemoved() {
         Board b = new Board();
-        Column c = new ActivityColumn(State.TEST, 3, new NullColumn());
+        Column c = new StateColumn(State.TEST, 3, new NullColumn());
         b.setColumn(State.TEST, c);
 
-        assertThat(((ActivityColumn) c).getLimit(), is(3));
+        assertThat(((StateColumn) c).getLimit(), is(3));
 
         Day d = new Day(1, new CarlosHired(new AtomicInteger()));
         d.endOfDay(b);
 
-        assertThat(((ActivityColumn) c).getLimit(), is(Integer.MAX_VALUE));
+        assertThat(((StateColumn) c).getLimit(), is(Integer.MAX_VALUE));
     }
 }

@@ -1,7 +1,7 @@
 package uk.org.grant.getkanban;
 
 import org.junit.Test;
-import uk.org.grant.getkanban.dice.ActivityDice;
+import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.RandomDice;
 
 import java.util.Random;
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 public class BoardTest {
     @Test
     public void testGetDiceFromBoard() {
-        ActivityDice dice = new ActivityDice(State.ANALYSIS, new RandomDice(new Random()));
+        StateDice dice = new StateDice(State.ANALYSIS, new RandomDice(new Random()));
         Board board = new Board();
         board.addDice(dice);
         assertThat(board.getDice(), hasItems(dice));
@@ -21,7 +21,7 @@ public class BoardTest {
 
     @Test
     public void canGetColumnsForBoard() {
-        ActivityColumn column = new ActivityColumn(State.ANALYSIS, new NullColumn());
+        StateColumn column = new StateColumn(State.ANALYSIS, new NullColumn());
         Board board = new Board();
         board.setColumn(State.ANALYSIS, column);
         assertThat(board.getColumn(State.ANALYSIS), is(column));

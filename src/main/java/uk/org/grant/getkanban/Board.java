@@ -1,6 +1,6 @@
 package uk.org.grant.getkanban;
 
-import uk.org.grant.getkanban.dice.ActivityDice;
+import uk.org.grant.getkanban.dice.StateDice;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -9,18 +9,18 @@ import java.util.stream.Collectors;
 
 public class Board {
     // Selected (3), Analysis (2), Development (4), Test (3)
-    private final List<ActivityDice> dice = new ArrayList<>();
+    private final List<StateDice> dice = new ArrayList<>();
     private final EnumMap<State, Column> columns = new EnumMap<>(State.class);
 
-    public List<ActivityDice> getDice() {
+    public List<StateDice> getDice() {
         return dice;
     }
 
-    public List<ActivityDice> getDice(State state) {
+    public List<StateDice> getDice(State state) {
         return dice.stream().filter(d -> d.getActivity() == state).collect(Collectors.toList());
     }
 
-    public void addDice(ActivityDice dice) {
+    public void addDice(StateDice dice) {
         this.dice.add(dice);
     }
 

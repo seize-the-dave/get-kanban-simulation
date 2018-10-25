@@ -1,6 +1,6 @@
 package uk.org.grant.getkanban;
 
-import uk.org.grant.getkanban.dice.ActivityDice;
+import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.RandomDice;
 
 import java.util.*;
@@ -14,19 +14,19 @@ public class BoardRunner {
             @Override
             public Integer call() {
                 Board b = new Board();
-                b.addDice(new ActivityDice(State.ANALYSIS, new RandomDice(new Random())));
-                b.addDice(new ActivityDice(State.ANALYSIS, new RandomDice(new Random())));
-                b.addDice(new ActivityDice(State.DEVELOPMENT, new RandomDice(new Random())));
-                b.addDice(new ActivityDice(State.DEVELOPMENT, new RandomDice(new Random())));
-                b.addDice(new ActivityDice(State.DEVELOPMENT, new RandomDice(new Random())));
-                b.addDice(new ActivityDice(State.TEST, new RandomDice(new Random())));
-                b.addDice(new ActivityDice(State.TEST, new RandomDice(new Random())));
+                b.addDice(new StateDice(State.ANALYSIS, new RandomDice(new Random())));
+                b.addDice(new StateDice(State.ANALYSIS, new RandomDice(new Random())));
+                b.addDice(new StateDice(State.DEVELOPMENT, new RandomDice(new Random())));
+                b.addDice(new StateDice(State.DEVELOPMENT, new RandomDice(new Random())));
+                b.addDice(new StateDice(State.DEVELOPMENT, new RandomDice(new Random())));
+                b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
+                b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
 
                 b.setColumn(State.BACKLOG, new BacklogColumn());
                 b.setColumn(State.SELECTED, new SelectedColumn(3, b.getColumn(State.BACKLOG)));
-                b.setColumn(State.ANALYSIS, new ActivityColumn(State.ANALYSIS, 2, b.getColumn(State.SELECTED)));
-                b.setColumn(State.DEVELOPMENT, new ActivityColumn(State.DEVELOPMENT, 4, b.getColumn(State.ANALYSIS)));
-                b.setColumn(State.TEST, new ActivityColumn(State.TEST, 3, b.getColumn(State.DEVELOPMENT)));
+                b.setColumn(State.ANALYSIS, new StateColumn(State.ANALYSIS, 2, b.getColumn(State.SELECTED)));
+                b.setColumn(State.DEVELOPMENT, new StateColumn(State.DEVELOPMENT, 4, b.getColumn(State.ANALYSIS)));
+                b.setColumn(State.TEST, new StateColumn(State.TEST, 3, b.getColumn(State.DEVELOPMENT)));
                 b.setColumn(State.READY_TO_DEPLOY, new ReadyToDeployColumn(b.getColumn(State.TEST)));
                 b.setColumn(State.DEPLOY, new DeployedColumn(b.getColumn(State.READY_TO_DEPLOY)));
 

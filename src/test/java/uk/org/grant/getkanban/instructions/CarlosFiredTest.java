@@ -14,26 +14,26 @@ public class CarlosFiredTest {
         AtomicInteger wipStore = new AtomicInteger();
 
         Board b = new Board();
-        Column c = new ActivityColumn(State.TEST, 3, new NullColumn());
+        Column c = new StateColumn(State.TEST, 3, new NullColumn());
         b.setColumn(State.TEST, c);
 
-        assertThat(((ActivityColumn) c).getLimit(), is(3));
+        assertThat(((StateColumn) c).getLimit(), is(3));
 
         Day day1 = new Day(1, new CarlosHired(wipStore));
         day1.endOfDay(b);
 
-        assertThat(((ActivityColumn) c).getLimit(), is(Integer.MAX_VALUE));
+        assertThat(((StateColumn) c).getLimit(), is(Integer.MAX_VALUE));
 
         Day day2 = new Day(2, new CarlosFired(wipStore));
         day2.endOfDay(b);
 
-        assertThat(((ActivityColumn) c).getLimit(), is(3));
+        assertThat(((StateColumn) c).getLimit(), is(3));
     }
 
     @Test
     public void anotherTesterShouldBeHired() {
         Board b = new Board();
-        b.setColumn(State.TEST, new ActivityColumn(State.TEST, 3, new NullColumn()));
+        b.setColumn(State.TEST, new StateColumn(State.TEST, 3, new NullColumn()));
 
         assertThat(b.getDice(State.TEST).size(), is(0));
 

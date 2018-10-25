@@ -1,6 +1,6 @@
 package uk.org.grant.getkanban;
 
-import uk.org.grant.getkanban.dice.ActivityDice;
+import uk.org.grant.getkanban.dice.StateDice;
 
 public class Day implements Visitable<Board> {
     private final int ordinal;
@@ -30,9 +30,9 @@ public class Day implements Visitable<Board> {
     }
 
     public void standUp(Board board) {
-        board.getColumn(State.ANALYSIS).allocateDice(board.getDice(State.ANALYSIS).toArray(new ActivityDice[] {}));
-        board.getColumn(State.DEVELOPMENT).allocateDice(board.getDice(State.DEVELOPMENT).toArray(new ActivityDice[] {}));
-        board.getColumn(State.TEST).allocateDice(board.getDice(State.TEST).toArray(new ActivityDice[] {}));
+        board.getColumn(State.ANALYSIS).allocateDice(board.getDice(State.ANALYSIS).toArray(new StateDice[] {}));
+        board.getColumn(State.DEVELOPMENT).allocateDice(board.getDice(State.DEVELOPMENT).toArray(new StateDice[] {}));
+        board.getColumn(State.TEST).allocateDice(board.getDice(State.TEST).toArray(new StateDice[] {}));
     }
 
     public void visit(Board board) {
