@@ -65,10 +65,10 @@ public class DayTest {
     public void executesInstructionsAtEndOfDay() {
         Board b = new Board();
         b.setColumn(State.ANALYSIS, new StateColumn(State.ANALYSIS, new NullColumn()));
-        assertThat(((Limited) b.getColumn(State.ANALYSIS)).getLimit(), is(Integer.MAX_VALUE));
+        assertThat(b.getColumn(State.ANALYSIS).getLimit(), is(Integer.MAX_VALUE));
 
-        Day d = new Day(1, board -> ((Limited) board.getColumn(State.ANALYSIS)).setLimit(1));
+        Day d = new Day(1, board -> board.getColumn(State.ANALYSIS).setLimit(1));
         d.endOfDay(b);
-        assertThat(((Limited) b.getColumn(State.ANALYSIS)).getLimit(), is(1));
+        assertThat(b.getColumn(State.ANALYSIS).getLimit(), is(1));
     }
 }
