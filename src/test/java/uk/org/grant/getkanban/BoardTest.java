@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 public class BoardTest {
     @Test
     public void testGetDiceFromBoard() {
-        ActivityDice dice = new ActivityDice(Activity.ANALYSIS, new RandomDice(new Random()));
+        ActivityDice dice = new ActivityDice(State.ANALYSIS, new RandomDice(new Random()));
         Board board = new Board();
         board.addDice(dice);
         assertThat(board.getDice(), hasItems(dice));
@@ -21,9 +21,9 @@ public class BoardTest {
 
     @Test
     public void canGetColumnsForBoard() {
-        ActivityColumn column = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
+        ActivityColumn column = new ActivityColumn(State.ANALYSIS, new NullColumn());
         Board board = new Board();
-        board.setColumn(Column.Type.ANALYSIS, column);
-        assertThat(board.getColumn(Column.Type.ANALYSIS), is(column));
+        board.setColumn(State.ANALYSIS, column);
+        assertThat(board.getColumn(State.ANALYSIS), is(column));
     }
 }

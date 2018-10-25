@@ -14,8 +14,8 @@ public class CarlosFiredTest {
         AtomicInteger wipStore = new AtomicInteger();
 
         Board b = new Board();
-        Column c = new ActivityColumn(Activity.TEST, 3, new NullColumn());
-        b.setColumn(Column.Type.TEST, c);
+        Column c = new ActivityColumn(State.TEST, 3, new NullColumn());
+        b.setColumn(State.TEST, c);
 
         assertThat(((ActivityColumn) c).getLimit(), is(3));
 
@@ -33,13 +33,13 @@ public class CarlosFiredTest {
     @Test
     public void anotherTesterShouldBeHired() {
         Board b = new Board();
-        b.setColumn(Column.Type.TEST, new ActivityColumn(Activity.TEST, 3, new NullColumn()));
+        b.setColumn(State.TEST, new ActivityColumn(State.TEST, 3, new NullColumn()));
 
-        assertThat(b.getDice(Activity.TEST).size(), is(0));
+        assertThat(b.getDice(State.TEST).size(), is(0));
 
         Day d = new Day(1, new CarlosFired(new AtomicInteger()));
         d.endOfDay(b);
 
-        assertThat(b.getDice(Activity.TEST).size(), is(1));
+        assertThat(b.getDice(State.TEST).size(), is(1));
     }
 }

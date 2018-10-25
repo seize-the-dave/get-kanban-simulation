@@ -30,19 +30,19 @@ public class Day implements Visitable<Board> {
     }
 
     public void standUp(Board board) {
-        board.getColumn(Column.Type.ANALYSIS).allocateDice(board.getDice(Activity.ANALYSIS).toArray(new ActivityDice[] {}));
-        board.getColumn(Column.Type.DEVELOPMENT).allocateDice(board.getDice(Activity.DEVELOPMENT).toArray(new ActivityDice[] {}));
-        board.getColumn(Column.Type.TEST).allocateDice(board.getDice(Activity.TEST).toArray(new ActivityDice[] {}));
+        board.getColumn(State.ANALYSIS).allocateDice(board.getDice(State.ANALYSIS).toArray(new ActivityDice[] {}));
+        board.getColumn(State.DEVELOPMENT).allocateDice(board.getDice(State.DEVELOPMENT).toArray(new ActivityDice[] {}));
+        board.getColumn(State.TEST).allocateDice(board.getDice(State.TEST).toArray(new ActivityDice[] {}));
     }
 
     public void visit(Board board) {
-        board.getColumn(Column.Type.DEPLOY).visit(this);
-        board.getColumn(Column.Type.READY_TO_DEPLOY).visit(this);
-        board.getColumn(Column.Type.TEST).visit(this);
-        board.getColumn(Column.Type.DEVELOPMENT).visit(this);
-        board.getColumn(Column.Type.ANALYSIS).visit(this);
-        board.getColumn(Column.Type.SELECTED).visit(this);
-        board.getColumn(Column.Type.BACKLOG).visit(this);
+        board.getColumn(State.DEPLOY).visit(this);
+        board.getColumn(State.READY_TO_DEPLOY).visit(this);
+        board.getColumn(State.TEST).visit(this);
+        board.getColumn(State.DEVELOPMENT).visit(this);
+        board.getColumn(State.ANALYSIS).visit(this);
+        board.getColumn(State.SELECTED).visit(this);
+        board.getColumn(State.BACKLOG).visit(this);
     }
 
     public int getOrdinal() {

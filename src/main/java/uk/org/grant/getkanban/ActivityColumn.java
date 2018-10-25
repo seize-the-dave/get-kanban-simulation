@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ActivityColumn implements Column, Limited {
-    private final Activity activity;
+    private final State state;
     private final Column upstream;
     private final Queue<Card> todo;
     private final Queue<Card> done;
@@ -15,23 +15,23 @@ public class ActivityColumn implements Column, Limited {
     private int sum;
     private int limit;
 
-    public ActivityColumn(Activity activity, int limit, Column upstream) {
-        this.activity = activity;
+    public ActivityColumn(State state, int limit, Column upstream) {
+        this.state = state;
         this.upstream = upstream;
         this.limit = limit;
         this.todo = new PriorityQueue<>(new DefaultPrioritisationStrategy());
         this.done = new PriorityQueue<>(new DefaultPrioritisationStrategy());
     }
 
-    public ActivityColumn(Activity analysis, Column upstream) {
-        this(analysis, Integer.MAX_VALUE, upstream);
+    public ActivityColumn(State state, Column upstream) {
+        this(state, Integer.MAX_VALUE, upstream);
     }
 
     public void addCard(Card card) {
         if (getCards().size() == this.limit) {
             throw new IllegalStateException();
         }
-        if (card.getRemainingWork(this.activity) == 0) {
+        if (card.getRemainingWork(this.state) == 0) {
             done.add(card);
         } else {
             todo.add(card);
@@ -53,7 +53,7 @@ public class ActivityColumn implements Column, Limited {
 
     public void allocateDice(ActivityDice... dice) {
         this.dice = Arrays.asList(dice);
-        this.sum = this.dice.stream().mapToInt(d -> d.rollFor(activity)).sum();
+        this.sum = this.dice.stream().mapToInt(d -> d.rollFor(this.state)).sum();
     }
 
     public List<ActivityDice> getAllocatedDice() {
@@ -71,10 +71,10 @@ public class ActivityColumn implements Column, Limited {
         // Do Work
         for (Iterator<Card> iter = todo.iterator(); iter.hasNext(); ) {
             Card card = iter.next();
-            int remaining = card.getRemainingWork(activity);
-            card.doWork(activity, Math.min(remaining, sum));
+            int remaining = card.getRemainingWork(this.state);
+            card.doWork(this.state, Math.min(remaining, sum));
             sum -= remaining;
-            if (card.getRemainingWork(activity) == 0) {
+            if (card.getRemainingWork(this.state) == 0) {
                 iter.remove();
                 done.add(card);
             }

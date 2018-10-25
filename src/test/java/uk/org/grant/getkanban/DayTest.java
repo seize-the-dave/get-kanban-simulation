@@ -11,45 +11,45 @@ import static org.junit.Assert.assertThat;
 public class DayTest {
     @Test
     public void daysAllocateDiceDuringStandup() {
-        ActivityDice dice = new ActivityDice(Activity.ANALYSIS, new LoadedDice(6));
+        ActivityDice dice = new ActivityDice(State.ANALYSIS, new LoadedDice(6));
 
         Board b = new Board();
         b.addDice(dice);
-        b.setColumn(Column.Type.BACKLOG, new BacklogColumn());
-        b.setColumn(Column.Type.SELECTED, new SelectedColumn(3, b.getColumn(Column.Type.BACKLOG)));
-        b.setColumn(Column.Type.ANALYSIS, new ActivityColumn(Activity.ANALYSIS, 2, b.getColumn(Column.Type.SELECTED)));
-        b.setColumn(Column.Type.DEVELOPMENT, new ActivityColumn(Activity.DEVELOPMENT, 4, b.getColumn(Column.Type.ANALYSIS)));
-        b.setColumn(Column.Type.TEST, new ActivityColumn(Activity.TEST, 3, b.getColumn(Column.Type.DEVELOPMENT)));
-        b.setColumn(Column.Type.READY_TO_DEPLOY, new ReadyToDeployColumn(b.getColumn(Column.Type.TEST)));
-        b.setColumn(Column.Type.DEPLOY, new DeployedColumn(b.getColumn(Column.Type.READY_TO_DEPLOY)));
+        b.setColumn(State.BACKLOG, new BacklogColumn());
+        b.setColumn(State.SELECTED, new SelectedColumn(3, b.getColumn(State.BACKLOG)));
+        b.setColumn(State.ANALYSIS, new ActivityColumn(State.ANALYSIS, 2, b.getColumn(State.SELECTED)));
+        b.setColumn(State.DEVELOPMENT, new ActivityColumn(State.DEVELOPMENT, 4, b.getColumn(State.ANALYSIS)));
+        b.setColumn(State.TEST, new ActivityColumn(State.TEST, 3, b.getColumn(State.DEVELOPMENT)));
+        b.setColumn(State.READY_TO_DEPLOY, new ReadyToDeployColumn(b.getColumn(State.TEST)));
+        b.setColumn(State.DEPLOY, new DeployedColumn(b.getColumn(State.READY_TO_DEPLOY)));
 
         Day day = Days.getDay(1);
         day.standUp(b);
 
-        assertThat(b.getColumn(Column.Type.ANALYSIS).getAllocatedDice(), hasItem(dice));
+        assertThat(b.getColumn(State.ANALYSIS).getAllocatedDice(), hasItem(dice));
     }
 
     @Test
     public void daysCompleteCardsDuringWork() {
         Card card = Cards.getCard("S1");
-        ActivityColumn analysis = new ActivityColumn(Activity.ANALYSIS, new NullColumn());
+        ActivityColumn analysis = new ActivityColumn(State.ANALYSIS, new NullColumn());
         analysis.addCard(card);
-        ActivityDice dice = new ActivityDice(Activity.ANALYSIS, new LoadedDice(6));
+        ActivityDice dice = new ActivityDice(State.ANALYSIS, new LoadedDice(6));
         Board b = new Board();
         b.addDice(dice);
-        b.setColumn(Column.Type.BACKLOG, new BacklogColumn());
-        b.setColumn(Column.Type.SELECTED, new SelectedColumn(3, b.getColumn(Column.Type.BACKLOG)));
-        b.setColumn(Column.Type.ANALYSIS, new ActivityColumn(Activity.ANALYSIS, 2, b.getColumn(Column.Type.SELECTED)));
-        b.setColumn(Column.Type.DEVELOPMENT, new ActivityColumn(Activity.DEVELOPMENT, 4, b.getColumn(Column.Type.ANALYSIS)));
-        b.setColumn(Column.Type.TEST, new ActivityColumn(Activity.TEST, 3, b.getColumn(Column.Type.DEVELOPMENT)));
-        b.setColumn(Column.Type.READY_TO_DEPLOY, new ReadyToDeployColumn(b.getColumn(Column.Type.TEST)));
-        b.setColumn(Column.Type.DEPLOY, new DeployedColumn(b.getColumn(Column.Type.READY_TO_DEPLOY)));
+        b.setColumn(State.BACKLOG, new BacklogColumn());
+        b.setColumn(State.SELECTED, new SelectedColumn(3, b.getColumn(State.BACKLOG)));
+        b.setColumn(State.ANALYSIS, new ActivityColumn(State.ANALYSIS, 2, b.getColumn(State.SELECTED)));
+        b.setColumn(State.DEVELOPMENT, new ActivityColumn(State.DEVELOPMENT, 4, b.getColumn(State.ANALYSIS)));
+        b.setColumn(State.TEST, new ActivityColumn(State.TEST, 3, b.getColumn(State.DEVELOPMENT)));
+        b.setColumn(State.READY_TO_DEPLOY, new ReadyToDeployColumn(b.getColumn(State.TEST)));
+        b.setColumn(State.DEPLOY, new DeployedColumn(b.getColumn(State.READY_TO_DEPLOY)));
 
         Day day = Days.getDay(1);
         day.standUp(b);
         day.visit(b);
 
-        assertThat(card.getRemainingWork(Activity.ANALYSIS), is(0));
+        assertThat(card.getRemainingWork(State.ANALYSIS), is(0));
     }
 
     @Test
@@ -61,11 +61,11 @@ public class DayTest {
     @Test
     public void executesInstructionsAtEndOfDay() {
         Board b = new Board();
-        b.setColumn(Column.Type.ANALYSIS, new ActivityColumn(Activity.ANALYSIS, new NullColumn()));
-        assertThat(((Limited) b.getColumn(Column.Type.ANALYSIS)).getLimit(), is(Integer.MAX_VALUE));
+        b.setColumn(State.ANALYSIS, new ActivityColumn(State.ANALYSIS, new NullColumn()));
+        assertThat(((Limited) b.getColumn(State.ANALYSIS)).getLimit(), is(Integer.MAX_VALUE));
 
-        Day d = new Day(1, board -> ((Limited) board.getColumn(Column.Type.ANALYSIS)).setLimit(1));
+        Day d = new Day(1, board -> ((Limited) board.getColumn(State.ANALYSIS)).setLimit(1));
         d.endOfDay(b);
-        assertThat(((Limited) b.getColumn(Column.Type.ANALYSIS)).getLimit(), is(1));
+        assertThat(((Limited) b.getColumn(State.ANALYSIS)).getLimit(), is(1));
     }
 }

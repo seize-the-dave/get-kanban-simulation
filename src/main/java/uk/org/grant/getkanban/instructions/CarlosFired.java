@@ -21,11 +21,11 @@ public class CarlosFired implements Instruction {
     }
 
     private void hireAnotherTester(Board b) {
-        b.addDice(new ActivityDice(Activity.TEST, new RandomDice(new Random())));
+        b.addDice(new ActivityDice(State.TEST, new RandomDice(new Random())));
     }
 
     private void restoreWipLimitsToTest(Board b) {
-        Limited c = (Limited) b.getColumn(Column.Type.TEST);
+        Limited c = (Limited) b.getColumn(State.TEST);
         c.setLimit(store.get());
     }
 }

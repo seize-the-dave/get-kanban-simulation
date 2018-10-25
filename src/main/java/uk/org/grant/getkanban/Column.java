@@ -11,7 +11,4 @@ public interface Column extends Pullable, Visitable<Day> {
     void allocateDice(ActivityDice... dice);
     List<ActivityDice> getAllocatedDice();
 
-    enum Type {
-        DEVELOPMENT, READY_TO_DEPLOY, BACKLOG, SELECTED, TEST, DEPLOY, ANALYSIS
-    }
 }

@@ -21,33 +21,33 @@ public class CardTest {
     @Test
     public void testGetRemainingDevelopmentWork() {
         Card card = Cards.getCard("S1");
-        assertThat(card.getRemainingWork(Activity.DEVELOPMENT), is(0));
+        assertThat(card.getRemainingWork(State.DEVELOPMENT), is(0));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testDoingExcessWorkThrowsException() {
         Card card = createCard();
-        card.doWork(Activity.DEVELOPMENT, 15);
+        card.doWork(State.DEVELOPMENT, 15);
     }
 
     @Test
     public void testDoingWorkReducesRemainingWork() {
         Card card = Cards.getCard("S6");
-        card.doWork(Activity.DEVELOPMENT, 5);
+        card.doWork(State.DEVELOPMENT, 5);
 
-        assertThat(card.getRemainingWork(Activity.DEVELOPMENT), is(2));
+        assertThat(card.getRemainingWork(State.DEVELOPMENT), is(2));
     }
 
     @Test
     public void testReducingDevelopmentWorkDoesNotAffectTestOrAnalysis() {
         Card card = Cards.getCard("S10");
-        assertThat(card.getRemainingWork(Activity.TEST), is(9));
-        assertThat(card.getRemainingWork(Activity.ANALYSIS), is(2));
+        assertThat(card.getRemainingWork(State.TEST), is(9));
+        assertThat(card.getRemainingWork(State.ANALYSIS), is(2));
 
-        card.doWork(Activity.DEVELOPMENT, 6);
+        card.doWork(State.DEVELOPMENT, 6);
 
-        assertThat(card.getRemainingWork(Activity.TEST), is(9));
-        assertThat(card.getRemainingWork(Activity.ANALYSIS), is(2));
+        assertThat(card.getRemainingWork(State.TEST), is(9));
+        assertThat(card.getRemainingWork(State.ANALYSIS), is(2));
     }
 
     @Test(expected = IllegalStateException.class)

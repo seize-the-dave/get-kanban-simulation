@@ -12,8 +12,8 @@ public class CarlosHiredTest {
     @Test
     public void wipOnTestRemoved() {
         Board b = new Board();
-        Column c = new ActivityColumn(Activity.TEST, 3, new NullColumn());
-        b.setColumn(Column.Type.TEST, c);
+        Column c = new ActivityColumn(State.TEST, 3, new NullColumn());
+        b.setColumn(State.TEST, c);
 
         assertThat(((ActivityColumn) c).getLimit(), is(3));
 

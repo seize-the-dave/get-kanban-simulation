@@ -15,7 +15,7 @@ public class Card {
 
     private final Size size;
     private final SubscriberProfile profile;
-    private final Map<Activity, Integer> work = new EnumMap<>(Activity.class);
+    private final Map<State, Integer> work = new EnumMap<>(State.class);
     private int daySelected;
     private int dayDeployed;
     private final String name;
@@ -23,9 +23,9 @@ public class Card {
     public Card(String name, Size size, int analysis, int development, int test, SubscriberProfile profile) {
         this.name = name;
         this.size = size;
-        this.work.put(Activity.ANALYSIS, analysis);
-        this.work.put(Activity.DEVELOPMENT, development);
-        this.work.put(Activity.TEST, test);
+        this.work.put(State.ANALYSIS, analysis);
+        this.work.put(State.DEVELOPMENT, development);
+        this.work.put(State.TEST, test);
         this.profile = profile;
     }
 
@@ -62,16 +62,16 @@ public class Card {
         this.dayDeployed = dayDeployed;
     }
 
-    public int getRemainingWork(Activity activity) {
-        return work.get(activity);
+    public int getRemainingWork(State state) {
+        return work.get(state);
     }
 
-    public void doWork(Activity activity, int effort) {
-        int remaining = getRemainingWork(activity);
+    public void doWork(State state, int effort) {
+        int remaining = getRemainingWork(state);
         if (effort > remaining) {
             throw new IllegalArgumentException();
         }
-        work.put(activity, remaining - effort);
+        work.put(state, remaining - effort);
     }
 
     public int getDaySelected() {
