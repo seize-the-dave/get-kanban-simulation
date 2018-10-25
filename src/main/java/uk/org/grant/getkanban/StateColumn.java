@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class StateColumn implements Column, Limited {
+public class StateColumn implements Column {
     private final State state;
     private final Column upstream;
     private final Queue<Card> todo;
