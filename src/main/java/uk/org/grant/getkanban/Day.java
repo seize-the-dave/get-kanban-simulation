@@ -1,6 +1,8 @@
 package uk.org.grant.getkanban;
 
+import uk.org.grant.getkanban.column.Visitable;
 import uk.org.grant.getkanban.dice.StateDice;
+import uk.org.grant.getkanban.instructions.Instruction;
 
 public class Day implements Visitable<Board> {
     private final int ordinal;

@@ -1,5 +1,6 @@
 package uk.org.grant.getkanban;
 
+import uk.org.grant.getkanban.column.Column;
 import uk.org.grant.getkanban.dice.StateDice;
 
 import java.util.ArrayList;

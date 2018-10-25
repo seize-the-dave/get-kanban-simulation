@@ -1,6 +1,10 @@
 package uk.org.grant.getkanban;
 
 import org.junit.Test;
+import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.column.Column;
+import uk.org.grant.getkanban.column.DeployedColumn;
+import uk.org.grant.getkanban.column.NullColumn;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

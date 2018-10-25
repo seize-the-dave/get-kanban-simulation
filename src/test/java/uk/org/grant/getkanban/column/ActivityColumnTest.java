@@ -1,6 +1,10 @@
-package uk.org.grant.getkanban;
+package uk.org.grant.getkanban.column;
 
 import org.junit.Test;
+import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.Cards;
+import uk.org.grant.getkanban.Day;
+import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.LoadedDice;
 

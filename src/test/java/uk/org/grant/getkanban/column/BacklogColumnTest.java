@@ -1,6 +1,8 @@
-package uk.org.grant.getkanban;
+package uk.org.grant.getkanban.column;
 
 import org.junit.Test;
+import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.Cards;
 
 import java.util.Optional;
 

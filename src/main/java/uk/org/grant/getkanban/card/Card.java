@@ -1,4 +1,7 @@
-package uk.org.grant.getkanban;
+package uk.org.grant.getkanban.card;
+
+import uk.org.grant.getkanban.State;
+import uk.org.grant.getkanban.SubscriberProfile;
 
 import java.util.EnumMap;
 import java.util.Map;

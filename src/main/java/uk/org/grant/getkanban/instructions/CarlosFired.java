@@ -1,6 +1,7 @@
 package uk.org.grant.getkanban.instructions;
 
 import uk.org.grant.getkanban.*;
+import uk.org.grant.getkanban.column.Column;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.RandomDice;
 

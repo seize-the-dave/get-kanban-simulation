@@ -1,7 +1,8 @@
-package uk.org.grant.getkanban;
+package uk.org.grant.getkanban.card;
 
 import org.junit.Assert;
 import org.junit.Test;
+import uk.org.grant.getkanban.Days;
 
 import static org.hamcrest.Matchers.is;
 

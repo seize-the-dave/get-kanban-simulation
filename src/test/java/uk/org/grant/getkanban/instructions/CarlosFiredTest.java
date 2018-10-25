@@ -2,6 +2,9 @@ package uk.org.grant.getkanban.instructions;
 
 import org.junit.Test;
 import uk.org.grant.getkanban.*;
+import uk.org.grant.getkanban.column.Column;
+import uk.org.grant.getkanban.column.NullColumn;
+import uk.org.grant.getkanban.column.StateColumn;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

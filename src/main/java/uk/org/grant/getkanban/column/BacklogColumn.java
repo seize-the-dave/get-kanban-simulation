@@ -1,4 +1,8 @@
-package uk.org.grant.getkanban;
+package uk.org.grant.getkanban.column;
+
+import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.Day;
+import uk.org.grant.getkanban.DefaultPrioritisationStrategy;
 
 import java.util.*;
 

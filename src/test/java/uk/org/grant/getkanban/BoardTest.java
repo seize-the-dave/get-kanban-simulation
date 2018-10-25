@@ -1,6 +1,8 @@
 package uk.org.grant.getkanban;
 
 import org.junit.Test;
+import uk.org.grant.getkanban.column.NullColumn;
+import uk.org.grant.getkanban.column.StateColumn;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.RandomDice;
 

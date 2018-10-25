@@ -1,5 +1,8 @@
 package uk.org.grant.getkanban;
 
+import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.column.Column;
+
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
 public class FinancialSummary {

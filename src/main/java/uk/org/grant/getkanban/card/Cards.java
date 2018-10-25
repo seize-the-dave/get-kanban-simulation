@@ -1,4 +1,6 @@
-package uk.org.grant.getkanban;
+package uk.org.grant.getkanban.card;
+
+import uk.org.grant.getkanban.SubscriberProfile;
 
 public class Cards {
     public static Card getCard(String name) {
