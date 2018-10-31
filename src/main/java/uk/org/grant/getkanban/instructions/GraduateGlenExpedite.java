@@ -4,9 +4,9 @@ import uk.org.grant.getkanban.Board;
 import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.card.Cards;
 
-public class BigCorpExpedite implements Instruction {
+public class GraduateGlenExpedite implements Instruction {
     @Override
     public void execute(Board b) {
-        b.getColumn(State.BACKLOG).addCard(Cards.getCard("E1"));
+        b.getColumn(State.BACKLOG).addCard(Cards.getCard("E2"));
     }
 }

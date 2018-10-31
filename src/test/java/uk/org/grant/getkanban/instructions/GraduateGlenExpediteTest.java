@@ -10,10 +10,10 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.Assert.assertThat;
 
-public class BigCorpExpediteTest {
+public class GraduateGlenExpediteTest {
     @Test
-    public void ticketE1ShouldBeAddedToBacklog() {
-        Instruction bigCorp = new BigCorpExpedite();
+    public void ticketE2ShouldBeAddedToBacklog() {
+        Instruction bigCorp = new GraduateGlenExpedite();
 
         Board b = new Board();
         b.setColumn(State.BACKLOG, new BacklogColumn());
@@ -22,6 +22,6 @@ public class BigCorpExpediteTest {
 
         bigCorp.execute(b);
 
-        assertThat(b.getColumn(State.BACKLOG).getCards(), contains(Cards.getCard("E1")));
+        assertThat(b.getColumn(State.BACKLOG).getCards(), contains(Cards.getCard("E2")));
     }
 }
