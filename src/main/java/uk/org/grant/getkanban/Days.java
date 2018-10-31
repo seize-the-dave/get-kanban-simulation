@@ -1,5 +1,6 @@
 package uk.org.grant.getkanban;
 
+import uk.org.grant.getkanban.instructions.BigCorpExpedite;
 import uk.org.grant.getkanban.instructions.CarlosFired;
 import uk.org.grant.getkanban.instructions.CarlosHired;
 
@@ -13,6 +14,8 @@ public class Days {
                 return new Day(day, new CarlosHired(testWipStore));
             case 14:
                 return new Day(day, new CarlosFired(testWipStore));
+            case 15:
+                return new Day(day, new BigCorpExpedite());
             default:
                 return new Day(day);
         }
