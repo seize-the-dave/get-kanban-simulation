@@ -1,5 +1,6 @@
 package uk.org.grant.getkanban.column;
 
+import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.Day;
 
@@ -24,7 +25,7 @@ public class NullColumn extends AbstractColumn {
     }
 
     @Override
-    public void visit(Day day) {
+    public void visit(Context context) {
         // No Op
     }
 }

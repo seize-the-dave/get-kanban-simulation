@@ -83,4 +83,61 @@ public class FinancialSummary {
             return 0;
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("%1$-20s", ""));
+        for (int i = 0; i < 5; i++) {
+            int day = 9 + (i * 3);
+            sb.append(padLeft("Day " + day));
+        }
+        sb.append("\n");
+        sb.append(String.format("%1$-20s", "New Subscribers"));
+        for (int i = 0; i < 5; i++) {
+            int day = 9 + (i * 3);
+            sb.append(padLeft(getNewSubscribers(day)));
+        }
+        sb.append("\n");
+        sb.append(String.format("%1$-20s", "Total Subscribers"));
+        for (int i = 0; i < 5; i++) {
+            int day = 9 + (i * 3);
+            sb.append(padLeft(getTotalSubscribersToDate(day)));
+        }
+        sb.append("\n");
+        sb.append(String.format("%1$-20s", "Cycle Revenue"));
+        for (int i = 0; i < 5; i++) {
+            int day = 9 + (i * 3);
+            sb.append(padLeft(getBillingCycleRevenue(day)));
+        }
+        sb.append("\n");
+        sb.append(String.format("%1$-20s", "Fines or Payments"));
+        for (int i = 0; i < 5; i++) {
+            int day = 9 + (i * 3);
+            sb.append(padLeft(getFinesOrPayments(day)));
+        }
+        sb.append("\n");
+        sb.append(String.format("%1$-20s", "Cycle Gross Profit"));
+        for (int i = 0; i < 5; i++) {
+            int day = 9 + (i * 3);
+            sb.append(padLeft(getBillingCycleGrossProfit(day)));
+        }
+        sb.append("\n");
+        sb.append(String.format("%1$-20s", "Gross Profit To Date"));
+        for (int i = 0; i < 5; i++) {
+            int day = 9 + (i * 3);
+            sb.append(padLeft(getTotalGrossProfitToDate(day)));
+        }
+
+        return sb.toString();
+    }
+
+    public String padLeft(String s) {
+        return String.format("%1$8s", s);
+    }
+
+    public String padLeft(int i) {
+        return String.format("%1$8s", i);
+    }
 }

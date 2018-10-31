@@ -1,5 +1,6 @@
 package uk.org.grant.getkanban.column;
 
+import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.Day;
@@ -64,13 +65,17 @@ public class StateColumn implements Column {
         return this.dice;
     }
 
-    public void visit(Day day) {
-        upstream.visit(day);
+    public void visit(Context context) {
+//        System.out.println("In " + this + " on " + context.getDay());
+//        upstream.visit(day);
         while (getCards().size() < this.limit) {
+//            System.out.println("Try pulling from " + upstream);
             Optional<Card> optionalCard = upstream.pull();
             if (optionalCard.isPresent()) {
                 addCard(optionalCard.get());
+//                System.out.println("Pulled " + optionalCard.get() + " into " + this);
             } else {
+//                System.out.println(upstream + " has nothing to pull.");
                 break;
             }
         }
@@ -78,16 +83,20 @@ public class StateColumn implements Column {
         for (Iterator<Card> iter = todo.iterator(); iter.hasNext(); ) {
             Card card = iter.next();
             int remaining = card.getRemainingWork(this.state);
-            card.doWork(this.state, Math.min(remaining, sum));
-            sum -= remaining;
+            int work_to_be_done = Math.min(remaining, sum);
+//            System.out.println("Doing " + work_to_be_done + " points of work on " + card);
+            card.doWork(this.state, work_to_be_done);
+            sum -= work_to_be_done;
             if (card.getRemainingWork(this.state) == 0) {
                 iter.remove();
                 done.add(card);
+//                System.out.println(card + " has been completed in " + this);
             }
             if (sum < 1) {
                 break;
             }
         }
+//        System.out.println(this + " has " + sum + " unspent point(s)");
     }
 
     public int getLimit() {
@@ -96,5 +105,10 @@ public class StateColumn implements Column {
 
     public void setLimit(int limit) {
         this.limit = limit;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + this.state + " (" + todo.size() + "/" + done.size() + "/" + limit + ")]";
     }
 }

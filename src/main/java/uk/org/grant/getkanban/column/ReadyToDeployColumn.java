@@ -1,5 +1,6 @@
 package uk.org.grant.getkanban.column;
 
+import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.Day;
@@ -35,19 +36,28 @@ public class ReadyToDeployColumn extends AbstractColumn {
     }
 
     @Override
-    public void visit(Day day) {
+    public void visit(Context context) {
         // TODO: Automate regression for I2
+//        System.out.println("In " + this + " on " + context.getDay());
         while (true) {
+//            System.out.println("Pull from " + upstream);
             Optional<Card> optionalCard = upstream.pull();
             if (optionalCard.isPresent()) {
                 addCard(optionalCard.get());
+//                System.out.println("Pulled " + optionalCard.get() + " into " + this);
             } else {
+//                System.out.println(upstream + " has nothing to pull.");
                 break;
             }
         }
-        if (day.getOrdinal() % 3 == 0) {
+        if (context.getDay().getOrdinal() % 3 == 0) {
             done.addAll(todo);
             todo.clear();;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "[READY TO DEPLOY (" + todo.size() + "/" + done.size() + "/-)]";
     }
 }

@@ -80,6 +80,10 @@ public class Card {
         return this.name;
     }
 
+    public int getRemainingWork() {
+        return getRemainingWork(State.ANALYSIS) + getRemainingWork(State.DEVELOPMENT) + getRemainingWork(State.TEST);
+    }
+
     public enum Size {
         VERY_HIGH, HIGH, MEDIUM, LOW, NONE
     }

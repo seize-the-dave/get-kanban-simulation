@@ -4,7 +4,7 @@ import uk.org.grant.getkanban.column.Visitable;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.instructions.Instruction;
 
-public class Day implements Visitable<Board> {
+public class Day implements Visitable<Context> {
     private final int ordinal;
     private final Instruction[] instructions;
 
@@ -37,14 +37,16 @@ public class Day implements Visitable<Board> {
         board.getColumn(State.TEST).allocateDice(board.getDice(State.TEST).toArray(new StateDice[] {}));
     }
 
-    public void visit(Board board) {
-        board.getColumn(State.DEPLOY).visit(this);
-        board.getColumn(State.READY_TO_DEPLOY).visit(this);
-        board.getColumn(State.TEST).visit(this);
-        board.getColumn(State.DEVELOPMENT).visit(this);
-        board.getColumn(State.ANALYSIS).visit(this);
-        board.getColumn(State.SELECTED).visit(this);
-        board.getColumn(State.BACKLOG).visit(this);
+    public void visit(Context context) {
+        for (int i = 0; i < 2; i++) {
+            context.getBoard().getColumn(State.DEPLOY).visit(context);
+            context.getBoard().getColumn(State.READY_TO_DEPLOY).visit(context);
+            context.getBoard().getColumn(State.TEST).visit(context);
+            context.getBoard().getColumn(State.DEVELOPMENT).visit(context);
+            context.getBoard().getColumn(State.ANALYSIS).visit(context);
+            context.getBoard().getColumn(State.SELECTED).visit(context);
+            context.getBoard().getColumn(State.BACKLOG).visit(context);
+        }
     }
 
     public int getOrdinal() {
@@ -55,5 +57,10 @@ public class Day implements Visitable<Board> {
         for (Instruction instruction : instructions) {
             instruction.execute(b);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "[Day " + ordinal + "]";
     }
 }

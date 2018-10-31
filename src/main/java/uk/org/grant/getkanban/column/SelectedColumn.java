@@ -1,5 +1,6 @@
 package uk.org.grant.getkanban.column;
 
+import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.Day;
@@ -36,13 +37,16 @@ public class SelectedColumn implements Column, Limited {
     }
 
     @Override
-    public void visit(Day day) {
+    public void visit(Context context) {
         while (getCards().size() < this.limit) {
+//            System.out.println("Try pulling from " + upstream);
             Optional<Card> optionalCard = upstream.pull();
             if (optionalCard.isPresent()) {
-                optionalCard.get().setDaySelected(day.getOrdinal());
+                optionalCard.get().setDaySelected(context.getDay().getOrdinal());
                 addCard(optionalCard.get());
+//                System.out.println("Pulled " + optionalCard.get() + " into " + this);
             } else {
+//                System.out.println(upstream + " has nothing to pull.");
                 break;
             }
         }
@@ -66,5 +70,10 @@ public class SelectedColumn implements Column, Limited {
     @Override
     public void setLimit(int limit) {
         this.limit = limit;
+    }
+
+    @Override
+    public String toString() {
+        return "[SELECTED (" + cards.size() + "/" + limit + ")]";
     }
 }

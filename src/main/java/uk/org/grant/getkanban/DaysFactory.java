@@ -6,13 +6,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class DaysFactory {
     private final boolean training;
+    private final AtomicInteger testWipStore;
 
     public DaysFactory(boolean training) {
         this.training = training;
+        testWipStore = new AtomicInteger();
     }
 
     public Day getDay(int day) {
-        AtomicInteger testWipStore = new AtomicInteger();
         switch (day) {
             case 11:
                 return new Day(day, new CarlosHired(testWipStore));

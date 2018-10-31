@@ -1,5 +1,6 @@
 package uk.org.grant.getkanban.column;
 
+import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.BusinessValuePrioritisationStrategy;
@@ -7,10 +8,16 @@ import uk.org.grant.getkanban.BusinessValuePrioritisationStrategy;
 import java.util.*;
 
 public class BacklogColumn extends UnbufferedColumn {
-    private final Queue<Card> cards = new PriorityQueue<>(new BusinessValuePrioritisationStrategy());
+    private final Queue<Card> cards;
 
     public BacklogColumn() {
+        this(new BusinessValuePrioritisationStrategy());
+    }
+
+    public BacklogColumn(Comparator<Card> comparator) {
         super(new NullColumn());
+
+        cards = new PriorityQueue<>(comparator);
     }
 
     @Override
@@ -29,7 +36,12 @@ public class BacklogColumn extends UnbufferedColumn {
     }
 
     @Override
-    public void visit(Day day) {
+    public void visit(Context context) {
         //
+    }
+
+    @Override
+    public String toString() {
+        return "[BACKLOG (" + cards.size() + "/-)]";
     }
 }

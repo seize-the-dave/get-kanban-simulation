@@ -24,7 +24,7 @@ public class BoardRunner {
                 b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
                 b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
 
-                b.setColumn(State.BACKLOG, new BacklogColumn());
+                b.setColumn(State.BACKLOG, new BacklogColumn(new SizePrioritisationStrategy()));
                 b.setColumn(State.SELECTED, new SelectedColumn(3, b.getColumn(State.BACKLOG)));
                 b.setColumn(State.ANALYSIS, new StateColumn(State.ANALYSIS, 2, b.getColumn(State.SELECTED)));
                 b.setColumn(State.DEVELOPMENT, new StateColumn(State.DEVELOPMENT, 4, b.getColumn(State.ANALYSIS)));
@@ -63,11 +63,12 @@ public class BoardRunner {
                     Day d = daysFactory.getDay(i);
 
                     d.standUp(b);
-                    d.visit(b);
+                    d.visit(new Context(b, d));
                     d.endOfDay(b);
                 }
 
                 FinancialSummary summary = new FinancialSummary(b.getColumn(State.DEPLOY));
+//                System.out.println(summary);
                 return summary.getTotalGrossProfitToDate(21);
             }
         };

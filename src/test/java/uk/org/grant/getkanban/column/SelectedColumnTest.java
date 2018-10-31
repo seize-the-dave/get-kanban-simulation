@@ -1,6 +1,8 @@
 package uk.org.grant.getkanban.column;
 
 import org.junit.Test;
+import uk.org.grant.getkanban.Board;
+import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.Day;
@@ -16,7 +18,7 @@ public class SelectedColumnTest {
         backlog.addCard(card);
 
         Column selected = new SelectedColumn(1, backlog);
-        selected.visit(new Day(1));
+        selected.visit(new Context(new Board(), new Day(1)));
 
         assertThat(card.getDaySelected(), is(1));
     }
@@ -44,7 +46,7 @@ public class SelectedColumnTest {
         backlog.addCard(Cards.getCard("S1"));
         selected.addCard(Cards.getCard("S2"));
 
-        selected.visit(new Day(1));
+        selected.visit(new Context(new Board(), new Day(1)));
         assertThat(selected.getCards().size(), is(1));
     }
 }

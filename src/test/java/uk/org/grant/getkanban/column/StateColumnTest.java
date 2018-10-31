@@ -1,6 +1,8 @@
 package uk.org.grant.getkanban.column;
 
 import org.junit.Test;
+import uk.org.grant.getkanban.Board;
+import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.Day;
@@ -19,7 +21,7 @@ public class StateColumnTest {
         StateColumn column = new StateColumn(State.ANALYSIS, new NullColumn());
         column.addCard(card);
         column.allocateDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
-        column.visit(new Day(1));
+        column.visit(new Context(new Board(), new Day(1)));
 
         assertThat(card.getRemainingWork(State.ANALYSIS), is(0));
     }
@@ -29,7 +31,7 @@ public class StateColumnTest {
         StateColumn column = new StateColumn(State.ANALYSIS, new NullColumn());
         column.addCard(Cards.getCard("S1"));
         column.allocateDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
-        column.visit(new Day(1));
+        column.visit(new Context(new Board(), new Day(1)));
 
         assertThat(column.pull().get(), is(Cards.getCard("S1")));
     }
@@ -44,8 +46,8 @@ public class StateColumnTest {
         assertThat(development.getIncompleteCards(), empty());
 
         analysis.allocateDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
-        analysis.visit(new Day(1));
-        development.visit(new Day(1));
+        analysis.visit(new Context(new Board(), new Day(1)));
+        development.visit(new Context(new Board(), new Day(1)));
 
         assertThat(analysis.getIncompleteCards(), not(hasItem(Cards.getCard("S8"))));
         assertThat(development.getIncompleteCards(), hasItem(Cards.getCard("S8")));
@@ -60,7 +62,7 @@ public class StateColumnTest {
         StateColumn test = new StateColumn(State.TEST, development);
         analysis.addCard(s1);
 
-        test.visit(new Day(1));
+        test.visit(new Context(new Board(), new Day(1)));
 
         assertThat(development.getIncompleteCards(), hasItem(s1));
     }
@@ -88,7 +90,7 @@ public class StateColumnTest {
         analysis.addCard(Cards.getCard("S1"));
         development.addCard(Cards.getCard("S2"));
 
-        development.visit(new Day(1));
+        development.visit(new Context(new Board(), new Day(1)));
         assertThat(development.getCards().size(), is(1));
     }
 }
