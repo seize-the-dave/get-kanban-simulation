@@ -1,8 +1,6 @@
 package uk.org.grant.getkanban;
 
-import uk.org.grant.getkanban.instructions.BigCorpExpedite;
-import uk.org.grant.getkanban.instructions.CarlosFired;
-import uk.org.grant.getkanban.instructions.CarlosHired;
+import uk.org.grant.getkanban.instructions.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,6 +14,10 @@ public class Days {
                 return new Day(day, new CarlosFired(testWipStore));
             case 15:
                 return new Day(day, new BigCorpExpedite());
+            case 17:
+                return new Day(day, new TedsTrainingOpportunity(true));
+            case 18:
+                return new Day(day, new GraduateGlenExpedite());
             default:
                 return new Day(day);
         }
