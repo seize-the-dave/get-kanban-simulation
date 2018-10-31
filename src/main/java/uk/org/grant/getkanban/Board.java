@@ -25,6 +25,10 @@ public class Board {
         this.dice.add(dice);
     }
 
+    public void removeDice(StateDice dice) {
+        this.dice.remove(dice);
+    }
+
     public void setColumn(State type, Column column) {
         columns.put(type, column);
     }

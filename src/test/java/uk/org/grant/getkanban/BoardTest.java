@@ -10,6 +10,7 @@ import java.util.Random;
 
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.Assert.assertThat;
 
 public class BoardTest {
@@ -27,5 +28,17 @@ public class BoardTest {
         Board board = new Board();
         board.setColumn(State.ANALYSIS, column);
         assertThat(board.getColumn(State.ANALYSIS), is(column));
+    }
+
+    @Test
+    public void canRemoveDiceBoard() {
+        StateDice dice = new StateDice(State.ANALYSIS, new RandomDice(new Random()));
+        Board board = new Board();
+        board.addDice(dice);
+
+        assertThat(board.getDice(), hasItems(dice));
+
+        board.removeDice(dice);
+        assertThat(board.getDice(), empty());
     }
 }
