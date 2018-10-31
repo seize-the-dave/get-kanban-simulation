@@ -17,6 +17,8 @@ public class DaysFactory {
         switch (day) {
             case 11:
                 return new Day(day, new CarlosHired(testWipStore));
+            case 12:
+                return new Day(day, new MargaretsFeatures());
             case 14:
                 return new Day(day, new CarlosFired(testWipStore));
             case 15:
