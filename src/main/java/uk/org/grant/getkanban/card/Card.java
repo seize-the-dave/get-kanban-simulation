@@ -51,7 +51,7 @@ public class Card {
             throw new IllegalStateException("Cannot deploy unselected card");
         }
         if (dayDeployed < this.daySelected) {
-            throw new IllegalStateException("Cannot deploy before selection day");
+            throw new IllegalStateException("Cannot deploy before selection getDay");
         }
         this.dayDeployed = dayDeployed;
     }

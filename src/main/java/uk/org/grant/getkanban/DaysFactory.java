@@ -4,8 +4,14 @@ import uk.org.grant.getkanban.instructions.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Days {
-    public static Day getDay(int day) {
+public class DaysFactory {
+    private final boolean training;
+
+    public DaysFactory(boolean training) {
+        this.training = training;
+    }
+
+    public Day getDay(int day) {
         AtomicInteger testWipStore = new AtomicInteger();
         switch (day) {
             case 11:
@@ -15,9 +21,9 @@ public class Days {
             case 15:
                 return new Day(day, new BigCorpExpedite());
             case 17:
-                return new Day(day, new TedsTrainingOpportunity(true));
+                return new Day(day, new TedsTrainingOpportunity(training));
             case 18:
-                return new Day(day, new GraduateGlenExpedite());
+                return new Day(day, new GraduateGlenExpedite(), new TammyHired(training));
             default:
                 return new Day(day);
         }

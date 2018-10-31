@@ -58,9 +58,9 @@ public class BoardRunner {
                 b.getColumn(State.BACKLOG).addCard(Cards.getCard("I2"));
                 b.getColumn(State.BACKLOG).addCard(Cards.getCard("I3"));
 
-
+                DaysFactory daysFactory = new DaysFactory(true);
                 for (int i = 9; i < 22; i++) {
-                    Day d = Days.getDay(i);
+                    Day d = daysFactory.getDay(i);
 
                     d.standUp(b);
                     d.visit(b);
