@@ -54,20 +54,6 @@ public class StateColumnTest {
     }
 
     @Test
-    public void testPullFromUpstreamTraversesBoard() {
-        Card s1 = Cards.getCard("S6");
-
-        StateColumn analysis = new StateColumn(State.ANALYSIS, new NullColumn());
-        StateColumn development = new StateColumn(State.DEVELOPMENT, analysis);
-        StateColumn test = new StateColumn(State.TEST, development);
-        analysis.addCard(s1);
-
-        test.visit(new Context(new Board(), new Day(1)));
-
-        assertThat(development.getIncompleteCards(), hasItem(s1));
-    }
-
-    @Test
     public void canGetWipLimit() {
         StateColumn column = new StateColumn(State.ANALYSIS, 4, new NullColumn());
 

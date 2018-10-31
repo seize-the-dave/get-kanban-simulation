@@ -21,7 +21,7 @@ public class DeployedColumnTest {
         selected.visit(new Context(new Board(), new Day(1)));
 
         Column deployed = new DeployedColumn(selected);
-        selected.visit(new Context(new Board(), new Day(2)));
+        deployed.visit(new Context(new Board(), new Day(2)));
 
         assertThat(card.getDayDeployed(), is(2));
     }
