@@ -23,13 +23,13 @@ public class FinancialSummary {
                     this.f1 = false;
                 }
             }
+            if (card.getName().equals("F2")) {
+                newSubscribers.getAndAdd(21, 30);
+            }
             if (card.getName().equals("E1")) {
                 if (card.getDayDeployed() <= 18) {
                     this.e1 = true;
                 }
-            }
-            if (card.getName().equals("F2")) {
-                newSubscribers.getAndAdd(21, 30);
             }
             if (card.getDayDeployed() <= 9) {
                 newSubscribers.getAndAdd(9, card.getSubscribers());

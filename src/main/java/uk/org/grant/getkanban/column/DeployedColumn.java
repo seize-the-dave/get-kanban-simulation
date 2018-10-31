@@ -13,6 +13,8 @@ public class DeployedColumn extends UnbufferedColumn {
 
     @Override
     public void visit(Day day) {
+        // TODO: Deploy Set 3 for I3
+        // TODO: Automate deployments for I2
         while (true) {
             Optional<Card> optionalCard = upstream.pull();
             if (optionalCard.isPresent()) {

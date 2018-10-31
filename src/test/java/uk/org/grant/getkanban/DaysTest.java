@@ -1,4 +1,4 @@
-package uk.org.grant.getkanban.card;
+package uk.org.grant.getkanban;
 
 import org.junit.Assert;
 import org.junit.Test;

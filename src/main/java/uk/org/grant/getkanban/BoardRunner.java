@@ -46,6 +46,18 @@ public class BoardRunner {
                 b.getColumn(State.BACKLOG).addCard(Cards.getCard("S12"));
                 b.getColumn(State.BACKLOG).addCard(Cards.getCard("S13"));
                 b.getColumn(State.BACKLOG).addCard(Cards.getCard("S14"));
+                b.getColumn(State.BACKLOG).addCard(Cards.getCard("S15"));
+                b.getColumn(State.BACKLOG).addCard(Cards.getCard("S16"));
+                b.getColumn(State.BACKLOG).addCard(Cards.getCard("S17"));
+                b.getColumn(State.BACKLOG).addCard(Cards.getCard("S18"));
+
+                b.getColumn(State.BACKLOG).addCard(Cards.getCard("F1"));
+                b.getColumn(State.BACKLOG).addCard(Cards.getCard("F2"));
+
+                b.getColumn(State.BACKLOG).addCard(Cards.getCard("I1"));
+                b.getColumn(State.BACKLOG).addCard(Cards.getCard("I2"));
+                b.getColumn(State.BACKLOG).addCard(Cards.getCard("I3"));
+
 
                 for (int i = 9; i < 22; i++) {
                     Day d = Days.getDay(i);

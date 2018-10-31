@@ -36,6 +36,7 @@ public class ReadyToDeployColumn extends AbstractColumn {
 
     @Override
     public void visit(Day day) {
+        // TODO: Automate regression for I2
         while (true) {
             Optional<Card> optionalCard = upstream.pull();
             if (optionalCard.isPresent()) {

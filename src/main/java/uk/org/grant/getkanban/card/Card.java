@@ -7,15 +7,6 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class Card {
-    // I1 1; 4; 2 (Don't wait in ready to deploy)
-    // I2 2; 2; 5 (2 points off test)
-    // I3 1; 3; 3 (Set 3 of cards)
-    // E1 4; 6; 6 Financial summary
-    // E2 2; 3; 4 Lose 6 subs if delivered
-    // F1 4; 3; 6 Financial summary
-    // F2 + 30 Subscribers
-    // S1
-
     private final Size size;
     private final SubscriberProfile profile;
     private final Map<State, Integer> work = new EnumMap<>(State.class);
@@ -90,7 +81,7 @@ public class Card {
     }
 
     public enum Size {
-        HIGH, MEDIUM, LOW
+        VERY_HIGH, HIGH, MEDIUM, LOW, NONE
     }
 
     @Override
