@@ -32,6 +32,6 @@ public abstract class UnbufferedColumn extends AbstractColumn {
     @Override
     public Optional<Card> pull(Context context) {
         doTheWork(context);
-        return Optional.ofNullable(cards.remove());
+        return Optional.ofNullable(cards.poll());
     }
 }
