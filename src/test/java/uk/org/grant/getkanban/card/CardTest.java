@@ -12,13 +12,13 @@ public class CardTest {
     @Test
     public void testSize() {
         Card card = createCard();
-        assertThat(card.getSize(), is(Card.Size.LOW));
+        assertThat(card.getSize(), is(Card.Size.HIGH));
     }
 
     @Test
     public void testGetName() {
         Card card = createCard();
-        assertThat(card.getName(), is("S1"));
+        assertThat(card.getName(), is("S18"));
     }
 
     @Test
@@ -35,22 +35,22 @@ public class CardTest {
 
     @Test
     public void testDoingWorkReducesRemainingWork() {
-        Card card = Cards.getCard("S6");
+        Card card = Cards.getCard("S10");
         card.doWork(State.DEVELOPMENT, 5);
 
-        assertThat(card.getRemainingWork(State.DEVELOPMENT), is(2));
+        assertThat(card.getRemainingWork(State.DEVELOPMENT), is(1));
     }
 
     @Test
     public void testReducingDevelopmentWorkDoesNotAffectTestOrAnalysis() {
         Card card = Cards.getCard("S10");
         assertThat(card.getRemainingWork(State.TEST), is(9));
-        assertThat(card.getRemainingWork(State.ANALYSIS), is(2));
+        assertThat(card.getRemainingWork(State.ANALYSIS), is(1));
 
         card.doWork(State.DEVELOPMENT, 6);
 
         assertThat(card.getRemainingWork(State.TEST), is(9));
-        assertThat(card.getRemainingWork(State.ANALYSIS), is(2));
+        assertThat(card.getRemainingWork(State.ANALYSIS), is(1));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -114,6 +114,6 @@ public class CardTest {
     }
 
     private Card createCard() {
-        return Cards.getCard("S1");
+        return Cards.getCard("S18");
     }
 }

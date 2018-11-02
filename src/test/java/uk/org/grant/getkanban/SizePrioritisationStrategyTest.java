@@ -14,10 +14,10 @@ public class SizePrioritisationStrategyTest {
     @Test
     public void shortItemsItemsRiseToTheTop() {
         Queue<Card> queue = new PriorityQueue<>(new SizePrioritisationStrategy());
-        queue.add(Cards.getCard("S2"));
-        queue.add(Cards.getCard("S4"));
+        queue.add(Cards.getCard("S29"));
+        queue.add(Cards.getCard("S28"));
 
-        assertThat(queue.poll().getRemainingWork(), is(2));
-        assertThat(queue.poll().getRemainingWork(), is(4));
+        assertThat(queue.poll().getRemainingWork(), is(11));
+        assertThat(queue.poll().getRemainingWork(), is(14));
     }
 }
