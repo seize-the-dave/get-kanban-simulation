@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.card.Cards;
 
 import java.util.*;
@@ -30,7 +29,7 @@ public class DeployedColumn extends UnbufferedColumn {
                 addCard(optionalCard.get());
 
                 if (optionalCard.get().getName().equals("I3")) {
-                    Column backlog = context.getBoard().getColumn(State.BACKLOG);
+                    Column backlog = context.getBoard().getBacklog();
                     backlog.addCard(Cards.getCard("S29"));
                     backlog.addCard(Cards.getCard("S30"));
                     backlog.addCard(Cards.getCard("S31"));

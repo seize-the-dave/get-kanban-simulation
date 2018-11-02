@@ -3,7 +3,7 @@ package uk.org.grant.getkanban.instructions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.*;
-import uk.org.grant.getkanban.column.Column;
+import uk.org.grant.getkanban.column.StateColumn;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,7 +17,7 @@ public class CarlosHired implements Instruction {
 
     @Override
     public void execute(Board b) {
-        Column c = b.getColumn(State.TEST);
+        StateColumn c = b.getStateColumn(State.TEST);
         store.set(c.getLimit());
         c.setLimit(Integer.MAX_VALUE);
         LOGGER.info("Removed WIP limit on {}", c);

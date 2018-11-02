@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.*;
 import uk.org.grant.getkanban.column.Column;
+import uk.org.grant.getkanban.column.StateColumn;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.RandomDice;
 
@@ -30,7 +31,7 @@ public class CarlosFired implements Instruction {
     }
 
     private void restoreWipLimitsToTest(Board b) {
-        Column c = b.getColumn(State.TEST);
+        StateColumn c = b.getStateColumn(State.TEST);
         c.setLimit(store.get());
         LOGGER.info("Restored WIP limit on {}", c);
     }

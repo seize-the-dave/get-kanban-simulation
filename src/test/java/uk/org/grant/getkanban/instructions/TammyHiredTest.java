@@ -16,8 +16,6 @@ public class TammyHiredTest {
     @Test
     public void tammyShouldBeHiredAndTedShouldBeBack() {
         Board b = new Board();
-        b.setColumn(State.BACKLOG, new BacklogColumn());
-        b.setColumn(State.TEST, new StateColumn(State.TEST, 3, new NullColumn()));
 
         assertThat(b.getDice(State.TEST).size(), is(0));
 
@@ -31,9 +29,6 @@ public class TammyHiredTest {
     @Test
     public void tammyNotHiredAndTedShouldBeBack() {
         Board b = new Board();
-        b.setColumn(State.BACKLOG, new BacklogColumn());
-        b.setColumn(State.TEST, new StateColumn(State.TEST, 3, new NullColumn()));
-
         assertThat(b.getDice(State.TEST).size(), is(0));
 
         DaysFactory daysFactory = new DaysFactory(false);

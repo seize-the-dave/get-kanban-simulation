@@ -11,13 +11,12 @@ public class MargaretsFeaturesTest {
     @Test
     public void shouldIntroduceSet2() {
         Board b = new Board();
-        b.setColumn(State.BACKLOG, new BacklogColumn());
 
         DaysFactory days = new DaysFactory(true);
         Day day = days.getDay(12);
 
         day.endOfDay(b);
 
-        assertThat(b.getColumn(State.BACKLOG).getCards().size(), is(10));
+        assertThat(b.getBacklog().getCards().size(), is(10));
     }
 }

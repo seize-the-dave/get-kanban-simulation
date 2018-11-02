@@ -6,26 +6,28 @@ import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.State;
+import uk.org.grant.getkanban.dice.DiceGroup;
 import uk.org.grant.getkanban.dice.StateDice;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class StateColumn implements Column {
+public class StateColumn extends LimitedColumn {
     private final Logger logger;
     private final State state;
     private final Column upstream;
     private final Queue<Card> todo;
     private final Queue<Card> done;
     private List<StateDice> dice;
-    private int sum;
-    private int limit;
+    private AtomicBoolean rolled = new AtomicBoolean();
+    private DiceGroup[] groups = new DiceGroup[0];
 
     public StateColumn(State state, int limit, Column upstream) {
+        super(limit);
         this.state = state;
         this.upstream = upstream;
-        this.limit = limit;
         this.todo = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
         this.done = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
         this.logger = LoggerFactory.getLogger(StateColumn.class.getName() + "[" + state + "]");
@@ -36,7 +38,7 @@ public class StateColumn implements Column {
     }
 
     public void addCard(Card card) {
-        if (getCards().size() == this.limit) {
+        if (getCards().size() == getLimit()) {
             throw new IllegalStateException();
         }
         if (card.getRemainingWork(this.state) == 0) {
@@ -47,8 +49,11 @@ public class StateColumn implements Column {
     }
 
     @Override
-    public Collection<Card> getCards() {
-        return Stream.concat(this.todo.stream(), this.done.stream()).collect(Collectors.toList());
+    public Queue<Card> getCards() {
+        Queue<Card> queue = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
+        queue.addAll(Stream.concat(this.todo.stream(), this.done.stream()).collect(Collectors.toList()));
+
+        return queue;
     }
 
     public Collection<Card> getIncompleteCards() {
@@ -60,61 +65,61 @@ public class StateColumn implements Column {
         return Optional.ofNullable(done.poll());
     }
 
-    public void assignDice(StateDice... dice) {
-        this.dice = Arrays.asList(dice);
-        this.sum = this.dice.stream().mapToInt(d -> d.rollFor(this.state)).sum();
-        logger.info("Rolled {} from {} dice", this.sum, this.dice);
-    }
-
-    public List<StateDice> getAssignedDice() {
-        return this.dice;
-    }
-
     public void doTheWork(Context context) {
-        logger.info("In " + this + " on " + context.getDay());
-//        upstream.doTheWork(day);
-        while (getCards().size() < this.limit) {
-            logger.info("Try pulling from " + upstream);
+        reduceWorkOnAssignedTickets();
+        spendLeftoverPoints(context);
+    }
+
+    private void spendLeftoverPoints(Context context) {
+        logger.info("{}: Spending leftover points ", context.getDay());
+        while (getCards().size() < this.getLimit()) {
+            logger.info("Pulling cards from {}", upstream);
             Optional<Card> optionalCard = upstream.pull(context);
             if (optionalCard.isPresent()) {
                 addCard(optionalCard.get());
                 logger.info("Pulled {} into {} from {}", optionalCard.get(), this, upstream);
             } else {
-                logger.warn("Nothing to pull.");
+                logger.warn("Nothing available to pull");
                 break;
             }
         }
         // Do Work
-        for (Iterator<Card> iter = todo.iterator(); iter.hasNext() && sum > 0; ) {
-            Card card = iter.next();
-            int remaining = card.getRemainingWork(this.state);
-            int work_to_be_done = Math.min(remaining, sum);
-            logger.info("Doing " + work_to_be_done + " points of work on " + card);
-            card.doWork(this.state, work_to_be_done);
-            sum -= work_to_be_done;
-            if (card.getRemainingWork(this.state) == 0) {
-                iter.remove();
-                done.add(card);
-                logger.info(card + " has been completed in " + this);
-            }
-            if (sum < 1) {
-                break;
+        for (DiceGroup group : groups) {
+            logger.info("{} leftover points to spend", group.getLeftoverPoints());
+            for (Iterator<Card> iter = todo.iterator(); iter.hasNext() && group.getLeftoverPoints() > 0; ) {
+                Card card = iter.next();
+                group.spendLeftoverPoints(state, card);
+                if (card.getRemainingWork(this.state) == 0) {
+                    iter.remove();
+                    done.add(card);
+                    logger.info(card + " has been completed in " + this);
+                }
             }
         }
-        logger.warn(this + " has " + sum + " unspent point(s)");
     }
 
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
+    private void reduceWorkOnAssignedTickets() {
+        if (rolled.getAndSet(true)) {
+            return;
+        }
+        for (DiceGroup group : groups) {
+            group.rollFor(state);
+            Optional<Card> card = todo.stream().filter(c -> c.getRemainingWork(this.state) == 0).findFirst();
+            if (card.isPresent()) {
+                todo.remove(card.get());
+                done.add(card.get());
+            }
+        }
     }
 
     @Override
     public String toString() {
-        String wip = limit == Integer.MAX_VALUE ? "∞" : Integer.toString(limit);
+        String wip = getLimit() == Integer.MAX_VALUE ? "∞" : Integer.toString(getLimit());
         return "[" + this.state + " (" + todo.size() + "/" + done.size() + "/" + wip+ ")]";
+    }
+
+    public void assignDice(DiceGroup... groups) {
+        this.groups = groups;
+        this.rolled.set(false);
     }
 }

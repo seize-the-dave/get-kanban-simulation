@@ -23,14 +23,6 @@ public class BoardTest {
     }
 
     @Test
-    public void canGetColumnsForBoard() {
-        StateColumn column = new StateColumn(State.ANALYSIS, new NullColumn());
-        Board board = new Board();
-        board.setColumn(State.ANALYSIS, column);
-        assertThat(board.getColumn(State.ANALYSIS), is(column));
-    }
-
-    @Test
     public void canRemoveDiceBoard() {
         StateDice dice = new StateDice(State.ANALYSIS, new RandomDice(new Random()));
         Board board = new Board();

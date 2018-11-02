@@ -8,13 +8,12 @@ import uk.org.grant.getkanban.card.Card;
 
 import java.util.*;
 
-public class ReadyToDeployColumn extends AbstractColumn {
+public class ReadyToDeployColumn extends UnbufferedColumn {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReadyToDeployColumn.class);
     private final Queue<Card> cards = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
-    private final Column upstream;
 
     public ReadyToDeployColumn(Column upstream) {
-        this.upstream = upstream;
+        super(upstream);
     }
 
 
@@ -24,7 +23,7 @@ public class ReadyToDeployColumn extends AbstractColumn {
     }
 
     @Override
-    public Collection<Card> getCards() {
+    public Queue<Card> getCards() {
         return cards;
     }
 

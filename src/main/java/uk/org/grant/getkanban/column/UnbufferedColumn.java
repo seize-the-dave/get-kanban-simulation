@@ -3,6 +3,7 @@ package uk.org.grant.getkanban.column;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.BusinessValuePrioritisationStrategy;
+import uk.org.grant.getkanban.dice.DiceGroup;
 
 import java.util.*;
 
@@ -25,8 +26,8 @@ public abstract class UnbufferedColumn extends AbstractColumn {
     }
 
     @Override
-    public Collection<Card> getCards() {
-        return Collections.unmodifiableCollection(cards);
+    public Queue<Card> getCards() {
+        return cards;
     }
 
     @Override

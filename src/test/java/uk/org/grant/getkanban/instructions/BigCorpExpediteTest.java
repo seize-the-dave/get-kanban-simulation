@@ -16,12 +16,10 @@ public class BigCorpExpediteTest {
         Instruction bigCorp = new BigCorpExpedite();
 
         Board b = new Board();
-        b.setColumn(State.BACKLOG, new BacklogColumn());
-
-        assertThat(b.getColumn(State.BACKLOG).getCards(), empty());
+        assertThat(b.getBacklog().getCards(), empty());
 
         bigCorp.execute(b);
 
-        assertThat(b.getColumn(State.BACKLOG).getCards(), contains(Cards.getCard("E1")));
+        assertThat(b.getBacklog().getCards(), contains(Cards.getCard("E1")));
     }
 }

@@ -1,6 +1,6 @@
 package uk.org.grant.getkanban;
 
-import uk.org.grant.getkanban.column.Column;
+import uk.org.grant.getkanban.column.*;
 import uk.org.grant.getkanban.dice.StateDice;
 
 import java.util.ArrayList;
@@ -9,9 +9,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Board {
-    // Selected (3), Analysis (2), Development (4), Test (3)
     private final List<StateDice> dice = new ArrayList<>();
-    private final EnumMap<State, Column> columns = new EnumMap<>(State.class);
+
+    // Selected (3), Analysis (2), Development (4), Test (3)
+    private final BacklogColumn backlog = new BacklogColumn();
+    private final SelectedColumn selected = new SelectedColumn(3, backlog);
+    private final EnumMap<State, StateColumn> columns = new EnumMap<>(State.class);
+    {
+        columns.put(State.ANALYSIS, new StateColumn(State.ANALYSIS, 2, selected));
+        columns.put(State.DEVELOPMENT, new StateColumn(State.DEVELOPMENT, 4, columns.get(State.ANALYSIS)));
+        columns.put(State.TEST, new StateColumn(State.TEST, 3, columns.get(State.DEVELOPMENT)));
+    }
+    private final ReadyToDeployColumn readyToDeploy = new ReadyToDeployColumn(columns.get(State.TEST));
+    private final DeployedColumn deployed = new DeployedColumn(readyToDeploy);
 
     public List<StateDice> getDice() {
         return dice;
@@ -29,11 +39,23 @@ public class Board {
         this.dice.remove(dice);
     }
 
-    public void setColumn(State type, Column column) {
-        columns.put(type, column);
+    public StateColumn getStateColumn(State type) {
+        return columns.get(type);
     }
 
-    public Column getColumn(State type) {
-        return columns.get(type);
+    public BacklogColumn getBacklog() {
+        return this.backlog;
+    }
+
+    public SelectedColumn getSelected() {
+        return this.selected;
+    }
+
+    public DeployedColumn getReadyToDeploy() {
+        return this.deployed;
+    }
+
+    public DeployedColumn getDeployed() {
+        return this.deployed;
     }
 }

@@ -103,6 +103,6 @@ public class Card {
 
     @Override
     public String toString() {
-        return name.toString();
+        return name + "[" + getRemainingWork(State.ANALYSIS) + "/" + getRemainingWork(State.DEVELOPMENT) + "/" + getRemainingWork(State.TEST) + "]" ;
     }
 }

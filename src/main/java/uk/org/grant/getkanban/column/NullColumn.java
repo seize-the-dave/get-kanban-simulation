@@ -4,9 +4,7 @@ import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.Day;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 public class NullColumn extends AbstractColumn {
     @Override
@@ -15,8 +13,8 @@ public class NullColumn extends AbstractColumn {
     }
 
     @Override
-    public Collection<Card> getCards() {
-        return Collections.emptyList();
+    public Queue<Card> getCards() {
+        return new PriorityQueue<>();
     }
 
     @Override

@@ -1,10 +1,19 @@
 package uk.org.grant.getkanban;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.column.Column;
+import uk.org.grant.getkanban.column.StateColumn;
 import uk.org.grant.getkanban.column.Workable;
+import uk.org.grant.getkanban.dice.DiceGroup;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.instructions.Instruction;
 
+import java.util.Optional;
+
 public class Day implements Workable<Context> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day.class);
     private final int ordinal;
     private final Instruction[] instructions;
 
@@ -37,22 +46,29 @@ public class Day implements Workable<Context> {
     }
 
     private void replenishSelected(Board board) {
-        board.getColumn(State.SELECTED).doTheWork(new Context(board, this));
+        board.getSelected().doTheWork(new Context(board, this));
     }
 
     private void assignDice(Board board) {
-        board.getColumn(State.ANALYSIS).assignDice(board.getDice(State.ANALYSIS).toArray(new StateDice[] {}));
-        board.getColumn(State.DEVELOPMENT).assignDice(board.getDice(State.DEVELOPMENT).toArray(new StateDice[] {}));
-        board.getColumn(State.TEST).assignDice(board.getDice(State.TEST).toArray(new StateDice[] {}));
+        for (State state : new State[] {State.ANALYSIS, State.DEVELOPMENT, State.TEST}) {
+            StateColumn column = board.getStateColumn(state);
+            Optional<Card> card = column.getCards().stream().filter(c -> c.getRemainingWork(state) != 0).findFirst();
+            if (card.isPresent()) {
+                DiceGroup group = new DiceGroup(card.get(), board.getDice(state).toArray(new StateDice[0]));
+                column.assignDice(group);
+            } else {
+                LOGGER.warn("Can't assign dice for {}, as no items are available!", state);
+            }
+        }
     }
 
     public void doTheWork(Context context) {
         for (int i = 0; i < 2; i++) {
-            context.getBoard().getColumn(State.DEPLOY).doTheWork(context);
-            context.getBoard().getColumn(State.READY_TO_DEPLOY).doTheWork(context);
-            context.getBoard().getColumn(State.TEST).doTheWork(context);
-            context.getBoard().getColumn(State.DEVELOPMENT).doTheWork(context);
-            context.getBoard().getColumn(State.ANALYSIS).doTheWork(context);
+            context.getBoard().getDeployed().doTheWork(context);
+            context.getBoard().getReadyToDeploy().doTheWork(context);
+            context.getBoard().getStateColumn(State.TEST).doTheWork(context);
+            context.getBoard().getStateColumn(State.DEVELOPMENT).doTheWork(context);
+            context.getBoard().getStateColumn(State.ANALYSIS).doTheWork(context);
         }
     }
 

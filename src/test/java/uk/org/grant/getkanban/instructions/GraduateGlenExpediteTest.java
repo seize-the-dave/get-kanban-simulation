@@ -16,12 +16,11 @@ public class GraduateGlenExpediteTest {
         Instruction bigCorp = new GraduateGlenExpedite();
 
         Board b = new Board();
-        b.setColumn(State.BACKLOG, new BacklogColumn());
 
-        assertThat(b.getColumn(State.BACKLOG).getCards(), empty());
+        assertThat(b.getBacklog().getCards(), empty());
 
         bigCorp.execute(b);
 
-        assertThat(b.getColumn(State.BACKLOG).getCards(), contains(Cards.getCard("E2")));
+        assertThat(b.getBacklog().getCards(), contains(Cards.getCard("E2")));
     }
 }

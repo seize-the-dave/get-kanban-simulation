@@ -24,45 +24,37 @@ public class BoardRunner {
                 b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
                 b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
 
-                b.setColumn(State.BACKLOG, new BacklogColumn(new BusinessValuePrioritisationStrategy().thenComparing(new SizePrioritisationStrategy())));
-                b.setColumn(State.SELECTED, new SelectedColumn(3, b.getColumn(State.BACKLOG)));
-                b.setColumn(State.ANALYSIS, new StateColumn(State.ANALYSIS, 2, b.getColumn(State.SELECTED)));
-                b.setColumn(State.DEVELOPMENT, new StateColumn(State.DEVELOPMENT, 4, b.getColumn(State.ANALYSIS)));
-                b.setColumn(State.TEST, new StateColumn(State.TEST, 3, b.getColumn(State.DEVELOPMENT)));
-                b.setColumn(State.READY_TO_DEPLOY, new ReadyToDeployColumn(b.getColumn(State.TEST)));
-                b.setColumn(State.DEPLOY, new DeployedColumn(b.getColumn(State.READY_TO_DEPLOY)));
+                b.getDeployed().addCard(Cards.getCard("S1"));
+                b.getDeployed().addCard(Cards.getCard("S2"));
+                b.getDeployed().addCard(Cards.getCard("S4"));
 
-                b.getColumn(State.DEPLOY).addCard(Cards.getCard("S1"));
-                b.getColumn(State.DEPLOY).addCard(Cards.getCard("S2"));
-                b.getColumn(State.DEPLOY).addCard(Cards.getCard("S4"));
+                b.getStateColumn(State.TEST).addCard(Cards.getCard("S3"));
 
-                b.getColumn(State.TEST).addCard(Cards.getCard("S3"));
+                b.getStateColumn(State.DEVELOPMENT).addCard(Cards.getCard("S5"));
+                b.getStateColumn(State.DEVELOPMENT).addCard(Cards.getCard("S6"));
+                b.getStateColumn(State.DEVELOPMENT).addCard(Cards.getCard("S7"));
+                b.getStateColumn(State.DEVELOPMENT).addCard(Cards.getCard("S9"));
 
-                b.getColumn(State.DEVELOPMENT).addCard(Cards.getCard("S5"));
-                b.getColumn(State.DEVELOPMENT).addCard(Cards.getCard("S6"));
-                b.getColumn(State.DEVELOPMENT).addCard(Cards.getCard("S7"));
-                b.getColumn(State.DEVELOPMENT).addCard(Cards.getCard("S9"));
+                b.getStateColumn(State.ANALYSIS).addCard(Cards.getCard("S8"));
+                b.getStateColumn(State.ANALYSIS).addCard(Cards.getCard("S10"));
 
-                b.getColumn(State.ANALYSIS).addCard(Cards.getCard("S8"));
-                b.getColumn(State.ANALYSIS).addCard(Cards.getCard("S10"));
+                b.getSelected().addCard(Cards.getCard("S13"));
 
-                b.getColumn(State.SELECTED).addCard(Cards.getCard("S13"));
+                b.getBacklog().addCard(Cards.getCard("S11"));
+                b.getBacklog().addCard(Cards.getCard("S12"));
+                b.getBacklog().addCard(Cards.getCard("S13"));
+                b.getBacklog().addCard(Cards.getCard("S14"));
+                b.getBacklog().addCard(Cards.getCard("S15"));
+                b.getBacklog().addCard(Cards.getCard("S16"));
+                b.getBacklog().addCard(Cards.getCard("S17"));
+                b.getBacklog().addCard(Cards.getCard("S18"));
 
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("S11"));
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("S12"));
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("S13"));
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("S14"));
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("S15"));
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("S16"));
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("S17"));
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("S18"));
+                b.getBacklog().addCard(Cards.getCard("F1"));
+                b.getBacklog().addCard(Cards.getCard("F2"));
 
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("F1"));
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("F2"));
-
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("I1"));
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("I2"));
-                b.getColumn(State.BACKLOG).addCard(Cards.getCard("I3"));
+                b.getBacklog().addCard(Cards.getCard("I1"));
+                b.getBacklog().addCard(Cards.getCard("I2"));
+                b.getBacklog().addCard(Cards.getCard("I3"));
 
                 DaysFactory daysFactory = new DaysFactory(true);
                 for (int i = 10; i < 22; i++) {
@@ -73,7 +65,7 @@ public class BoardRunner {
                     d.endOfDay(b);
                 }
 
-                return new FinancialSummary(b.getColumn(State.DEPLOY));
+                return new FinancialSummary(b.getDeployed());
             }
         };
         List<Callable<FinancialSummary>> runs = new ArrayList<>();

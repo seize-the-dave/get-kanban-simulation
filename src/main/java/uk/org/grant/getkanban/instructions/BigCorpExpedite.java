@@ -7,6 +7,6 @@ import uk.org.grant.getkanban.card.Cards;
 public class BigCorpExpedite implements Instruction {
     @Override
     public void execute(Board b) {
-        b.getColumn(State.BACKLOG).addCard(Cards.getCard("E1"));
+        b.getBacklog().addCard(Cards.getCard("E1"));
     }
 }

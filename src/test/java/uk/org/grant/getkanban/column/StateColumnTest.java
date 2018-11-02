@@ -7,6 +7,7 @@ import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.State;
+import uk.org.grant.getkanban.dice.DiceGroup;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.LoadedDice;
 
@@ -17,10 +18,13 @@ public class StateColumnTest {
     @Test
     public void testDoingWorkOnColumnReducesCardWork() {
         Card card = Cards.getCard("S1");
-
         StateColumn column = new StateColumn(State.ANALYSIS, new NullColumn());
         column.addCard(card);
-        column.assignDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
+
+        StateDice dice = new StateDice(State.ANALYSIS, new LoadedDice(6));
+        DiceGroup group = new DiceGroup(column.getCards().peek(), dice);
+        column.assignDice(group);
+
         column.doTheWork(new Context(new Board(), new Day(1)));
 
         assertThat(card.getRemainingWork(State.ANALYSIS), is(0));
@@ -31,7 +35,10 @@ public class StateColumnTest {
         Context context = new Context(new Board(), new Day(1));
         StateColumn column = new StateColumn(State.ANALYSIS, new NullColumn());
         column.addCard(Cards.getCard("S1"));
-        column.assignDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
+
+        StateDice dice = new StateDice(State.ANALYSIS, new LoadedDice(6));
+        column.assignDice(new DiceGroup(column.getCards().peek(), dice));
+
         column.doTheWork(context);
 
         assertThat(column.pull(context).get(), is(Cards.getCard("S1")));
@@ -41,12 +48,12 @@ public class StateColumnTest {
     public void testCanPullFromUpstream() {
         StateColumn analysis = new StateColumn(State.ANALYSIS, new NullColumn());
         analysis.addCard(Cards.getCard("S8"));
-//        analysis.addCard(Cards.getCard("S2"));
 
         StateColumn development = new StateColumn(State.DEVELOPMENT, analysis);
         assertThat(development.getIncompleteCards(), empty());
 
-        analysis.assignDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
+        StateDice dice = new StateDice(State.ANALYSIS, new LoadedDice(6));
+        analysis.assignDice(new DiceGroup(analysis.getCards().peek(), dice));
         analysis.doTheWork(new Context(new Board(), new Day(1)));
         development.doTheWork(new Context(new Board(), new Day(1)));
 
