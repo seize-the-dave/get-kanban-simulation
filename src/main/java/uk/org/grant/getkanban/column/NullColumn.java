@@ -20,12 +20,12 @@ public class NullColumn extends AbstractColumn {
     }
 
     @Override
-    public Optional<Card> pull() {
+    public Optional<Card> pull(Context context) {
         return Optional.empty();
     }
 
     @Override
-    public void visit(Context context) {
+    public void doTheWork(Context context) {
         // No Op
     }
 }

@@ -1,14 +1,16 @@
 package uk.org.grant.getkanban.column;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.dice.StateDice;
 
 import java.util.*;
 
 public class SelectedColumn implements Column, Limited {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SelectedColumn.class);
     private final Queue<Card> cards = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
     private Column upstream;
     private int limit;
@@ -32,21 +34,22 @@ public class SelectedColumn implements Column, Limited {
     }
 
     @Override
-    public Optional<Card> pull() {
+    public Optional<Card> pull(Context context) {
+        // Only pull once a day!
         return Optional.ofNullable(cards.poll());
     }
 
     @Override
-    public void visit(Context context) {
+    public void doTheWork(Context context) {
+        LOGGER.info("{}: Replenishing {} from {}", context.getDay(), this, upstream);
         while (getCards().size() < this.limit) {
-//            System.out.println("Try pulling from " + upstream);
-            Optional<Card> optionalCard = upstream.pull();
+            Optional<Card> optionalCard = upstream.pull(context);
             if (optionalCard.isPresent()) {
                 optionalCard.get().setDaySelected(context.getDay().getOrdinal());
                 addCard(optionalCard.get());
-//                System.out.println("Pulled " + optionalCard.get() + " into " + this);
+                LOGGER.info("Pulled {} into {} from {}", optionalCard.get(), this, upstream);
             } else {
-//                System.out.println(upstream + " has nothing to pull.");
+                LOGGER.warn("Nothing to pull.");
                 break;
             }
         }

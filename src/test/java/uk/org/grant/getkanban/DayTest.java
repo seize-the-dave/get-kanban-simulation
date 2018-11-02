@@ -52,7 +52,7 @@ public class DayTest {
         DaysFactory daysFactory = new DaysFactory(true);
         Day day = daysFactory.getDay(1);
         day.standUp(b);
-        day.visit(new Context(b, day));
+        day.doTheWork(new Context(b, day));
 
         assertThat(card.getRemainingWork(State.ANALYSIS), is(0));
     }

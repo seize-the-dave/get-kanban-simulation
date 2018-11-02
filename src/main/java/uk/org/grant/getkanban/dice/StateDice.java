@@ -22,4 +22,9 @@ public class StateDice {
             return Long.valueOf(Math.round(Integer.valueOf(dice.roll()).doubleValue() / 2.0)).intValue();
         }
     }
+
+    @Override
+    public String toString() {
+        return this.state.toString().substring(0, 1);
+    }
 }

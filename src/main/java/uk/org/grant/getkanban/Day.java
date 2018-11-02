@@ -1,10 +1,10 @@
 package uk.org.grant.getkanban;
 
-import uk.org.grant.getkanban.column.Visitable;
+import uk.org.grant.getkanban.column.Workable;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.instructions.Instruction;
 
-public class Day implements Visitable<Context> {
+public class Day implements Workable<Context> {
     private final int ordinal;
     private final Instruction[] instructions;
 
@@ -32,20 +32,27 @@ public class Day implements Visitable<Context> {
     }
 
     public void standUp(Board board) {
+        replenishSelected(board);
+        assignDice(board);
+    }
+
+    private void replenishSelected(Board board) {
+        board.getColumn(State.SELECTED).doTheWork(new Context(board, this));
+    }
+
+    private void assignDice(Board board) {
         board.getColumn(State.ANALYSIS).allocateDice(board.getDice(State.ANALYSIS).toArray(new StateDice[] {}));
         board.getColumn(State.DEVELOPMENT).allocateDice(board.getDice(State.DEVELOPMENT).toArray(new StateDice[] {}));
         board.getColumn(State.TEST).allocateDice(board.getDice(State.TEST).toArray(new StateDice[] {}));
     }
 
-    public void visit(Context context) {
+    public void doTheWork(Context context) {
         for (int i = 0; i < 2; i++) {
-            context.getBoard().getColumn(State.DEPLOY).visit(context);
-            context.getBoard().getColumn(State.READY_TO_DEPLOY).visit(context);
-            context.getBoard().getColumn(State.TEST).visit(context);
-            context.getBoard().getColumn(State.DEVELOPMENT).visit(context);
-            context.getBoard().getColumn(State.ANALYSIS).visit(context);
-            context.getBoard().getColumn(State.SELECTED).visit(context);
-            context.getBoard().getColumn(State.BACKLOG).visit(context);
+            context.getBoard().getColumn(State.DEPLOY).doTheWork(context);
+            context.getBoard().getColumn(State.READY_TO_DEPLOY).doTheWork(context);
+            context.getBoard().getColumn(State.TEST).doTheWork(context);
+            context.getBoard().getColumn(State.DEVELOPMENT).doTheWork(context);
+            context.getBoard().getColumn(State.ANALYSIS).doTheWork(context);
         }
     }
 
@@ -61,6 +68,6 @@ public class Day implements Visitable<Context> {
 
     @Override
     public String toString() {
-        return "[Day " + ordinal + "]";
+        return "D" + ordinal;
     }
 }

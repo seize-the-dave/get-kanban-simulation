@@ -9,12 +9,12 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class BoardRunner {
-    private static int RUNS = 10000;
+    private static int RUNS = 1;
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        Callable<Integer> callable = new Callable<Integer>() {
+        Callable<FinancialSummary> callable = new Callable<FinancialSummary>() {
             @Override
-            public Integer call() {
+            public FinancialSummary call() {
                 Board b = new Board();
                 b.addDice(new StateDice(State.ANALYSIS, new RandomDice(new Random())));
                 b.addDice(new StateDice(State.ANALYSIS, new RandomDice(new Random())));
@@ -24,7 +24,7 @@ public class BoardRunner {
                 b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
                 b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
 
-                b.setColumn(State.BACKLOG, new BacklogColumn(new SizePrioritisationStrategy()));
+                b.setColumn(State.BACKLOG, new BacklogColumn(new BusinessValuePrioritisationStrategy().thenComparing(new SizePrioritisationStrategy())));
                 b.setColumn(State.SELECTED, new SelectedColumn(3, b.getColumn(State.BACKLOG)));
                 b.setColumn(State.ANALYSIS, new StateColumn(State.ANALYSIS, 2, b.getColumn(State.SELECTED)));
                 b.setColumn(State.DEVELOPMENT, new StateColumn(State.DEVELOPMENT, 4, b.getColumn(State.ANALYSIS)));
@@ -63,34 +63,32 @@ public class BoardRunner {
                     Day d = daysFactory.getDay(i);
 
                     d.standUp(b);
-                    d.visit(new Context(b, d));
+                    d.doTheWork(new Context(b, d));
                     d.endOfDay(b);
                 }
 
-                FinancialSummary summary = new FinancialSummary(b.getColumn(State.DEPLOY));
-//                System.out.println(summary);
-                return summary.getTotalGrossProfitToDate(21);
+                return new FinancialSummary(b.getColumn(State.DEPLOY));
             }
         };
-        List<Callable<Integer>> runs = new ArrayList<>();
+        List<Callable<FinancialSummary>> runs = new ArrayList<>();
         for (int j = 0; j < RUNS; j++) {
             runs.add(callable);
         }
 
         ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        List<Future<Integer>> results = service.invokeAll(runs);
+        List<Future<FinancialSummary>> results = service.invokeAll(runs);
 
-        List<Integer> profitsList = new ArrayList<>();
-        for (Future<Integer> result : results) {
+        List<FinancialSummary> profitsList = new ArrayList<>();
+        for (Future<FinancialSummary> result : results) {
             profitsList.add(result.get());
         }
         service.shutdown();
 
         Collections.sort(profitsList);
 
-        System.out.println("50%: " + profitsList.get(RUNS / 2));
-        System.out.println("70%: " + profitsList.get(RUNS * 3 / 10));
-        System.out.println("85%: " + profitsList.get(RUNS * 3 / 20));
-        System.out.println("95%: " + profitsList.get(RUNS / 20));
+        System.out.println("\n50th Percentile:\n\n" + profitsList.get(RUNS / 2));
+        System.out.println("\n70th Percentile:\n\n" + profitsList.get(RUNS * 3 / 10));
+        System.out.println("\n85th Percentile:\n\n" + profitsList.get(RUNS * 3 / 20));
+        System.out.println("\n95th Percentile:\n\n" + profitsList.get(RUNS / 20));
     }
 }

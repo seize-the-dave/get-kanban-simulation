@@ -18,10 +18,10 @@ public class DeployedColumnTest {
         backlog.addCard(card);
 
         Column selected = new SelectedColumn(1, backlog);
-        selected.visit(new Context(new Board(), new Day(1)));
+        selected.doTheWork(new Context(new Board(), new Day(1)));
 
         Column deployed = new DeployedColumn(selected);
-        deployed.visit(new Context(new Board(), new Day(2)));
+        deployed.doTheWork(new Context(new Board(), new Day(2)));
 
         assertThat(card.getDayDeployed(), is(2));
     }

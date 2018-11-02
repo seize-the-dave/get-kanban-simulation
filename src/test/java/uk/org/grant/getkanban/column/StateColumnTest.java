@@ -21,19 +21,20 @@ public class StateColumnTest {
         StateColumn column = new StateColumn(State.ANALYSIS, new NullColumn());
         column.addCard(card);
         column.allocateDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
-        column.visit(new Context(new Board(), new Day(1)));
+        column.doTheWork(new Context(new Board(), new Day(1)));
 
         assertThat(card.getRemainingWork(State.ANALYSIS), is(0));
     }
 
     @Test
     public void testFinishingCardMakesItPullable() {
+        Context context = new Context(new Board(), new Day(1));
         StateColumn column = new StateColumn(State.ANALYSIS, new NullColumn());
         column.addCard(Cards.getCard("S1"));
         column.allocateDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
-        column.visit(new Context(new Board(), new Day(1)));
+        column.doTheWork(context);
 
-        assertThat(column.pull().get(), is(Cards.getCard("S1")));
+        assertThat(column.pull(context).get(), is(Cards.getCard("S1")));
     }
 
     @Test
@@ -46,8 +47,8 @@ public class StateColumnTest {
         assertThat(development.getIncompleteCards(), empty());
 
         analysis.allocateDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
-        analysis.visit(new Context(new Board(), new Day(1)));
-        development.visit(new Context(new Board(), new Day(1)));
+        analysis.doTheWork(new Context(new Board(), new Day(1)));
+        development.doTheWork(new Context(new Board(), new Day(1)));
 
         assertThat(analysis.getIncompleteCards(), not(hasItem(Cards.getCard("S8"))));
         assertThat(development.getIncompleteCards(), hasItem(Cards.getCard("S8")));
@@ -76,7 +77,7 @@ public class StateColumnTest {
         analysis.addCard(Cards.getCard("S1"));
         development.addCard(Cards.getCard("S2"));
 
-        development.visit(new Context(new Board(), new Day(1)));
+        development.doTheWork(new Context(new Board(), new Day(1)));
         assertThat(development.getCards().size(), is(1));
     }
 }

@@ -5,7 +5,7 @@ import uk.org.grant.getkanban.column.Column;
 
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
-public class FinancialSummary {
+public class FinancialSummary implements Comparable<FinancialSummary> {
     private AtomicIntegerArray newSubscribers = new AtomicIntegerArray(22);
     private boolean f1 = true;
     private boolean e1 = false;
@@ -139,5 +139,10 @@ public class FinancialSummary {
 
     public String padLeft(int i) {
         return String.format("%1$8s", i);
+    }
+
+    @Override
+    public int compareTo(FinancialSummary o) {
+        return getTotalGrossProfitToDate(21) - o.getTotalGrossProfitToDate(21);
     }
 }

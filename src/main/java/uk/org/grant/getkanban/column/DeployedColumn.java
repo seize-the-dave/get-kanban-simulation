@@ -1,5 +1,7 @@
 package uk.org.grant.getkanban.column;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.card.Card;
@@ -9,19 +11,20 @@ import uk.org.grant.getkanban.card.Cards;
 import java.util.*;
 
 public class DeployedColumn extends UnbufferedColumn {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeployedColumn.class);
 
     public DeployedColumn(Column upstream) {
         super(upstream);
     }
 
     @Override
-    public void visit(Context context) {
+    public void doTheWork(Context context) {
         // TODO: Deploy Set 3 for I3
         // TODO: Automate deployments for I2
-//        System.out.println("In " + this + " on " + context.getDay());
+        LOGGER.info("In " + this + " on " + context.getDay());
         while (true) {
-//            System.out.println("Try pulling from " + upstream);
-            Optional<Card> optionalCard = upstream.pull();
+            LOGGER.info("Try pulling from " + upstream);
+            Optional<Card> optionalCard = upstream.pull(context);
             if (optionalCard.isPresent()) {
                 optionalCard.get().setDayDeployed(context.getDay().getOrdinal());
                 addCard(optionalCard.get());
@@ -34,9 +37,9 @@ public class DeployedColumn extends UnbufferedColumn {
                     backlog.addCard(Cards.getCard("S32"));
                     backlog.addCard(Cards.getCard("S33"));
                 }
-//                System.out.println("Pulled " + optionalCard.get() + " into " + this);
+                LOGGER.info("Pulled {} into {} from {}", optionalCard.get(), this, upstream);
             } else {
-//                System.out.println(upstream + " has nothing to pull.");
+                LOGGER.warn("Nothing to pull.");
                 break;
             }
         }
@@ -44,6 +47,6 @@ public class DeployedColumn extends UnbufferedColumn {
 
     @Override
     public String toString() {
-        return "[DEPLOYED (" + getCards().size() + "/-)";
+        return "[DEPLOYED (" + getCards().size() + "/∞)";
     }
 }

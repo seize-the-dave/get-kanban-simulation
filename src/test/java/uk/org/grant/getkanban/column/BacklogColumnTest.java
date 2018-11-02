@@ -1,6 +1,7 @@
 package uk.org.grant.getkanban.column;
 
 import org.junit.Test;
+import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
 
@@ -16,7 +17,7 @@ public class BacklogColumnTest {
         Column backlog = new BacklogColumn();
 
         backlog.addCard(card);
-        Optional<Card> actual = backlog.pull();
+        Optional<Card> actual = backlog.pull(new Context(null, null));
 
         assertThat(actual.get(), is(card));
     }

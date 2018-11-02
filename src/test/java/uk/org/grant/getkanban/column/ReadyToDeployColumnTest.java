@@ -15,11 +15,15 @@ public class ReadyToDeployColumnTest {
         Column selected = new SelectedColumn(1, new NullColumn());
         selected.addCard(Cards.getCard("S1"));
 
-        Column readyToDeploy = new ReadyToDeployColumn(selected);
-        readyToDeploy.visit(new Context(new Board(), new Day(1)));
-        Assert.assertThat(readyToDeploy.pull().isPresent(), is(false));
+        Context context = new Context(new Board(), new Day(1));
 
-        readyToDeploy.visit(new Context(new Board(), new Day(3)));
-        Assert.assertThat(readyToDeploy.pull().isPresent(), is(true));
+        Column readyToDeploy = new ReadyToDeployColumn(selected);
+        readyToDeploy.doTheWork(context);
+        Assert.assertThat(readyToDeploy.pull(context).isPresent(), is(false));
+
+        context = new Context(new Board(), new Day(3));
+
+        readyToDeploy.doTheWork(context);
+        Assert.assertThat(readyToDeploy.pull(context).isPresent(), is(true));
     }
 }

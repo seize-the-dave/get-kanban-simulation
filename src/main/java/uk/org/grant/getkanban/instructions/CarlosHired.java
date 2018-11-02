@@ -1,11 +1,14 @@
 package uk.org.grant.getkanban.instructions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.*;
 import uk.org.grant.getkanban.column.Column;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CarlosHired implements Instruction {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarlosHired.class);
     private final AtomicInteger store;
 
     public CarlosHired(AtomicInteger store) {
@@ -17,5 +20,6 @@ public class CarlosHired implements Instruction {
         Column c = b.getColumn(State.TEST);
         store.set(c.getLimit());
         c.setLimit(Integer.MAX_VALUE);
+        LOGGER.info("Removed WIP limit on {}", c);
     }
 }

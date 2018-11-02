@@ -1,18 +1,16 @@
 package uk.org.grant.getkanban.column;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.Day;
-import uk.org.grant.getkanban.BusinessValuePrioritisationStrategy;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ReadyToDeployColumn extends AbstractColumn {
-    private final Queue<Card> todo = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
-    private final Queue<Card> done = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReadyToDeployColumn.class);
+    private final Queue<Card> cards = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
     private final Column upstream;
 
     public ReadyToDeployColumn(Column upstream) {
@@ -22,42 +20,44 @@ public class ReadyToDeployColumn extends AbstractColumn {
 
     @Override
     public void addCard(Card card) {
-        todo.add(card);
+        cards.add(card);
     }
 
     @Override
     public Collection<Card> getCards() {
-        return Stream.concat(this.todo.stream(), this.done.stream()).collect(Collectors.toList());
+        return cards;
     }
 
     @Override
-    public Optional<Card> pull() {
-        return Optional.ofNullable(done.poll());
+    public Optional<Card> pull(Context context) {
+        doTheWork(context);
+        if (context.getDay().getOrdinal() % 3 == 0) {
+            return Optional.ofNullable(cards.poll());
+        } else {
+            return Optional.empty();
+        }
+
     }
 
     @Override
-    public void visit(Context context) {
+    public void doTheWork(Context context) {
         // TODO: Automate regression for I2
-//        System.out.println("In " + this + " on " + context.getDay());
+        LOGGER.info("In " + this + " on " + context.getDay());
         while (true) {
-//            System.out.println("Pull from " + upstream);
-            Optional<Card> optionalCard = upstream.pull();
+            LOGGER.info("Pull from " + upstream);
+            Optional<Card> optionalCard = upstream.pull(context);
             if (optionalCard.isPresent()) {
                 addCard(optionalCard.get());
-//                System.out.println("Pulled " + optionalCard.get() + " into " + this);
+                LOGGER.info("Pulled " + optionalCard.get() + " into " + this);
             } else {
-//                System.out.println(upstream + " has nothing to pull.");
+                LOGGER.info(upstream + " has nothing to pull.");
                 break;
             }
-        }
-        if (context.getDay().getOrdinal() % 3 == 0) {
-            done.addAll(todo);
-            todo.clear();;
         }
     }
 
     @Override
     public String toString() {
-        return "[READY TO DEPLOY (" + todo.size() + "/" + done.size() + "/-)]";
+        return "[READY TO DEPLOY (" + cards.size() + "/∞)]";
     }
 }
