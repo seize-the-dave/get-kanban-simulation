@@ -17,12 +17,12 @@ public abstract class AbstractColumn implements Column {
     }
 
     @Override
-    public void allocateDice(StateDice... dice) {
+    public void assignDice(StateDice... dice) {
         // Do nothing
     }
 
     @Override
-    public List<StateDice> getAllocatedDice() {
+    public List<StateDice> getAssignedDice() {
         return Collections.emptyList();
     }
 }

@@ -56,12 +56,12 @@ public class SelectedColumn implements Column, Limited {
     }
 
     @Override
-    public void allocateDice(StateDice... dice) {
+    public void assignDice(StateDice... dice) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<StateDice> getAllocatedDice() {
+    public List<StateDice> getAssignedDice() {
         throw new UnsupportedOperationException();
     }
 

@@ -4,6 +4,9 @@ import org.junit.Test;
 import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
+import uk.org.grant.getkanban.dice.Dice;
+import uk.org.grant.getkanban.dice.LoadedDice;
+import uk.org.grant.getkanban.dice.StateDice;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

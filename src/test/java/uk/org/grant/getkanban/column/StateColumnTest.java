@@ -20,7 +20,7 @@ public class StateColumnTest {
 
         StateColumn column = new StateColumn(State.ANALYSIS, new NullColumn());
         column.addCard(card);
-        column.allocateDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
+        column.assignDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
         column.doTheWork(new Context(new Board(), new Day(1)));
 
         assertThat(card.getRemainingWork(State.ANALYSIS), is(0));
@@ -31,7 +31,7 @@ public class StateColumnTest {
         Context context = new Context(new Board(), new Day(1));
         StateColumn column = new StateColumn(State.ANALYSIS, new NullColumn());
         column.addCard(Cards.getCard("S1"));
-        column.allocateDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
+        column.assignDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
         column.doTheWork(context);
 
         assertThat(column.pull(context).get(), is(Cards.getCard("S1")));
@@ -46,7 +46,7 @@ public class StateColumnTest {
         StateColumn development = new StateColumn(State.DEVELOPMENT, analysis);
         assertThat(development.getIncompleteCards(), empty());
 
-        analysis.allocateDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
+        analysis.assignDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
         analysis.doTheWork(new Context(new Board(), new Day(1)));
         development.doTheWork(new Context(new Board(), new Day(1)));
 

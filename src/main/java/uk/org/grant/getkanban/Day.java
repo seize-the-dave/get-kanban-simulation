@@ -41,9 +41,9 @@ public class Day implements Workable<Context> {
     }
 
     private void assignDice(Board board) {
-        board.getColumn(State.ANALYSIS).allocateDice(board.getDice(State.ANALYSIS).toArray(new StateDice[] {}));
-        board.getColumn(State.DEVELOPMENT).allocateDice(board.getDice(State.DEVELOPMENT).toArray(new StateDice[] {}));
-        board.getColumn(State.TEST).allocateDice(board.getDice(State.TEST).toArray(new StateDice[] {}));
+        board.getColumn(State.ANALYSIS).assignDice(board.getDice(State.ANALYSIS).toArray(new StateDice[] {}));
+        board.getColumn(State.DEVELOPMENT).assignDice(board.getDice(State.DEVELOPMENT).toArray(new StateDice[] {}));
+        board.getColumn(State.TEST).assignDice(board.getDice(State.TEST).toArray(new StateDice[] {}));
     }
 
     public void doTheWork(Context context) {

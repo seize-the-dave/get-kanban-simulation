@@ -60,13 +60,13 @@ public class StateColumn implements Column {
         return Optional.ofNullable(done.poll());
     }
 
-    public void allocateDice(StateDice... dice) {
+    public void assignDice(StateDice... dice) {
         this.dice = Arrays.asList(dice);
         this.sum = this.dice.stream().mapToInt(d -> d.rollFor(this.state)).sum();
         logger.info("Rolled {} from {} dice", this.sum, this.dice);
     }
 
-    public List<StateDice> getAllocatedDice() {
+    public List<StateDice> getAssignedDice() {
         return this.dice;
     }
 

@@ -10,7 +10,7 @@ import java.util.List;
 public interface Column extends Pullable, Workable<Context>, Limited {
     void addCard(Card card);
     Collection<Card> getCards();
-    void allocateDice(StateDice... dice);
-    List<StateDice> getAllocatedDice();
+    void assignDice(StateDice... dice);
+    List<StateDice> getAssignedDice();
 
 }

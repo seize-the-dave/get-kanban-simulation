@@ -30,7 +30,7 @@ public class DayTest {
         Day day = daysFactory.getDay(1);
         day.standUp(b);
 
-        assertThat(b.getColumn(State.ANALYSIS).getAllocatedDice(), hasItem(dice));
+        assertThat(b.getColumn(State.ANALYSIS).getAssignedDice(), hasItem(dice));
     }
 
     @Test
