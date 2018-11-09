@@ -1,6 +1,6 @@
 package uk.org.grant.getkanban;
 
-import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.column.Column;
 
 import java.util.concurrent.atomic.AtomicIntegerArray;
@@ -17,7 +17,7 @@ public class FinancialSummary implements Comparable<FinancialSummary> {
     }
 
     private void init() {
-        for (Card card : deployed.getCards()) {
+        for (StandardCard card : deployed.getCards()) {
             if (card.getName().equals("F1")) {
                 if (card.getDayDeployed() <= 15) {
                     this.f1 = false;

@@ -3,7 +3,7 @@ package uk.org.grant.getkanban.column;
 import org.junit.Test;
 import uk.org.grant.getkanban.Board;
 import uk.org.grant.getkanban.Context;
-import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.State;
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertThat;
 public class StateColumnTest {
     @Test
     public void testDoingWorkOnColumnReducesCardWork() {
-        Card card = Cards.getCard("S1");
+        StandardCard card = Cards.getCard("S1");
         StateColumn column = new StateColumn(State.ANALYSIS, new NullColumn());
         column.addCard(card);
 
@@ -35,8 +35,8 @@ public class StateColumnTest {
         Board b = new Board();
         Day d = new Day(10);
 
-        Card s8 = Cards.getCard("S8");
-        Card s12 = Cards.getCard("S12");
+        StandardCard s8 = Cards.getCard("S8");
+        StandardCard s12 = Cards.getCard("S12");
         b.getStateColumn(State.ANALYSIS).addCard(s8);
         b.getStateColumn(State.ANALYSIS).addCard(s12);
         b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));

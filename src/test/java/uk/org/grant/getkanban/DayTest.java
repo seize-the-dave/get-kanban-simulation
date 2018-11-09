@@ -1,7 +1,7 @@
 package uk.org.grant.getkanban;
 
 import org.junit.Test;
-import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.column.*;
 import uk.org.grant.getkanban.dice.StateDice;
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 public class DayTest {
     @Test
     public void daysCompleteCardsDuringWork() {
-        Card card = Cards.getCard("S1");
+        StandardCard card = Cards.getCard("S1");
         StateColumn analysis = new StateColumn(State.ANALYSIS, new NullColumn());
         analysis.addCard(card);
 

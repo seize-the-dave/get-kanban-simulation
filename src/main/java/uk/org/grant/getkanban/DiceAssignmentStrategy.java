@@ -2,7 +2,7 @@ package uk.org.grant.getkanban;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.column.StateColumn;
 import uk.org.grant.getkanban.dice.DiceGroup;
 import uk.org.grant.getkanban.dice.StateDice;
@@ -21,12 +21,12 @@ class DiceAssignmentStrategy {
             StateColumn column = board.getStateColumn(state);
             List<StateDice> dice = board.getDice(state);
             LOGGER.info("Ready to allocate {} to {}", dice, column);
-            List<Card> cards = column.getCards().stream().filter(c -> c.getRemainingWork(state) != 0).collect(Collectors.toList());
+            List<StandardCard> cards = column.getCards().stream().filter(c -> c.getRemainingWork(state) != 0).collect(Collectors.toList());
             if (cards.size() == 0) {
                 LOGGER.debug("Can't allocate for {}", state);
             }
             List<DiceGroup> groups = new ArrayList<DiceGroup>();
-            for (Card card : cards) {
+            for (StandardCard card : cards) {
                 int allocation = new BigDecimal(card.getRemainingWork(state)).divide(new BigDecimal(3.5), RoundingMode.UP).intValue();
                 if (allocation >= dice.size()) {
                     groups.add(new DiceGroup(card, dice.toArray(new StateDice[0])));

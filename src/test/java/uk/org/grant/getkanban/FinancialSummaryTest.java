@@ -1,7 +1,7 @@
 package uk.org.grant.getkanban;
 
 import org.junit.Test;
-import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.column.Column;
 import uk.org.grant.getkanban.column.DeployedColumn;
 import uk.org.grant.getkanban.column.NullColumn;
@@ -23,33 +23,33 @@ public class FinancialSummaryTest {
     }
 
     private Column buildDeployedColumn() {
-        Card s1 = new Card("S1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
-        s1.setDaySelected(1);
-        s1.setDayDeployed(3);
+        StandardCard s1 = new StandardCard("S1", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        s1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(1)));
+        s1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(3)));
 
-        Card s2 = new Card("S2", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
-        s2.setDaySelected(9);
-        s2.setDayDeployed(11);
+        StandardCard s2 = new StandardCard("S2", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        s2.onSelected(new Context(new Board(), new DaysFactory(true).getDay(9)));
+        s2.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(11)));
 
-        Card s3 = new Card("S3", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
-        s3.setDaySelected(12);
-        s3.setDayDeployed(14);
+        StandardCard s3 = new StandardCard("S3", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        s3.onSelected(new Context(new Board(), new DaysFactory(true).getDay(12)));
+        s3.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(14)));
 
-        Card s4 = new Card("S4", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
-        s4.setDaySelected(14);
-        s4.setDayDeployed(17);
+        StandardCard s4 = new StandardCard("S4", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        s4.onSelected(new Context(new Board(), new DaysFactory(true).getDay(14)));
+        s4.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(17)));
 
-        Card e1 = new Card("E1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
-        e1.setDaySelected(16);
-        e1.setDayDeployed(18);
+        StandardCard e1 = new StandardCard("E1", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        e1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(16)));
+        e1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(18)));
 
-        Card f2 = new Card("F2", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
-        f2.setDaySelected(19);
-        f2.setDayDeployed(21);
+        StandardCard f2 = new StandardCard("F2", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        f2.onSelected(new Context(new Board(), new DaysFactory(true).getDay(19)));
+        f2.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(21)));
 
-        Card s5 = new Card("S5", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[] {1, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
-        s5.setDaySelected(16);
-        s5.setDayDeployed(20);
+        StandardCard s5 = new StandardCard("S5", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        s5.onSelected(new Context(new Board(), new DaysFactory(true).getDay(16)));
+        s5.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(20)));
 
         Column deployed = new DeployedColumn(new NullColumn());
         deployed.addCard(s1);
@@ -86,9 +86,9 @@ public class FinancialSummaryTest {
 
     @Test
     public void testNoFineForF1WhenDelivered() {
-        Card f1 = new Card("F1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
-        f1.setDaySelected(10);
-        f1.setDayDeployed(15);
+        StandardCard f1 = new StandardCard("F1", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
+        f1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(10)));
+        f1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(15)));
 
         Column deployed = new DeployedColumn(new NullColumn());
         deployed.addCard(f1);
@@ -99,9 +99,9 @@ public class FinancialSummaryTest {
 
     @Test
     public void testFineForF1WhenLate() {
-        Card f1 = new Card("F1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
-        f1.setDaySelected(10);
-        f1.setDayDeployed(16);
+        StandardCard f1 = new StandardCard("F1", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
+        f1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(10)));
+        f1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(16)));
 
         Column deployed = new DeployedColumn(new NullColumn());
         deployed.addCard(f1);
@@ -112,9 +112,9 @@ public class FinancialSummaryTest {
 
     @Test
     public void testNoPaymentForE1WhenLate() {
-        Card e1 = new Card("E1", Card.Size.LOW, 0, 0, 0, new SubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
-        e1.setDaySelected(15);
-        e1.setDayDeployed(19);
+        StandardCard e1 = new StandardCard("E1", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
+        e1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(15)));
+        e1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(19)));
 
         Column deployed = new DeployedColumn(new NullColumn());
         deployed.addCard(e1);

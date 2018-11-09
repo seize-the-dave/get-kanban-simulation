@@ -1,13 +1,18 @@
 package uk.org.grant.getkanban;
 
-import java.util.stream.IntStream;
+public class FixedSubscriberProfile implements SubscriberProfile {
+    private final int subscribers;
 
-public class FixedSubscriberProfile extends SubscriberProfile {
     public FixedSubscriberProfile() {
         this(0);
     }
 
-    public FixedSubscriberProfile(int value) {
-        super(IntStream.generate(() -> value).limit(15).toArray());
+    public FixedSubscriberProfile(int subscribers) {
+        this.subscribers = subscribers;
+    }
+
+    @Override
+    public int getSubscribers(int cycleTime) {
+        return subscribers;
     }
 }

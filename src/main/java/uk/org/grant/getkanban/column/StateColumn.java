@@ -4,10 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.WipAgingPrioritisationStrategy;
-import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.dice.DiceGroup;
-import uk.org.grant.getkanban.dice.StateDice;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -18,8 +17,8 @@ public class StateColumn extends LimitedColumn {
     private final Logger logger;
     private final State state;
     private final Column upstream;
-    private final Queue<Card> todo;
-    private final Queue<Card> done;
+    private final Queue<StandardCard> todo;
+    private final Queue<StandardCard> done;
     private AtomicBoolean rolled = new AtomicBoolean();
     private DiceGroup[] groups = new DiceGroup[0];
 
@@ -36,7 +35,7 @@ public class StateColumn extends LimitedColumn {
         this(state, Integer.MAX_VALUE, upstream);
     }
 
-    public void addCard(Card card) {
+    public void addCard(StandardCard card) {
         if (getCards().size() == getLimit()) {
             throw new IllegalStateException();
         }
@@ -48,18 +47,18 @@ public class StateColumn extends LimitedColumn {
     }
 
     @Override
-    public Queue<Card> getCards() {
-        Queue<Card> queue = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
+    public Queue<StandardCard> getCards() {
+        Queue<StandardCard> queue = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
         queue.addAll(Stream.concat(this.todo.stream(), this.done.stream()).collect(Collectors.toList()));
 
         return queue;
     }
 
-    public Collection<Card> getIncompleteCards() {
+    public Collection<StandardCard> getIncompleteCards() {
         return todo;
     }
 
-    public Optional<Card> pull(Context context) {
+    public Optional<StandardCard> pull(Context context) {
         doTheWork(context);
         return Optional.ofNullable(done.poll());
     }
@@ -74,7 +73,7 @@ public class StateColumn extends LimitedColumn {
         logger.info("{}: Spending leftover points on {}", context.getDay(), this);
         while (getCards().size() < this.getLimit()) {
             logger.info("Pull from {}", upstream);
-            Optional<Card> optionalCard = upstream.pull(context);
+            Optional<StandardCard> optionalCard = upstream.pull(context);
             if (optionalCard.isPresent()) {
                 addCard(optionalCard.get());
                 logger.info("Pulled {} into {} from {}", optionalCard.get(), this, upstream);
@@ -90,8 +89,8 @@ public class StateColumn extends LimitedColumn {
             }
             for (DiceGroup group : groups) {
                 logger.info("{} leftover points to spend", group.getLeftoverPoints());
-                for (Iterator<Card> iter = todo.iterator(); iter.hasNext() && group.getLeftoverPoints() > 0; ) {
-                    Card card = iter.next();
+                for (Iterator<StandardCard> iter = todo.iterator(); iter.hasNext() && group.getLeftoverPoints() > 0; ) {
+                    StandardCard card = iter.next();
                     group.spendLeftoverPoints(state, card);
                     if (card.getRemainingWork(this.state) == 0) {
                         iter.remove();
@@ -112,7 +111,7 @@ public class StateColumn extends LimitedColumn {
         }
         for (DiceGroup group : groups) {
             group.rollFor(state);
-            Optional<Card> card = todo.stream().filter(c -> c.getRemainingWork(this.state) == 0).findFirst();
+            Optional<StandardCard> card = todo.stream().filter(c -> c.getRemainingWork(this.state) == 0).findFirst();
             if (card.isPresent()) {
                 logger.info("{} has been completed and is now ready to pull", card.get());
                 todo.remove(card.get());

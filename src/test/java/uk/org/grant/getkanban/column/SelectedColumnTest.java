@@ -3,7 +3,7 @@ package uk.org.grant.getkanban.column;
 import org.junit.Test;
 import uk.org.grant.getkanban.Board;
 import uk.org.grant.getkanban.Context;
-import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.Day;
 
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 public class SelectedColumnTest {
     @Test
     public void marksSelectedDayOnPull() {
-        Card card = Cards.getCard("S10");
+        StandardCard card = Cards.getCard("S10");
         BacklogColumn backlog = new BacklogColumn();
         backlog.addCard(card);
 

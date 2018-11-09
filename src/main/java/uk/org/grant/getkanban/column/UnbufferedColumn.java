@@ -1,37 +1,36 @@
 package uk.org.grant.getkanban.column;
 
 import uk.org.grant.getkanban.Context;
-import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.BusinessValuePrioritisationStrategy;
-import uk.org.grant.getkanban.dice.DiceGroup;
 
 import java.util.*;
 
 public abstract class UnbufferedColumn extends AbstractColumn {
     protected final Column upstream;
-    protected final Queue<Card> cards;
+    protected final Queue<StandardCard> cards;
 
     public UnbufferedColumn(Column upstream) {
         this(upstream, new BusinessValuePrioritisationStrategy());;
     }
 
-    public UnbufferedColumn(Column upstream, Comparator<Card> comparator) {
+    public UnbufferedColumn(Column upstream, Comparator<StandardCard> comparator) {
         this.upstream = upstream;
         this.cards = new PriorityQueue<>(comparator);
     }
 
     @Override
-    public void addCard(Card card) {
+    public void addCard(StandardCard card) {
         cards.add(card);
     }
 
     @Override
-    public Queue<Card> getCards() {
+    public Queue<StandardCard> getCards() {
         return cards;
     }
 
     @Override
-    public Optional<Card> pull(Context context) {
+    public Optional<StandardCard> pull(Context context) {
         doTheWork(context);
         return Optional.ofNullable(cards.poll());
     }

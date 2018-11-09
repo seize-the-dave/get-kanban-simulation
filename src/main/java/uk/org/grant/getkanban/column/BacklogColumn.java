@@ -1,8 +1,7 @@
 package uk.org.grant.getkanban.column;
 
 import uk.org.grant.getkanban.Context;
-import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.Day;
+import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.BusinessValuePrioritisationStrategy;
 
 import java.util.*;
@@ -12,7 +11,7 @@ public class BacklogColumn extends UnbufferedColumn {
         this(new BusinessValuePrioritisationStrategy());
     }
 
-    public BacklogColumn(Comparator<Card> comparator) {
+    public BacklogColumn(Comparator<StandardCard> comparator) {
         super(new NullColumn(), comparator);
     }
 
