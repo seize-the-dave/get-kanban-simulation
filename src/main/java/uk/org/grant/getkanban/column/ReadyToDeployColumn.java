@@ -40,8 +40,7 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
 
     @Override
     public void doTheWork(Context context) {
-        // TODO: Automate regression for I2
-        LOGGER.info("In " + this + " on " + context.getDay());
+        LOGGER.info("{}: Doing work in {} ", context.getDay(), this);
         while (true) {
             LOGGER.info("Pull from " + upstream);
             Optional<Card> optionalCard = upstream.pull(context);
@@ -49,7 +48,7 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
                 addCard(optionalCard.get());
                 LOGGER.info("Pulled " + optionalCard.get() + " into " + this);
             } else {
-                LOGGER.info(upstream + " has nothing to pull.");
+                LOGGER.warn("{} has nothing available to pull", upstream);
                 break;
             }
         }

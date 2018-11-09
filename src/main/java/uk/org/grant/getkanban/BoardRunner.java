@@ -1,7 +1,8 @@
 package uk.org.grant.getkanban;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.card.Cards;
-import uk.org.grant.getkanban.column.*;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.RandomDice;
 
@@ -9,12 +10,17 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class BoardRunner {
-    private static int RUNS = 1;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BoardRunner.class);
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        Callable<FinancialSummary> callable = new Callable<FinancialSummary>() {
-            @Override
-            public FinancialSummary call() {
+        int runs = 10000;
+        if (args.length == 1) {
+            runs = Integer.parseInt(args[0]);
+        }
+        LOGGER.info("Running {} simulation(s) using {} thread(s)", runs, Runtime.getRuntime().availableProcessors());
+        List<Callable<FinancialSummary>> summaries = new ArrayList<>();
+        for (int j = 0; j < runs; j++) {
+            summaries.add(() -> {
                 Board b = new Board();
                 b.addDice(new StateDice(State.ANALYSIS, new RandomDice(new Random())));
                 b.addDice(new StateDice(State.ANALYSIS, new RandomDice(new Random())));
@@ -66,15 +72,11 @@ public class BoardRunner {
                 }
 
                 return new FinancialSummary(b.getDeployed());
-            }
-        };
-        List<Callable<FinancialSummary>> runs = new ArrayList<>();
-        for (int j = 0; j < RUNS; j++) {
-            runs.add(callable);
+            });
         }
 
         ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        List<Future<FinancialSummary>> results = service.invokeAll(runs);
+        List<Future<FinancialSummary>> results = service.invokeAll(summaries);
 
         List<FinancialSummary> profitsList = new ArrayList<>();
         for (Future<FinancialSummary> result : results) {
@@ -84,9 +86,15 @@ public class BoardRunner {
 
         Collections.sort(profitsList);
 
-        System.out.println("\n50th Percentile:\n\n" + profitsList.get(RUNS / 2));
-        System.out.println("\n70th Percentile:\n\n" + profitsList.get(RUNS * 3 / 10));
-        System.out.println("\n85th Percentile:\n\n" + profitsList.get(RUNS * 3 / 20));
-        System.out.println("\n95th Percentile:\n\n" + profitsList.get(RUNS / 20));
+
+        percentile(50, profitsList);
+        percentile(70, profitsList);
+        percentile(85, profitsList);
+        percentile(90, profitsList);
+    }
+
+    private static void percentile(int percentage, List<FinancialSummary> profitsList) {
+        int inverse = 100 - percentage;
+        System.out.println("\n" + percentage + "%:\n\n" + profitsList.get((profitsList.size() / 100) * inverse));
     }
 }

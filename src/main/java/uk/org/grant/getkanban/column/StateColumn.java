@@ -20,7 +20,6 @@ public class StateColumn extends LimitedColumn {
     private final Column upstream;
     private final Queue<Card> todo;
     private final Queue<Card> done;
-    private List<StateDice> dice;
     private AtomicBoolean rolled = new AtomicBoolean();
     private DiceGroup[] groups = new DiceGroup[0];
 
@@ -66,35 +65,44 @@ public class StateColumn extends LimitedColumn {
     }
 
     public void doTheWork(Context context) {
+        logger.info("{}: Doing work in {} ", context.getDay(), this);
         reduceWorkOnAssignedTickets();
         spendLeftoverPoints(context);
     }
 
     private void spendLeftoverPoints(Context context) {
-        logger.info("{}: Spending leftover points ", context.getDay());
+        logger.info("{}: Spending leftover points on {}", context.getDay(), this);
         while (getCards().size() < this.getLimit()) {
-            logger.info("Pulling cards from {}", upstream);
+            logger.info("Pull from {}", upstream);
             Optional<Card> optionalCard = upstream.pull(context);
             if (optionalCard.isPresent()) {
                 addCard(optionalCard.get());
                 logger.info("Pulled {} into {} from {}", optionalCard.get(), this, upstream);
             } else {
-                logger.warn("Nothing available to pull");
+                logger.warn("{} has nothing available to pull", upstream);
+            }
+            // Do Work
+            if (todo.isEmpty()) {
                 break;
             }
-        }
-        // Do Work
-        for (DiceGroup group : groups) {
-            logger.info("{} leftover points to spend", group.getLeftoverPoints());
-            for (Iterator<Card> iter = todo.iterator(); iter.hasNext() && group.getLeftoverPoints() > 0; ) {
-                Card card = iter.next();
-                group.spendLeftoverPoints(state, card);
-                if (card.getRemainingWork(this.state) == 0) {
-                    iter.remove();
-                    done.add(card);
-                    logger.info(card + " has been completed in " + this);
+            if (Arrays.stream(groups).noneMatch(g -> g.getLeftoverPoints() > 0)) {
+                break;
+            }
+            for (DiceGroup group : groups) {
+                logger.info("{} leftover points to spend", group.getLeftoverPoints());
+                for (Iterator<Card> iter = todo.iterator(); iter.hasNext() && group.getLeftoverPoints() > 0; ) {
+                    Card card = iter.next();
+                    group.spendLeftoverPoints(state, card);
+                    if (card.getRemainingWork(this.state) == 0) {
+                        iter.remove();
+                        done.add(card);
+                        logger.info("{} has been completed and is now ready to pull", card);
+                    }
                 }
             }
+        }
+        if (getCards().size() == this.getLimit()) {
+            logger.info("{} is filled to capacity", this);
         }
     }
 
@@ -106,6 +114,7 @@ public class StateColumn extends LimitedColumn {
             group.rollFor(state);
             Optional<Card> card = todo.stream().filter(c -> c.getRemainingWork(this.state) == 0).findFirst();
             if (card.isPresent()) {
+                logger.info("{} has been completed and is now ready to pull", card.get());
                 todo.remove(card.get());
                 done.add(card.get());
             }

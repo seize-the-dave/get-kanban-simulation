@@ -31,6 +31,25 @@ public class StateColumnTest {
     }
 
     @Test
+    public void testSpendLeftoverWork() {
+        Board b = new Board();
+        Day d = new Day(10);
+
+        Card s8 = Cards.getCard("S8");
+        Card s12 = Cards.getCard("S12");
+        b.getStateColumn(State.ANALYSIS).addCard(s8);
+        b.getStateColumn(State.ANALYSIS).addCard(s12);
+        b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
+        b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
+
+        d.standUp(b);
+        d.doTheWork(new Context(b, d));
+
+        assertThat(s8.getRemainingWork(State.ANALYSIS), is(0));
+        assertThat(s12.getRemainingWork(State.ANALYSIS), is(0));
+    }
+
+    @Test
     public void testFinishingCardMakesItPullable() {
         Context context = new Context(new Board(), new Day(1));
         StateColumn column = new StateColumn(State.ANALYSIS, new NullColumn());

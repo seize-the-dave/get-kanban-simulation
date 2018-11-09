@@ -18,13 +18,14 @@ public class DeployedColumn extends UnbufferedColumn {
 
     @Override
     public void doTheWork(Context context) {
-        // TODO: Deploy Set 3 for I3
-        // TODO: Automate deployments for I2
-        LOGGER.info("In " + this + " on " + context.getDay());
+        LOGGER.info("{}: Doing work in {} ", context.getDay(), this);
         while (true) {
-            LOGGER.info("Try pulling from " + upstream);
+            LOGGER.info("Pull from " + upstream);
             Optional<Card> optionalCard = upstream.pull(context);
-            if (optionalCard.isPresent()) {
+            if (optionalCard.isPresent() == false) {
+                LOGGER.warn("{} has nothing available to pull", upstream);
+                break;
+            } else {
                 optionalCard.get().setDayDeployed(context.getDay().getOrdinal());
                 addCard(optionalCard.get());
 
@@ -37,9 +38,6 @@ public class DeployedColumn extends UnbufferedColumn {
                     backlog.addCard(Cards.getCard("S33"));
                 }
                 LOGGER.info("Pulled {} into {} from {}", optionalCard.get(), this, upstream);
-            } else {
-                LOGGER.warn("Nothing to pull.");
-                break;
             }
         }
     }
