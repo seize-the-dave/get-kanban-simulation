@@ -28,15 +28,6 @@ public class DeployedColumn extends UnbufferedColumn {
             } else {
                 optionalCard.get().onDeployed(context);
                 addCard(optionalCard.get());
-
-                if (optionalCard.get().getName().equals("I3")) {
-                    Column backlog = context.getBoard().getBacklog();
-                    backlog.addCard(Cards.getCard("S29"));
-                    backlog.addCard(Cards.getCard("S30"));
-                    backlog.addCard(Cards.getCard("S31"));
-                    backlog.addCard(Cards.getCard("S32"));
-                    backlog.addCard(Cards.getCard("S33"));
-                }
                 LOGGER.info("Pulled {} into {} from {}", optionalCard.get(), this, upstream);
             }
         }
