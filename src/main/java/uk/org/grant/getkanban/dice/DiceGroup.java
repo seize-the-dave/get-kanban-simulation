@@ -3,6 +3,7 @@ package uk.org.grant.getkanban.dice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.State;
+import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.StandardCard;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -12,11 +13,11 @@ public class DiceGroup {
     private static final Logger LOGGER = LoggerFactory.getLogger(DiceGroup.class);
     private final AtomicBoolean rolled = new AtomicBoolean();
     private final StateDice[] die;
-    private final StandardCard card;
+    private final Card card;
     private final AtomicInteger dots = new AtomicInteger(0);
     private State originalState;
 
-    public DiceGroup(StandardCard card, StateDice... die) {
+    public DiceGroup(Card card, StateDice... die) {
         LOGGER.info("Allocated {} to {}", die, card);
         this.card = card;
         this.die = die;
@@ -43,14 +44,14 @@ public class DiceGroup {
         return dots.get();
     }
 
-    public void spendLeftoverPoints(State state, StandardCard card) {
+    public void spendLeftoverPoints(State state, Card card) {
         if (state != originalState) {
             throw new IllegalStateException("Points must be spent in same specialisation die was originally rolled for");
         }
         spendPoints(state, card);
     }
 
-    private void spendPoints(State state, StandardCard card) {
+    private void spendPoints(State state, Card card) {
         int delta = Math.min(dots.get(), card.getRemainingWork(state));
 
         card.doWork(state, delta);

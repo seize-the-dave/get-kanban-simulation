@@ -1,6 +1,7 @@
 package uk.org.grant.getkanban.column;
 
 import uk.org.grant.getkanban.Context;
+import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.BusinessValuePrioritisationStrategy;
 
@@ -8,29 +9,29 @@ import java.util.*;
 
 public abstract class UnbufferedColumn extends AbstractColumn {
     protected final Column upstream;
-    protected final Queue<StandardCard> cards;
+    protected final Queue<Card> cards;
 
     public UnbufferedColumn(Column upstream) {
         this(upstream, new BusinessValuePrioritisationStrategy());;
     }
 
-    public UnbufferedColumn(Column upstream, Comparator<StandardCard> comparator) {
+    public UnbufferedColumn(Column upstream, Comparator<Card> comparator) {
         this.upstream = upstream;
         this.cards = new PriorityQueue<>(comparator);
     }
 
     @Override
-    public void addCard(StandardCard card) {
+    public void addCard(Card card) {
         cards.add(card);
     }
 
     @Override
-    public Queue<StandardCard> getCards() {
+    public Queue<Card> getCards() {
         return cards;
     }
 
     @Override
-    public Optional<StandardCard> pull(Context context) {
+    public Optional<Card> pull(Context context) {
         doTheWork(context);
         return Optional.ofNullable(cards.poll());
     }

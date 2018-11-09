@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Cards {
-    private final Map<String, StandardCard> cards = new HashMap<>();
+    private final Map<String, Card> cards = new HashMap<>();
     {
         cards.put("S1", new StandardCard("S1", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {9, 9, 7, 7, 7, 6, 5, 5, 5, 3, 0, -2, -4, -4, -5}), 1, 9));
         cards.put("S2", new StandardCard("S2", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {10, 9, 7, 7, 5, 4, 4, 4, 4, 3, 3, 2, 2, 1, 0}), 1, 9));
@@ -42,21 +42,21 @@ public class Cards {
         cards.put("S31", new StandardCard("S31", StandardCard.Size.VERY_HIGH, 5, 6, 3, new VariableSubscriberProfile(new int[] {21, 21, 21, 19, 18, 18, 16, 14, 14, 12, 11, 11, 11, 9, 8})));
         cards.put("S32", new StandardCard("S32", StandardCard.Size.HIGH, 4, 7, 4, new VariableSubscriberProfile(new int[] {16, 16, 16, 16, 16, 15, 15, 15, 14, 12, 11, 11, 11, 11, 10})));
         cards.put("S33", new StandardCard("S33", StandardCard.Size.HIGH, 4, 7, 4, new VariableSubscriberProfile(new int[] {16, 16, 16, 16, 16, 15, 15, 15, 14, 12, 11, 11, 11, 11, 10})));
-        cards.put("E1", new StandardCard("E1", StandardCard.Size.NONE, 4, 6, 4, new FixedSubscriberProfile()));
+        cards.put("E1", new StandardCard("E1", StandardCard.Size.NONE, 4, 6, 4));
         cards.put("E2", new StandardCard("E2", StandardCard.Size.NONE, 2, 3, 4, new FixedSubscriberProfile(-6)));
-        cards.put("I1", new StandardCard("I1", StandardCard.Size.NONE, 1, 4, 2, new FixedSubscriberProfile()));
-        cards.put("I2", new StandardCard("I2", StandardCard.Size.NONE, 2, 2, 5, new FixedSubscriberProfile()));
-        cards.put("I3", new StandardCard("I3", StandardCard.Size.NONE, 1, 3, 3, new FixedSubscriberProfile()));
-        cards.put("F1", new StandardCard("F1", StandardCard.Size.NONE, 4, 3, 6, new FixedSubscriberProfile()));
-        cards.put("F2", new StandardCard("F2", StandardCard.Size.NONE, 5, 6, 4, new FixedSubscriberProfile()));
+        cards.put("I1", new IntangibleCard("I1", StandardCard.Size.NONE, 1, 4, 2));
+        cards.put("I2", new IntangibleCard("I2", StandardCard.Size.NONE, 2, 2, 5));
+        cards.put("I3", new IntangibleCard("I3", StandardCard.Size.NONE, 1, 3, 3));
+        cards.put("F1", new StandardCard("F1", StandardCard.Size.NONE, 4, 3, 6));
+        cards.put("F2", new StandardCard("F2", StandardCard.Size.NONE, 5, 6, 4));
     }
 
-    public static StandardCard getCard(String name) {
+    public static Card getCard(String name) {
         Cards cards = new Cards();
         return cards.createCard(name);
     }
 
-    public StandardCard createCard(String name) {
+    public Card createCard(String name) {
         if (cards.containsKey(name)) {
             return cards.get(name);
         }
