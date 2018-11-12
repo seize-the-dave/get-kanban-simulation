@@ -13,7 +13,7 @@ public class StandardCardTest {
     @Test
     public void testSize() {
         Card card = createCard();
-        assertThat(card.getSize(), is(StandardCard.Size.HIGH));
+        assertThat(card.getSize(), is(Card.Size.HIGH));
     }
 
     @Test

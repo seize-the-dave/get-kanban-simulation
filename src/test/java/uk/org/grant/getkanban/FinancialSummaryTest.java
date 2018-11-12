@@ -1,6 +1,7 @@
 package uk.org.grant.getkanban;
 
 import org.junit.Test;
+import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.column.Column;
 import uk.org.grant.getkanban.column.DeployedColumn;
@@ -23,31 +24,31 @@ public class FinancialSummaryTest {
     }
 
     private Column buildDeployedColumn() {
-        StandardCard s1 = new StandardCard("S1", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        StandardCard s1 = new StandardCard("S1", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         s1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(1)));
         s1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(3)));
 
-        StandardCard s2 = new StandardCard("S2", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        StandardCard s2 = new StandardCard("S2", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         s2.onSelected(new Context(new Board(), new DaysFactory(true).getDay(9)));
         s2.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(11)));
 
-        StandardCard s3 = new StandardCard("S3", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        StandardCard s3 = new StandardCard("S3", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         s3.onSelected(new Context(new Board(), new DaysFactory(true).getDay(12)));
         s3.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(14)));
 
-        StandardCard s4 = new StandardCard("S4", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        StandardCard s4 = new StandardCard("S4", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         s4.onSelected(new Context(new Board(), new DaysFactory(true).getDay(14)));
         s4.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(17)));
 
-        StandardCard e1 = new StandardCard("E1", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        StandardCard e1 = new StandardCard("E1", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         e1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(16)));
         e1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(18)));
 
-        StandardCard f2 = new StandardCard("F2", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        StandardCard f2 = new StandardCard("F2", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         f2.onSelected(new Context(new Board(), new DaysFactory(true).getDay(19)));
         f2.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(21)));
 
-        StandardCard s5 = new StandardCard("S5", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        StandardCard s5 = new StandardCard("S5", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         s5.onSelected(new Context(new Board(), new DaysFactory(true).getDay(16)));
         s5.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(20)));
 
@@ -86,7 +87,7 @@ public class FinancialSummaryTest {
 
     @Test
     public void testNoFineForF1WhenDelivered() {
-        StandardCard f1 = new StandardCard("F1", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
+        StandardCard f1 = new StandardCard("F1", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
         f1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(10)));
         f1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(15)));
 
@@ -99,7 +100,7 @@ public class FinancialSummaryTest {
 
     @Test
     public void testFineForF1WhenLate() {
-        StandardCard f1 = new StandardCard("F1", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
+        StandardCard f1 = new StandardCard("F1", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
         f1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(10)));
         f1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(16)));
 
@@ -112,7 +113,7 @@ public class FinancialSummaryTest {
 
     @Test
     public void testNoPaymentForE1WhenLate() {
-        StandardCard e1 = new StandardCard("E1", StandardCard.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
+        StandardCard e1 = new StandardCard("E1", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
         e1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(15)));
         e1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(19)));
 

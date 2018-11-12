@@ -2,7 +2,6 @@ package uk.org.grant.getkanban.card;
 
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.State;
-import uk.org.grant.getkanban.SubscriberProfile;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -89,7 +88,7 @@ public abstract class AbstractCard implements Card {
     @Override
     public void onDeployed(Context context) {
         if (this.daySelected == 0) {
-            throw new IllegalStateException("Cannot deploy unselected card");
+            throw new IllegalStateException("Cannot deploy unselected card " + getName());
         }
         if (context.getDay().getOrdinal() < this.daySelected) {
             throw new IllegalStateException("Cannot deploy before selection getDay");

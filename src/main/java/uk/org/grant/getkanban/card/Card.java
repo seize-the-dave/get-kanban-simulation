@@ -15,4 +15,8 @@ public interface Card {
     int getDayDeployed();
     int getSubscribers();
     int getCycleTime();
+
+    public enum Size {
+        VERY_HIGH, HIGH, MEDIUM, LOW, NONE
+    }
 }

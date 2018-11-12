@@ -31,10 +31,6 @@ public class StandardCard extends AbstractCard {
         return profile.getSubscribers(getCycleTime());
     }
 
-    public enum Size {
-        VERY_HIGH, HIGH, MEDIUM, LOW, NONE
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o instanceof StandardCard == false) {
