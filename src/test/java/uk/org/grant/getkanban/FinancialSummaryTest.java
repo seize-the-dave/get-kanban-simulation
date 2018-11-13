@@ -4,7 +4,6 @@ import org.junit.Test;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.card.StandardCard;
-import uk.org.grant.getkanban.column.Column;
 import uk.org.grant.getkanban.column.DeployedColumn;
 import uk.org.grant.getkanban.column.NullColumn;
 
@@ -14,9 +13,8 @@ import static org.junit.Assert.assertThat;
 public class FinancialSummaryTest {
     @Test
     public void testNewSubscribersThisBillingCycle() {
-        Column deployed = buildDeployedColumn();
+        FinancialSummary summary = new FinancialSummary(makeBoard());
 
-        FinancialSummary summary = new FinancialSummary(deployed);
         assertThat(summary.getNewSubscribers(9), is(2));
         assertThat(summary.getNewSubscribers(12), is(3));
         assertThat(summary.getNewSubscribers(15), is(4));
@@ -24,10 +22,10 @@ public class FinancialSummaryTest {
         assertThat(summary.getNewSubscribers(21), is(37));
     }
 
-    private Column buildDeployedColumn() {
+    private Board makeBoard() {
         StandardCard s1 = new StandardCard("S1", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
-        s1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(1)));
-        s1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(3)));
+        s1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(6)));
+        s1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(8)));
 
         StandardCard s2 = new StandardCard("S2", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {1, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         s2.onSelected(new Context(new Board(), new DaysFactory(true).getDay(9)));
@@ -41,7 +39,7 @@ public class FinancialSummaryTest {
         s4.onSelected(new Context(new Board(), new DaysFactory(true).getDay(14)));
         s4.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(17)));
 
-        StandardCard e1 = new StandardCard("E1", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        Card e1 = Cards.getCard("E1");
         e1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(16)));
         e1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(18)));
 
@@ -53,7 +51,8 @@ public class FinancialSummaryTest {
         s5.onSelected(new Context(new Board(), new DaysFactory(true).getDay(16)));
         s5.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(20)));
 
-        Column deployed = new DeployedColumn(new NullColumn());
+        Board b = new Board();
+        DeployedColumn deployed = b.getDeployed();
         deployed.addCard(s1);
         deployed.addCard(s2);
         deployed.addCard(s3);
@@ -61,15 +60,15 @@ public class FinancialSummaryTest {
         deployed.addCard(s5);
         deployed.addCard(e1);
         deployed.addCard(f2);
+        deployed.addCard(Cards.getCard("F1"));
 
-        return deployed;
+        return b;
     }
 
     @Test
     public void testTotalSubscribersToDate() {
-        Column deployed = buildDeployedColumn();
 
-        FinancialSummary summary = new FinancialSummary(deployed);
+        FinancialSummary summary = new FinancialSummary(makeBoard());
         assertThat(summary.getTotalSubscribersToDate(9), is(2));
         assertThat(summary.getTotalSubscribersToDate(12), is(5));
         assertThat(summary.getTotalSubscribersToDate(15), is(9));
@@ -79,9 +78,8 @@ public class FinancialSummaryTest {
 
     @Test
     public void testFinesAndPayments() {
-        Column deployed = buildDeployedColumn();
+        FinancialSummary summary = new FinancialSummary(makeBoard());
 
-        FinancialSummary summary = new FinancialSummary(deployed);
         assertThat(summary.getFinesOrPayments(15), is(-1500));
         assertThat(summary.getFinesOrPayments(18), is(4000));
     }
@@ -92,44 +90,46 @@ public class FinancialSummaryTest {
         f1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(10)));
         f1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(15)));
 
-        Column deployed = new DeployedColumn(new NullColumn());
+        Board b = new Board();
+        DeployedColumn deployed = b.getDeployed();
         deployed.addCard(f1);
 
-        FinancialSummary summary = new FinancialSummary(deployed);
+        FinancialSummary summary = new FinancialSummary(b);
         assertThat(summary.getFinesOrPayments(15), is(0));
     }
 
     @Test
     public void testFineForF1WhenLate() {
-        StandardCard f1 = new StandardCard("F1", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
+        Card f1 = Cards.getCard("F1");
         f1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(10)));
         f1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(16)));
 
-        Column deployed = new DeployedColumn(new NullColumn());
+        Board b = new Board();
+        DeployedColumn deployed = b.getDeployed();
         deployed.addCard(f1);
 
-        FinancialSummary summary = new FinancialSummary(deployed);
+        FinancialSummary summary = new FinancialSummary(b);
         assertThat(summary.getFinesOrPayments(15), is(-1500));
     }
 
     @Test
     public void testNoPaymentForE1WhenLate() {
-        StandardCard e1 = new StandardCard("E1", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
+        Card e1 = Cards.getCard("E1");
         e1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(15)));
         e1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(19)));
 
-        Column deployed = new DeployedColumn(new NullColumn());
+        Board b = new Board();
+        DeployedColumn deployed = b.getDeployed();
         deployed.addCard(e1);
 
-        FinancialSummary summary = new FinancialSummary(deployed);
+        FinancialSummary summary = new FinancialSummary(b);
         assertThat(summary.getFinesOrPayments(18), is(0));
     }
 
     @Test
     public void testBillingCycleRevenue() {
-        Column deployed = buildDeployedColumn();
+        FinancialSummary summary = new FinancialSummary(makeBoard());
 
-        FinancialSummary summary = new FinancialSummary(deployed);
         assertThat(summary.getBillingCycleRevenue(9), is(20));
         assertThat(summary.getBillingCycleRevenue(12), is(75));
         assertThat(summary.getBillingCycleRevenue(15), is(180));
@@ -139,9 +139,8 @@ public class FinancialSummaryTest {
 
     @Test
     public void testBillingCycleGrossProfit() {
-        Column deployed = buildDeployedColumn();
+        FinancialSummary summary = new FinancialSummary(makeBoard());
 
-        FinancialSummary summary = new FinancialSummary(deployed);
         assertThat(summary.getBillingCycleGrossProfit(9), is(20));
         assertThat(summary.getBillingCycleGrossProfit(12), is(75));
         assertThat(summary.getBillingCycleGrossProfit(15), is(-1320));
@@ -151,9 +150,8 @@ public class FinancialSummaryTest {
 
     @Test
     public void testGrossProfitToDate() {
-        Column deployed = buildDeployedColumn();
+        FinancialSummary summary = new FinancialSummary(makeBoard());
 
-        FinancialSummary summary = new FinancialSummary(deployed);
         assertThat(summary.getTotalGrossProfitToDate(9), is(20));
         assertThat(summary.getTotalGrossProfitToDate(12), is(95));
         assertThat(summary.getTotalGrossProfitToDate(15), is(-1225));

@@ -71,7 +71,7 @@ public class BoardRunner {
                     d.endOfDay(b);
                 }
 
-                return new FinancialSummary(b.getDeployed());
+                return new FinancialSummary(b);
             });
         }
 

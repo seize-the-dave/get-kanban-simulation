@@ -1,6 +1,8 @@
 package uk.org.grant.getkanban;
 
 import org.junit.Test;
+import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.column.NullColumn;
 import uk.org.grant.getkanban.column.StateColumn;
 import uk.org.grant.getkanban.dice.StateDice;
@@ -8,6 +10,7 @@ import uk.org.grant.getkanban.dice.RandomDice;
 
 import java.util.Random;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
@@ -32,5 +35,16 @@ public class BoardTest {
 
         board.removeDice(dice);
         assertThat(board.getDice(), empty());
+    }
+
+    @Test
+    public void getCardsReturnsCardsFromColumns() {
+        Board b = new Board();
+        assertThat(b.getCards(), empty());
+        Card e1 = Cards.getCard("E1");
+
+        b.getBacklog().addCard(e1);
+
+        assertThat(b.getCards(), contains(e1));
     }
 }

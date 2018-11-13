@@ -43,15 +43,15 @@ public class Cards {
         cards.put("S32", new StandardCard("S32", Card.Size.HIGH, 4, 7, 4, new VariableSubscriberProfile(new int[] {16, 16, 16, 16, 16, 15, 15, 15, 14, 12, 11, 11, 11, 11, 10})));
         cards.put("S33", new StandardCard("S33", Card.Size.HIGH, 4, 7, 4, new VariableSubscriberProfile(new int[] {16, 16, 16, 16, 16, 15, 15, 15, 14, 12, 11, 11, 11, 11, 10})));
 
-        cards.put("E1", new ExpediteCard("E1", Card.Size.NONE, 4, 6, 4, 0, 18));
-        cards.put("E2", new ExpediteCard("E2", Card.Size.NONE, 2, 3, 4, -6, 21));
+        cards.put("E1", new ExpediteCard("E1", Card.Size.NONE, 4, 6, 4, 0, 18, 0, 4000));
+        cards.put("E2", new ExpediteCard("E2", Card.Size.NONE, 2, 3, 4, -6, 21, 0, 0));
 
         cards.put("I1", new IntangibleCard("I1", Card.Size.NONE, 1, 4, 2));
         cards.put("I2", new IntangibleCard("I2", Card.Size.NONE, 2, 2, 5));
         cards.put("I3", new IntangibleCard("I3", Card.Size.NONE, 1, 3, 3));
 
-        cards.put("F1", new FixedDateCard("F1", Card.Size.NONE, 4, 3, 6, 0, 15));
-        cards.put("F2", new FixedDateCard("F2", Card.Size.NONE, 5, 6, 4, 30, 21));
+        cards.put("F1", new FixedDateCard("F1", Card.Size.NONE, 4, 3, 6, 0, 15, -1500, 0));
+        cards.put("F2", new FixedDateCard("F2", Card.Size.NONE, 5, 6, 4, 30, 21, 0, 0));
     }
 
     public static Card getCard(String name) {

@@ -1,13 +1,12 @@
 package uk.org.grant.getkanban;
 
+import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.column.*;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
 import uk.org.grant.getkanban.policies.IntangiblesFirstPrioritisationStrategy;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Board {
@@ -59,5 +58,18 @@ public class Board {
 
     public DeployedColumn getDeployed() {
         return this.deployed;
+    }
+
+    public Collection<Card> getCards() {
+        List<Card> cards = new ArrayList<Card>();
+        cards.addAll(backlog.getCards());
+        cards.addAll(selected.getCards());
+        cards.addAll(columns.get(State.ANALYSIS).getCards());
+        cards.addAll(columns.get(State.DEVELOPMENT).getCards());
+        cards.addAll(columns.get(State.TEST).getCards());
+        cards.addAll(readyToDeploy.getCards());
+        cards.addAll(deployed.getCards());
+
+        return cards;
     }
 }

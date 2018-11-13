@@ -1,47 +1,31 @@
 package uk.org.grant.getkanban;
 
 import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.ExpediteCard;
+import uk.org.grant.getkanban.card.FixedDateCard;
 import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.column.Column;
+import uk.org.grant.getkanban.column.DeployedColumn;
 
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
 public class FinancialSummary implements Comparable<FinancialSummary> {
     private AtomicIntegerArray newSubscribers = new AtomicIntegerArray(22);
-    private boolean f1 = true;
-    private boolean e1 = false;
-    private final Column deployed;
+    private AtomicIntegerArray finesAndPayments = new AtomicIntegerArray(22);
+    private final Board board;
 
-    public FinancialSummary(Column deployed) {
-        this.deployed = deployed;
+    public FinancialSummary(Board board) {
+        this.board = board;
         init();
     }
 
     private void init() {
-        for (Card card : deployed.getCards()) {
-            if (card.getName().equals("F1")) {
-                if (card.getDayDeployed() <= card.getDueDate()) {
-                    this.f1 = false;
-                }
-            }
-            if (card.getName().equals("E1")) {
-                if (card.getDayDeployed() <= 18) {
-                    this.e1 = true;
-                }
-            }
-            if (card.getDueDate() != -1) {
+        for (Card card : board.getCards()) {
+            if (card instanceof FixedDateCard) {
                 newSubscribers.getAndAdd(card.getDueDate(), card.getSubscribers());
-            }
-            else if (card.getDayDeployed() <= 9) {
-                newSubscribers.getAndAdd(9, card.getSubscribers());
-            } else if (card.getDayDeployed() <= 12) {
-                newSubscribers.getAndAdd(12, card.getSubscribers());
-            } else if (card.getDayDeployed() <= 15) {
-                newSubscribers.getAndAdd(15, card.getSubscribers());
-            } else if (card.getDayDeployed() <= 18) {
-                newSubscribers.getAndAdd(18, card.getSubscribers());
-            } else {
-                newSubscribers.getAndAdd(21, card.getSubscribers());
+                finesAndPayments.getAndAdd(card.getDueDate(), card.getFineOrPayment());
+            } else if (card.getDayDeployed() > 0) {
+                newSubscribers.getAndAdd((card.getDayDeployed() + 2) / 3 * 3, card.getSubscribers());
             }
         }
     }
@@ -76,13 +60,7 @@ public class FinancialSummary implements Comparable<FinancialSummary> {
     }
 
     public int getFinesOrPayments(int billingCycle) {
-        if (billingCycle == 15 && this.f1) {
-            return -1500;
-        } else if (billingCycle == 18 && this.e1) {
-            return 4000;
-        } else {
-            return 0;
-        }
+        return finesAndPayments.get(billingCycle);
     }
 
     @Override

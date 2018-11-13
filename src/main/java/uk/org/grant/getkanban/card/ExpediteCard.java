@@ -5,16 +5,8 @@ import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.SubscriberProfile;
 
 public class ExpediteCard extends FixedDateCard {
-    public ExpediteCard(String name, Size size, int analysis, int development, int test, int subscribers, int dueDate) {
-        super(name, size, analysis, development, test, subscribers, dueDate);
-    }
-
-    @Override
-    public int getFineOrPayment() {
-        if (getName().equals("E1") && (getDayDeployed() > 0 && getDayDeployed() <= this.getDueDate())) {
-            return 4000;
-        }
-        return 0;
+    public ExpediteCard(String name, Size size, int analysis, int development, int test, int subscribers, int dueDate, int fine, int payment) {
+        super(name, size, analysis, development, test, subscribers, dueDate, fine, payment);
     }
 
     @Override
