@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.column.Workable;
 import uk.org.grant.getkanban.instructions.Instruction;
+import uk.org.grant.getkanban.policies.DiceAssignmentStrategy;
 
 public class Day implements Workable<Context> {
     private static final Logger LOGGER = LoggerFactory.getLogger(Day.class);

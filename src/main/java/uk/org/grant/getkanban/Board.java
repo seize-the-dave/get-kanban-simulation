@@ -2,6 +2,8 @@ package uk.org.grant.getkanban;
 
 import uk.org.grant.getkanban.column.*;
 import uk.org.grant.getkanban.dice.StateDice;
+import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
+import uk.org.grant.getkanban.policies.IntangiblesFirstPrioritisationStrategy;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -12,7 +14,7 @@ public class Board {
     private final List<StateDice> dice = new ArrayList<>();
 
     // Selected (3), Analysis (2), Development (4), Test (3)
-    private final BacklogColumn backlog = new BacklogColumn();
+    private final BacklogColumn backlog = new BacklogColumn(new IntangiblesFirstPrioritisationStrategy().thenComparing(new BusinessValuePrioritisationStrategy()));
     private final SelectedColumn selected = new SelectedColumn(3, backlog);
     private final EnumMap<State, StateColumn> columns = new EnumMap<>(State.class);
     {

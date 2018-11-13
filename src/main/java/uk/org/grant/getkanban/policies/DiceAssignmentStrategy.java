@@ -1,9 +1,10 @@
-package uk.org.grant.getkanban;
+package uk.org.grant.getkanban.policies;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.org.grant.getkanban.Board;
+import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.column.StateColumn;
 import uk.org.grant.getkanban.dice.DiceGroup;
 import uk.org.grant.getkanban.dice.StateDice;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class DiceAssignmentStrategy {
+public class DiceAssignmentStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(DiceAssignmentStrategy.class);
 
     public void assignDice(Board board) {

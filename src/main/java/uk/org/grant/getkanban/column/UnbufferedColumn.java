@@ -2,8 +2,7 @@ package uk.org.grant.getkanban.column;
 
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.card.StandardCard;
-import uk.org.grant.getkanban.BusinessValuePrioritisationStrategy;
+import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
 
 import java.util.*;
 

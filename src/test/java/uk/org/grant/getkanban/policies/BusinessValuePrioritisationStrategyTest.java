@@ -1,8 +1,9 @@
-package uk.org.grant.getkanban;
+package uk.org.grant.getkanban.policies;
 
 import org.junit.Test;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
+import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
 
 import java.util.PriorityQueue;
 import java.util.Queue;

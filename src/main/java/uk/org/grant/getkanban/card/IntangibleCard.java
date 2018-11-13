@@ -23,7 +23,7 @@ public class IntangibleCard extends AbstractCard {
         super.onDeployed(context);
 
         if (getName().equals("I3")) {
-            LOGGER.info("Upgrade database version");
+            LOGGER.info("{}: Upgrade database version", context.getDay());
             Column backlog = context.getBoard().getBacklog();
             backlog.addCard(Cards.getCard("S29"));
             backlog.addCard(Cards.getCard("S30"));
@@ -38,7 +38,7 @@ public class IntangibleCard extends AbstractCard {
         super.onReadyToDeploy(context);
 
         if (getName().equals("I1")) {
-            LOGGER.info("Automate deployments");
+            LOGGER.info("{}: Automate deployments", context.getDay());
             ReadyToDeployColumn readyToDeploy = context.getBoard().getReadyToDeploy();
             readyToDeploy.setDeploymentFrequency(1);
         }

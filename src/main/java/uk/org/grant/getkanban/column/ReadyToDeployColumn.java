@@ -3,9 +3,8 @@ package uk.org.grant.getkanban.column;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.Context;
-import uk.org.grant.getkanban.WipAgingPrioritisationStrategy;
+import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.card.StandardCard;
 
 import java.util.*;
 
