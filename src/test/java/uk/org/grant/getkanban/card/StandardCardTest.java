@@ -114,6 +114,15 @@ public class StandardCardTest {
         assertThat(17, is(secondCard.getSubscribers()));
     }
 
+    @Test
+    public void canAddAndRemoveBlocker() {
+        Card s1 = Cards.getCard("S1");
+        Blocker b = new Blocker();
+        s1.setBlocker(b);
+
+        assertThat(s1.getBlocker(), is(b));
+    }
+
     private Card createCard() {
         return Cards.getCard("S18");
     }

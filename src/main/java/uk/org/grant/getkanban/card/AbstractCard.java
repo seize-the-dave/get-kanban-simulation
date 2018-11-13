@@ -12,6 +12,7 @@ public abstract class AbstractCard implements Card {
     private final Map<State, Integer> work = new EnumMap<>(State.class);
     private int daySelected;
     private int dayDeployed;
+    private Blocker blocker;
 
     public AbstractCard(String name, StandardCard.Size size, int analysis, int development, int test) {
         this.name = name;
@@ -109,5 +110,15 @@ public abstract class AbstractCard implements Card {
     @Override
     public int getDueDate() {
         return -1;
+    }
+
+    @Override
+    public void setBlocker(Blocker blocker) {
+        this.blocker = blocker;
+    }
+
+    @Override
+    public Blocker getBlocker() {
+        return blocker;
     }
 }

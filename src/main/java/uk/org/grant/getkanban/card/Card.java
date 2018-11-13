@@ -18,8 +18,10 @@ public interface Card {
     int getCycleTime();
     int getFineOrPayment();
     int getDueDate();
+    void setBlocker(Blocker b);
+    Blocker getBlocker();
 
-    public enum Size {
+    enum Size {
         VERY_HIGH, HIGH, MEDIUM, LOW, NONE
     }
 }
