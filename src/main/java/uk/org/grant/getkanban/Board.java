@@ -51,8 +51,8 @@ public class Board {
         return this.selected;
     }
 
-    public DeployedColumn getReadyToDeploy() {
-        return this.deployed;
+    public ReadyToDeployColumn getReadyToDeploy() {
+        return this.readyToDeploy;
     }
 
     public DeployedColumn getDeployed() {

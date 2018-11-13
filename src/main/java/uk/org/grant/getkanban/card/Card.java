@@ -11,6 +11,7 @@ public interface Card {
     int getRemainingWork();
     void onSelected(Context context);
     void onDeployed(Context context);
+    void onReadyToDeploy(Context context);
     int getDaySelected();
     int getDayDeployed();
     int getSubscribers();

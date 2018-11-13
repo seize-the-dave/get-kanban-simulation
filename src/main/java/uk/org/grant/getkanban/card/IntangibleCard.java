@@ -1,9 +1,14 @@
 package uk.org.grant.getkanban.card;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.column.Column;
+import uk.org.grant.getkanban.column.ReadyToDeployColumn;
 
 public class IntangibleCard extends AbstractCard {
+    private static final Logger LOGGER = LoggerFactory.getLogger(IntangibleCard.class);
+
     public IntangibleCard(String name, StandardCard.Size size, int analysis, int development, int test) {
         super(name, size, analysis, development, test);
     }
@@ -18,6 +23,7 @@ public class IntangibleCard extends AbstractCard {
         super.onDeployed(context);
 
         if (getName().equals("I3")) {
+            LOGGER.info("Upgrade database version");
             Column backlog = context.getBoard().getBacklog();
             backlog.addCard(Cards.getCard("S29"));
             backlog.addCard(Cards.getCard("S30"));
@@ -28,7 +34,23 @@ public class IntangibleCard extends AbstractCard {
     }
 
     @Override
+    public void onReadyToDeploy(Context context) {
+        super.onReadyToDeploy(context);
+
+        if (getName().equals("I1")) {
+            LOGGER.info("Automate deployments");
+            ReadyToDeployColumn readyToDeploy = context.getBoard().getReadyToDeploy();
+            readyToDeploy.setDeploymentFrequency(1);
+        }
+    }
+
+    @Override
     public int getSubscribers() {
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

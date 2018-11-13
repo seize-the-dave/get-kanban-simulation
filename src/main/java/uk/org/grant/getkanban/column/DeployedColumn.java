@@ -28,7 +28,7 @@ public class DeployedColumn extends UnbufferedColumn {
             } else {
                 optionalCard.get().onDeployed(context);
                 addCard(optionalCard.get());
-                LOGGER.info("Pulled {} into {} from {}", optionalCard.get(), this, upstream);
+                LOGGER.info("{}: Pulled {} into {} from {}", context.getDay(), optionalCard.get(), this, upstream);
             }
         }
     }

@@ -2,10 +2,11 @@ package uk.org.grant.getkanban.column;
 
 import org.junit.Assert;
 import org.junit.Test;
-import uk.org.grant.getkanban.Board;
-import uk.org.grant.getkanban.Context;
+import uk.org.grant.getkanban.*;
+import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
-import uk.org.grant.getkanban.Day;
+import uk.org.grant.getkanban.dice.LoadedDice;
+import uk.org.grant.getkanban.dice.StateDice;
 
 import static org.hamcrest.Matchers.is;
 
@@ -25,5 +26,26 @@ public class ReadyToDeployColumnTest {
 
         readyToDeploy.doTheWork(context);
         Assert.assertThat(readyToDeploy.pull(context).isPresent(), is(true));
+    }
+
+    @Test
+    public void canPullEverydayAfterEnablingContinuousDelivery() {
+        Card i1 = Cards.getCard("I1");
+
+        Board b = new Board();
+        b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(1)));
+        b.addDice(new StateDice(State.DEVELOPMENT, new LoadedDice(4)));
+        b.addDice(new StateDice(State.TEST, new LoadedDice(2)));
+        b.getBacklog().addCard(i1);
+
+        DaysFactory df = new DaysFactory(true);
+        for (int i = 4; i < 8; i++) {
+            Day d = df.getDay(i);
+            d.standUp(b);
+            d.doTheWork(new Context(b, d));
+            d.endOfDay(b);
+        }
+
+        Assert.assertThat(i1.getDayDeployed(), is(7));
     }
 }

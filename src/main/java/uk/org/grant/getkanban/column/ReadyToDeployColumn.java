@@ -12,6 +12,7 @@ import java.util.*;
 public class ReadyToDeployColumn extends UnbufferedColumn {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReadyToDeployColumn.class);
     private final Queue<Card> cards = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
+    private int deploymentFrequency = 3;
 
     public ReadyToDeployColumn(Column upstream) {
         super(upstream);
@@ -31,7 +32,7 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
     @Override
     public Optional<Card> pull(Context context) {
         doTheWork(context);
-        if (context.getDay().getOrdinal() % 3 == 0) {
+        if (context.getDay().getOrdinal() % deploymentFrequency == 0) {
             return Optional.ofNullable(cards.poll());
         } else {
             return Optional.empty();
@@ -46,8 +47,9 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
             LOGGER.info("Pull from " + upstream);
             Optional<Card> optionalCard = upstream.pull(context);
             if (optionalCard.isPresent()) {
+                optionalCard.get().onReadyToDeploy(context);
                 addCard(optionalCard.get());
-                LOGGER.info("Pulled " + optionalCard.get() + " into " + this);
+                LOGGER.info("{}: Pulled " + optionalCard.get() + " into " + this, context.getDay());
             } else {
                 LOGGER.warn("{} has nothing available to pull", upstream);
                 break;
@@ -58,5 +60,9 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
     @Override
     public String toString() {
         return "[READY TO DEPLOY (" + cards.size() + "/∞)]";
+    }
+
+    public void setDeploymentFrequency(int deploymentFrequency) {
+        this.deploymentFrequency = deploymentFrequency;
     }
 }
