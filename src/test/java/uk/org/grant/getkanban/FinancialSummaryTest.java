@@ -2,6 +2,7 @@ package uk.org.grant.getkanban;
 
 import org.junit.Test;
 import uk.org.grant.getkanban.card.Card;
+import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.column.Column;
 import uk.org.grant.getkanban.column.DeployedColumn;
@@ -44,7 +45,7 @@ public class FinancialSummaryTest {
         e1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(16)));
         e1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(18)));
 
-        StandardCard f2 = new StandardCard("F2", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        Card f2 = Cards.getCard("F2");
         f2.onSelected(new Context(new Board(), new DaysFactory(true).getDay(19)));
         f2.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(21)));
 
@@ -87,7 +88,7 @@ public class FinancialSummaryTest {
 
     @Test
     public void testNoFineForF1WhenDelivered() {
-        StandardCard f1 = new StandardCard("F1", Card.Size.LOW, 0, 0, 0, new VariableSubscriberProfile(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
+        Card f1 = Cards.getCard("F1");
         f1.onSelected(new Context(new Board(), new DaysFactory(true).getDay(10)));
         f1.onDeployed(new Context(new Board(), new DaysFactory(true).getDay(15)));
 

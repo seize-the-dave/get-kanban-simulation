@@ -46,7 +46,7 @@ public class IntangibleCard extends AbstractCard {
 
     @Override
     public int getSubscribers() {
-        return 0;
+        return getFineOrPayment();
     }
 
     @Override

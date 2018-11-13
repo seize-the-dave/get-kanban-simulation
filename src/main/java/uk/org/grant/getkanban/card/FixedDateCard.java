@@ -6,8 +6,14 @@ import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.SubscriberProfile;
 
 public class FixedDateCard extends AbstractCard {
-    public FixedDateCard(String name, Size size, int analysis, int development, int test) {
+    private final int dueDate;
+    private final int subscribers;
+
+    public FixedDateCard(String name, Size size, int analysis, int development, int test, int subscribers, int dueDate) {
         super(name, size, analysis, development, test);
+
+        this.subscribers = subscribers;
+        this.dueDate = dueDate;
     }
 
 
@@ -31,6 +37,22 @@ public class FixedDateCard extends AbstractCard {
 
     @Override
     public int getSubscribers() {
+        if ((getDayDeployed() > 0 || getDayDeployed() <= this.getDueDate())) {
+            return subscribers;
+        }
         return 0;
+    }
+
+    @Override
+    public int getFineOrPayment() {
+        if (getName().equals("F1") && (getDayDeployed() == 0 || getDayDeployed() > 15)) {
+            return -1500;
+        }
+        return 0;
+    }
+
+    @Override
+    public int getDueDate() {
+        return this.dueDate;
     }
 }

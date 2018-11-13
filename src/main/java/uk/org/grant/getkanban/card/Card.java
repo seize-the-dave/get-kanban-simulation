@@ -16,6 +16,8 @@ public interface Card {
     int getDayDeployed();
     int getSubscribers();
     int getCycleTime();
+    int getFineOrPayment();
+    int getDueDate();
 
     public enum Size {
         VERY_HIGH, HIGH, MEDIUM, LOW, NONE

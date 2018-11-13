@@ -28,6 +28,9 @@ public class StandardCard extends AbstractCard {
     }
 
     public int getSubscribers() {
+        if (getDayDeployed() == 0) {
+            return 0;
+        }
         return profile.getSubscribers(getCycleTime());
     }
 

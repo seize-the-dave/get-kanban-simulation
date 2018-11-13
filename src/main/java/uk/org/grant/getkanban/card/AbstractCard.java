@@ -100,4 +100,14 @@ public abstract class AbstractCard implements Card {
         }
         this.dayDeployed = context.getDay().getOrdinal();
     }
+
+    @Override
+    public int getFineOrPayment() {
+        return 0;
+    }
+
+    @Override
+    public int getDueDate() {
+        return -1;
+    }
 }

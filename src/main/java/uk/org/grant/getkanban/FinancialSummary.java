@@ -20,19 +20,19 @@ public class FinancialSummary implements Comparable<FinancialSummary> {
     private void init() {
         for (Card card : deployed.getCards()) {
             if (card.getName().equals("F1")) {
-                if (card.getDayDeployed() <= 15) {
+                if (card.getDayDeployed() <= card.getDueDate()) {
                     this.f1 = false;
                 }
-            }
-            if (card.getName().equals("F2")) {
-                newSubscribers.getAndAdd(21, 30);
             }
             if (card.getName().equals("E1")) {
                 if (card.getDayDeployed() <= 18) {
                     this.e1 = true;
                 }
             }
-            if (card.getDayDeployed() <= 9) {
+            if (card.getDueDate() != -1) {
+                newSubscribers.getAndAdd(card.getDueDate(), card.getSubscribers());
+            }
+            else if (card.getDayDeployed() <= 9) {
                 newSubscribers.getAndAdd(9, card.getSubscribers());
             } else if (card.getDayDeployed() <= 12) {
                 newSubscribers.getAndAdd(12, card.getSubscribers());

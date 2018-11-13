@@ -88,17 +88,17 @@ public class StandardCardTest {
         assertThat(2, is(card.getCycleTime()));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testCannotGetSubscribersForUnstartedCard() {
+    @Test
+    public void subscribersForUnstartedCardIsZero() {
         Card card = createCard();
-        card.getSubscribers();
+        assertThat(card.getSubscribers(), is(0));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testCannotGetSubscribersForUnfinishedCard() {
+    @Test
+    public void subscribersForUnfinishedCardIsZero() {
         Card card = createCard();
         card.onSelected(new Context(new Board(), new DaysFactory(true).getDay(1)));
-        card.getSubscribers();
+        assertThat(card.getSubscribers(), is(0));
     }
 
     @Test
