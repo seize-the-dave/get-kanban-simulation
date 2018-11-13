@@ -18,6 +18,11 @@ import java.util.stream.Collectors;
 public class DiceAssignmentStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(DiceAssignmentStrategy.class);
 
+    /**
+     * Assigns dice to cards on the board
+     *
+     * @param board
+     */
     public void assignDice(Board board) {
         for (State state : new State[] {State.TEST, State.DEVELOPMENT, State.ANALYSIS}) {
             StateColumn column = board.getStateColumn(state);
@@ -25,7 +30,7 @@ public class DiceAssignmentStrategy {
             LOGGER.info("Ready to allocate {} to {}", dice, column);
             List<Card> cards = column.getCards().stream().filter(c -> c.getRemainingWork(state) != 0).collect(Collectors.toList());
             if (cards.size() == 0) {
-                LOGGER.debug("Can't allocate for {}", state);
+                LOGGER.debug("No cards in {}", state);
             }
             List<DiceGroup> groups = new ArrayList<DiceGroup>();
             for (Card card : cards) {
