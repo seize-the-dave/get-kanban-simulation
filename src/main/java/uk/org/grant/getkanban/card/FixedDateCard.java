@@ -1,9 +1,6 @@
 package uk.org.grant.getkanban.card;
 
-import uk.org.grant.getkanban.Context;
-import uk.org.grant.getkanban.FixedSubscriberProfile;
 import uk.org.grant.getkanban.State;
-import uk.org.grant.getkanban.SubscriberProfile;
 
 public class FixedDateCard extends AbstractCard {
     private final int dueDate;
@@ -41,7 +38,7 @@ public class FixedDateCard extends AbstractCard {
 
     @Override
     public int getSubscribers() {
-        if ((getDayDeployed() > 0 || getDayDeployed() <= this.getDueDate())) {
+        if (hitDueDate()) {
             return subscribers;
         }
         return 0;
@@ -49,16 +46,15 @@ public class FixedDateCard extends AbstractCard {
 
     @Override
     public int getFineOrPayment() {
-        int fineOrPayment = 0;
-
-        if (getDayDeployed() == 0 || getDayDeployed() > getDueDate()) {
-            fineOrPayment += fine;
+        if (hitDueDate()) {
+            return payment;
+        } else {
+            return fine;
         }
-        if (getDayDeployed() > 0 && getDayDeployed() <= getDueDate()) {
-            fineOrPayment += payment;
-        }
+    }
 
-        return fineOrPayment;
+    private boolean hitDueDate() {
+        return getDayDeployed() > 0 && getDayDeployed() <= getDueDate();
     }
 
     @Override
