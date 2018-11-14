@@ -7,6 +7,7 @@ import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.Day;
+import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -49,5 +50,18 @@ public class SelectedColumnTest {
 
         selected.doTheWork(new Context(new Board(), new Day(1)));
         assertThat(selected.getCards().size(), is(1));
+    }
+
+    @Test
+    public void canChangePriority() {
+        Column deployed = new SelectedColumn(2, new NullColumn());
+        deployed.addCard(Cards.getCard("S10"));
+        deployed.addCard(Cards.getCard("S5"));
+
+        assertThat(deployed.getCards().peek().getName(), is("S5"));
+
+        deployed.orderBy(new BusinessValuePrioritisationStrategy());
+
+        assertThat(deployed.getCards().peek().getName(), is("S10"));
     }
 }

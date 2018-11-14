@@ -17,17 +17,19 @@ public class StateColumn extends LimitedColumn {
     private final Logger logger;
     private final State state;
     private final Column upstream;
-    private final Queue<Card> todo;
-    private final Queue<Card> done;
+    private final MutablePriorityQueue<Card> todo;
+    private final MutablePriorityQueue<Card> done;
     private AtomicBoolean rolled = new AtomicBoolean();
     private DiceGroup[] groups = new DiceGroup[0];
+    private Comparator<Card> comparator;
 
     public StateColumn(State state, int limit, Column upstream) {
         super(limit);
         this.state = state;
         this.upstream = upstream;
-        this.todo = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
-        this.done = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
+        this.todo = new MutablePriorityQueue<>(new WipAgingPrioritisationStrategy());
+        this.done = new MutablePriorityQueue<>(new WipAgingPrioritisationStrategy());
+        this.comparator = new WipAgingPrioritisationStrategy();
         this.logger = LoggerFactory.getLogger(StateColumn.class.getName() + "[" + state + "]");
     }
 
@@ -49,7 +51,7 @@ public class StateColumn extends LimitedColumn {
 
     @Override
     public Queue<Card> getCards() {
-        Queue<Card> queue = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
+        Queue<Card> queue = new PriorityQueue<>(comparator);
         queue.addAll(Stream.concat(this.todo.stream(), this.done.stream()).collect(Collectors.toList()));
 
         return queue;
@@ -131,5 +133,13 @@ public class StateColumn extends LimitedColumn {
     public void assignDice(DiceGroup... groups) {
         this.groups = groups;
         this.rolled.set(false);
+    }
+
+    @Override
+    public void orderBy(Comparator<Card> comparator) {
+        this.comparator = comparator;
+
+        todo.setComparator(comparator);
+        done.setComparator(comparator);
     }
 }

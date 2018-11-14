@@ -7,10 +7,11 @@ import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SelectedColumn extends LimitedColumn {
     private static final Logger LOGGER = LoggerFactory.getLogger(SelectedColumn.class);
-    private final Queue<Card> cards = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
+    private final MutablePriorityQueue<Card> cards = new MutablePriorityQueue<>(new WipAgingPrioritisationStrategy());
     private Column upstream;
 
     public SelectedColumn(int limit, Column upstream) {
@@ -51,6 +52,11 @@ public class SelectedColumn extends LimitedColumn {
                 break;
             }
         }
+    }
+
+    @Override
+    public void orderBy(Comparator<Card> comparator) {
+        cards.setComparator(comparator);
     }
 
     @Override

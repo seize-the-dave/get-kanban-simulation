@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.RandomDice;
+import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
+import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -29,6 +31,14 @@ public class BoardRunner {
                 b.addDice(new StateDice(State.DEVELOPMENT, new RandomDice(new Random())));
                 b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
                 b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
+
+                b.getBacklog().orderBy(new BusinessValuePrioritisationStrategy());
+                b.getSelected().orderBy(new WipAgingPrioritisationStrategy());
+                b.getStateColumn(State.ANALYSIS).orderBy(new WipAgingPrioritisationStrategy());
+                b.getStateColumn(State.DEVELOPMENT).orderBy(new WipAgingPrioritisationStrategy());
+                b.getStateColumn(State.TEST).orderBy(new WipAgingPrioritisationStrategy());
+                b.getReadyToDeploy().orderBy(new WipAgingPrioritisationStrategy());
+                b.getDeployed().orderBy(new WipAgingPrioritisationStrategy());
 
                 b.getDeployed().addCard(Cards.getCard("S1"));
                 b.getDeployed().addCard(Cards.getCard("S2"));

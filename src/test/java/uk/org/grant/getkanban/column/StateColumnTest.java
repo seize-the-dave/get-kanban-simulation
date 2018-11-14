@@ -11,6 +11,8 @@ import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.dice.DiceGroup;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.LoadedDice;
+import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
+import uk.org.grant.getkanban.policies.SizePrioritisationStrategy;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -106,5 +108,18 @@ public class StateColumnTest {
 
         development.doTheWork(new Context(new Board(), new Day(1)));
         assertThat(development.getCards().size(), is(1));
+    }
+
+    @Test
+    public void canChangePriority() {
+        Column deployed = new StateColumn(State.ANALYSIS, 2, new NullColumn());
+        deployed.addCard(Cards.getCard("S10"));
+        deployed.addCard(Cards.getCard("S5"));
+
+        assertThat(deployed.getCards().peek().getName(), is("S5"));
+
+        deployed.orderBy(new BusinessValuePrioritisationStrategy());
+
+        assertThat(deployed.getCards().peek().getName(), is("S10"));
     }
 }

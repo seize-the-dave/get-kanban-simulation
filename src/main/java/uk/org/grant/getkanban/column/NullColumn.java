@@ -21,9 +21,4 @@ public class NullColumn extends AbstractColumn {
     public Optional<Card> pull(Context context) {
         return Optional.empty();
     }
-
-    @Override
-    public void doTheWork(Context context) {
-        // No Op
-    }
 }

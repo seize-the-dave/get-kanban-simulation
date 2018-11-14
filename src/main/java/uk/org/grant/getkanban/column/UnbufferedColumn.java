@@ -3,20 +3,22 @@ package uk.org.grant.getkanban.column;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
+import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class UnbufferedColumn extends AbstractColumn {
     protected final Column upstream;
-    protected final Queue<Card> cards;
+    protected final MutablePriorityQueue<Card> cards;
 
     public UnbufferedColumn(Column upstream) {
-        this(upstream, new BusinessValuePrioritisationStrategy());;
+        this(upstream, new WipAgingPrioritisationStrategy());;
     }
 
     public UnbufferedColumn(Column upstream, Comparator<Card> comparator) {
         this.upstream = upstream;
-        this.cards = new PriorityQueue<>(comparator);
+        this.cards = new MutablePriorityQueue<>(comparator);
     }
 
     @Override
@@ -33,5 +35,10 @@ public abstract class UnbufferedColumn extends AbstractColumn {
     public Optional<Card> pull(Context context) {
         doTheWork(context);
         return Optional.ofNullable(cards.poll());
+    }
+
+    @Override
+    public void orderBy(Comparator<Card> comparator) {
+        cards.setComparator(comparator);
     }
 }
