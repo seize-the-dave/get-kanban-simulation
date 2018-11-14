@@ -76,11 +76,10 @@ public class StateColumn extends LimitedColumn {
     private void spendLeftoverPoints(Context context) {
         logger.info("{}: Spending leftover points on {}", context.getDay(), this);
         while (getCards().size() < this.getLimit()) {
-            logger.info("Pull from {}", upstream);
             Optional<Card> optionalCard = upstream.pull(context);
             if (optionalCard.isPresent()) {
                 addCard(optionalCard.get());
-                logger.info("Pulled {} into {} from {}", optionalCard.get(), this, upstream);
+                logger.info("{}: {} -> {} -> {}", context.getDay(), upstream, optionalCard.get().getName(), this);
             } else {
                 logger.warn("{} has nothing available to pull", upstream);
             }
@@ -92,20 +91,23 @@ public class StateColumn extends LimitedColumn {
                 break;
             }
             for (DiceGroup group : groups) {
-                logger.info("{} leftover points to spend", group.getLeftoverPoints());
+                if (group.getLeftoverPoints() == 0) {
+                    continue;
+                }
+                logger.info("{}: {} leftover points to spend", context.getDay(), group.getLeftoverPoints());
                 for (Iterator<Card> iter = todo.iterator(); iter.hasNext() && group.getLeftoverPoints() > 0; ) {
                     Card card = iter.next();
                     group.spendLeftoverPoints(state, card);
                     if (card.getRemainingWork(this.state) == 0) {
                         iter.remove();
                         done.add(card);
-                        logger.info("{} has been completed and is now ready to pull", card);
+                        logger.info("{} -> {} -> {}:DONE", state, card.getName(), state);
                     }
                 }
             }
         }
         if (getCards().size() == this.getLimit()) {
-            logger.info("{} is filled to capacity", this);
+            logger.info("{}: {} is full", context.getDay(), this);
         }
     }
 
@@ -117,7 +119,7 @@ public class StateColumn extends LimitedColumn {
             group.rollFor(state);
             Optional<Card> card = todo.stream().filter(c -> c.getRemainingWork(this.state) == 0).findFirst();
             if (card.isPresent()) {
-                logger.info("{} has been completed and is now ready to pull", card.get());
+                logger.info("{} -> {} -> {}:DONE", state, card.get().getName(), state);
                 todo.remove(card.get());
                 done.add(card.get());
             }

@@ -40,15 +40,14 @@ public class SelectedColumn extends LimitedColumn {
 
     @Override
     public void doTheWork(Context context) {
-        LOGGER.info("{}: Replenishing {} from {}", context.getDay(), this, upstream);
         while (getCards().size() < getLimit()) {
             Optional<Card> optionalCard = upstream.pull(context);
             if (optionalCard.isPresent()) {
                 optionalCard.get().onSelected(context);
                 addCard(optionalCard.get());
-                LOGGER.info("Pulled {} into {} from {}", optionalCard.get(), this, upstream);
+                LOGGER.info("{}: {} -> {} -> {}", context.getDay(), upstream, optionalCard.get().getName(), this);
             } else {
-                LOGGER.warn("Nothing to pull.");
+                LOGGER.warn("{}: Nothing to pull.", context.getDay());
                 break;
             }
         }

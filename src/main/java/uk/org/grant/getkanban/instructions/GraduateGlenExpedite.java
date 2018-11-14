@@ -9,4 +9,9 @@ public class GraduateGlenExpedite implements Instruction {
     public void execute(Board b) {
         b.getBacklog().addCard(Cards.getCard("E2"));
     }
+
+    @Override
+    public String toString() {
+        return "Glen the Graduate has suggested E2";
+    }
 }

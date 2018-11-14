@@ -17,9 +17,11 @@ public class CarlosHired implements Instruction {
 
     @Override
     public void execute(Board b) {
+        LOGGER.info("Carlos has been hired as Test Manager.");
+
         StateColumn c = b.getStateColumn(State.TEST);
         store.set(c.getLimit());
         c.setLimit(Integer.MAX_VALUE);
-        LOGGER.info("Removed WIP limit on {}", c);
+        LOGGER.info("Carlos has removed the WIP limit on test");
     }
 }

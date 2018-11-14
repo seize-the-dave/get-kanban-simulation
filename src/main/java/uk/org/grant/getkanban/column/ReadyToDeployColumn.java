@@ -41,16 +41,14 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
 
     @Override
     public void doTheWork(Context context) {
-        LOGGER.info("{}: Doing work in {} ", context.getDay(), this);
         while (true) {
-            LOGGER.info("Pull from " + upstream);
             Optional<Card> optionalCard = upstream.pull(context);
             if (optionalCard.isPresent()) {
                 optionalCard.get().onReadyToDeploy(context);
                 addCard(optionalCard.get());
-                LOGGER.info("{}: Pulled " + optionalCard.get() + " into " + this, context.getDay());
+                LOGGER.info("{}: {} -> {} -> {}", context.getDay(), upstream, optionalCard.get().getName(), this);
             } else {
-                LOGGER.warn("{} has nothing available to pull", upstream);
+                LOGGER.warn("{}: {} has nothing available to pull", context.getDay(), upstream);
                 break;
             }
         }

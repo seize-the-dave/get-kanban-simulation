@@ -18,17 +18,15 @@ public class DeployedColumn extends UnbufferedColumn {
 
     @Override
     public void doTheWork(Context context) {
-        LOGGER.info("{}: Doing work in {} ", context.getDay(), this);
         while (true) {
-            LOGGER.info("Pull from " + upstream);
             Optional<Card> optionalCard = upstream.pull(context);
             if (optionalCard.isPresent() == false) {
-                LOGGER.warn("{} has nothing available to pull", upstream);
+                LOGGER.warn("{}: {} has nothing available to pull", context.getDay(), upstream);
                 break;
             } else {
                 optionalCard.get().onDeployed(context);
                 addCard(optionalCard.get());
-                LOGGER.info("{}: Pulled {} into {} from {}", context.getDay(), optionalCard.get(), this, upstream);
+                LOGGER.info("{}: {} -> {} -> {}", context.getDay(), upstream, optionalCard.get().getName(), this);
             }
         }
     }

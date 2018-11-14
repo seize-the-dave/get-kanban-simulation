@@ -21,18 +21,20 @@ public class CarlosFired implements Instruction {
 
     @Override
     public void execute(Board b) {
+        LOGGER.info("Carlos has been fired.");
+
         restoreWipLimitsToTest(b);
         hireAnotherTester(b);
     }
 
     private void hireAnotherTester(Board b) {
         b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
-        LOGGER.info("Hired additional tester");
+        LOGGER.info("Another tester has been hired");
     }
 
     private void restoreWipLimitsToTest(Board b) {
         StateColumn c = b.getStateColumn(State.TEST);
         c.setLimit(store.get());
-        LOGGER.info("Restored WIP limit on {}", c);
+        LOGGER.info("The original WIP limit on test has been restored");
     }
 }

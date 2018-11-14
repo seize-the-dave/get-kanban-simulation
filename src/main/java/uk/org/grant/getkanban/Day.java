@@ -36,6 +36,7 @@ public class Day implements Workable<Context> {
     }
 
     public void standUp(Board board) {
+        LOGGER.info("{}: STAND UP", this);
 //        if (ordinal == 14) {
 //            board.getSelected().setLimit(1);
 //            board.getStateColumn(State.ANALYSIS).setLimit(1);
@@ -48,14 +49,17 @@ public class Day implements Workable<Context> {
     }
 
     private void replenishSelected(Board board) {
+        LOGGER.info("{}: Replenish Selected Column", this);
         board.getSelected().doTheWork(new Context(board, this));
     }
 
     private void assignDice(Board board) {
+        LOGGER.info("{}: Assigning Dice to Tickets", this);
         diceAssignmentStrategy.assignDice(board);
     }
 
     public void doTheWork(Context context) {
+        LOGGER.info("{}: DO THE WORK", this);
         context.getBoard().getDeployed().doTheWork(context);
         context.getBoard().getReadyToDeploy().doTheWork(context);
         context.getBoard().getStateColumn(State.TEST).doTheWork(context);
@@ -68,6 +72,10 @@ public class Day implements Workable<Context> {
     }
 
     public void endOfDay(Board b) {
+        LOGGER.info("{}: END OF DAY", this);
+        if (instructions.length == 0) {
+            LOGGER.info("{}: No special instructions", this);
+        }
         for (Instruction instruction : instructions) {
             instruction.execute(b);
         }
