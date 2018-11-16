@@ -15,6 +15,8 @@ public class DaysFactory {
 
     public Day getDay(int day) {
         switch (day) {
+            case 10:
+                return new Day(day, new PeteFromPlatformTeam());
             case 11:
                 return new Day(day, new CarlosHired(testWipStore));
             case 12:
@@ -24,7 +26,7 @@ public class DaysFactory {
             case 15:
                 return new Day(day, new BigCorpExpedite());
             case 17:
-                return new Day(day, new TedsTrainingOpportunity(training));
+                return new Day(day, new TedsTrainingOpportunity(training), new DefectFound());
             case 18:
                 return new Day(day, new GraduateGlenExpedite(), new TammyHired(training));
             default:

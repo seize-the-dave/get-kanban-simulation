@@ -43,8 +43,8 @@ public class Cards {
         cards.put("S32", new StandardCard("S32", Card.Size.HIGH, 4, 7, 4, new VariableSubscriberProfile(new int[] {16, 16, 16, 16, 16, 15, 15, 15, 14, 12, 11, 11, 11, 11, 10})));
         cards.put("S33", new StandardCard("S33", Card.Size.HIGH, 4, 7, 4, new VariableSubscriberProfile(new int[] {16, 16, 16, 16, 16, 15, 15, 15, 14, 12, 11, 11, 11, 11, 10})));
 
-        cards.put("E1", new ExpediteCard("E1", Card.Size.NONE, 4, 6, 4, 0, 18, 0, 4000));
-        cards.put("E2", new ExpediteCard("E2", Card.Size.NONE, 2, 3, 4, -6, 21, 0, 0));
+        cards.put("E1", new FixedDateCard("E1", Card.Size.NONE, 4, 6, 4, 0, 18, 0, 4000));
+        cards.put("E2", new FixedDateCard("E2", Card.Size.NONE, 2, 3, 4, -6, 21, 0, 0));
 
         cards.put("I1", new IntangibleCard("I1", Card.Size.NONE, 1, 4, 2));
         cards.put("I2", new IntangibleCard("I2", Card.Size.NONE, 2, 2, 5));

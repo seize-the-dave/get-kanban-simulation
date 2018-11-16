@@ -121,4 +121,21 @@ public abstract class AbstractCard implements Card {
     public Blocker getBlocker() {
         return blocker;
     }
+
+    @Override
+    public boolean isBlocked() {
+        return blocker != null && blocker.getRemainingWork() > 0;
+    }
+
+    @Override
+    public String toString() {
+        String blocked = isBlocked() ? " (BLOCKED)" : "";
+        return getName() +
+                "[" +
+                getRemainingWork(State.ANALYSIS) + "/" +
+                getRemainingWork(State.DEVELOPMENT) + "/" +
+                getRemainingWork(State.TEST) +
+                "]" +
+                blocked;
+    }
 }

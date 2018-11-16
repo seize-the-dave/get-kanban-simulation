@@ -2,12 +2,10 @@ package uk.org.grant.getkanban.card;
 
 import uk.org.grant.getkanban.*;
 
+import java.util.Objects;
+
 public class StandardCard extends AbstractCard {
     private final SubscriberProfile profile;
-
-    public StandardCard(String name, Size size, int analysis, int development, int test) {
-        this(name, size, analysis, development, test, new FixedSubscriberProfile());
-    }
 
     public StandardCard(String name, Size size, int analysis, int development, int test, SubscriberProfile profile) {
         super(name, size, analysis, development, test);
@@ -35,20 +33,20 @@ public class StandardCard extends AbstractCard {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (o instanceof StandardCard == false) {
             return false;
+        } else {
+            StandardCard other = (StandardCard) o;
+            return Objects.equals(getName(), other.getName());
         }
-        return this.getName().equals(((StandardCard) o).getName());
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
+        if (getName() == null) {
+            return 0;
+        }
         return getName().hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return getName() + "[" + getRemainingWork(State.ANALYSIS) + "/" + getRemainingWork(State.DEVELOPMENT) + "/" + getRemainingWork(State.TEST) + "]" ;
     }
 }

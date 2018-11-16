@@ -1,5 +1,6 @@
 package uk.org.grant.getkanban.card;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 import uk.org.grant.getkanban.Board;
 import uk.org.grant.getkanban.Context;
@@ -26,5 +27,12 @@ public class FixedDateCardTest {
     public void f2HasFixedDate() {
         Card f2 = Cards.getCard("F2");
         assertThat(f2.getDueDate(), is(21));
+    }
+
+    @Test
+    public void equalsContract() {
+        EqualsVerifier.forClass(FixedDateCard.class)
+                .withOnlyTheseFields("name")
+                .verify();
     }
 }

@@ -20,6 +20,7 @@ public interface Card {
     int getDueDate();
     void setBlocker(Blocker b);
     Blocker getBlocker();
+    boolean isBlocked();
 
     enum Size {
         VERY_HIGH, HIGH, MEDIUM, LOW, NONE

@@ -3,8 +3,10 @@ package uk.org.grant.getkanban.card;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.Context;
+import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.column.Column;
 import uk.org.grant.getkanban.column.ReadyToDeployColumn;
+import uk.org.grant.getkanban.column.StateColumn;
 
 public class IntangibleCard extends AbstractCard {
     private static final Logger LOGGER = LoggerFactory.getLogger(IntangibleCard.class);
@@ -25,11 +27,11 @@ public class IntangibleCard extends AbstractCard {
         if (getName().equals("I3")) {
             LOGGER.info("{}: Upgrade database version", context.getDay());
             Column backlog = context.getBoard().getBacklog();
-            backlog.addCard(Cards.getCard("S29"));
-            backlog.addCard(Cards.getCard("S30"));
-            backlog.addCard(Cards.getCard("S31"));
-            backlog.addCard(Cards.getCard("S32"));
-            backlog.addCard(Cards.getCard("S33"));
+            for (String name : new String[] {"S29", "S30", "S31", "S32", "S33"}) {
+                Card card = Cards.getCard(name);
+                LOGGER.info("{} -> {}", card, backlog);
+                backlog.addCard(card);
+            }
         }
     }
 
@@ -42,15 +44,22 @@ public class IntangibleCard extends AbstractCard {
             ReadyToDeployColumn readyToDeploy = context.getBoard().getReadyToDeploy();
             readyToDeploy.setDeploymentFrequency(1);
         }
+        if (getName().equals("I2")) {
+            LOGGER.info("{}: Automate testing", context.getDay());
+            StateColumn test = context.getBoard().getStateColumn(State.TEST);
+            test.getIncompleteCards().forEach(c -> {
+                c.doWork(State.TEST, Math.min(2, c.getRemainingWork(State.TEST)));
+                LOGGER.info("Test Automation: Removed 2 points of test effort from {}", c);
+            });
+            test.addListener(c -> {
+                c.doWork(State.TEST, 2);
+                LOGGER.info("Test Automation: Removed 2 points of test effort from {}", c);
+            });
+        }
     }
 
     @Override
     public int getSubscribers() {
-        return getFineOrPayment();
-    }
-
-    @Override
-    public String toString() {
-        return getName();
+        return 0;
     }
 }

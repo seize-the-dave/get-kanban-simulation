@@ -1,5 +1,6 @@
 package uk.org.grant.getkanban.card;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 import uk.org.grant.getkanban.Board;
 import uk.org.grant.getkanban.Context;
@@ -7,6 +8,7 @@ import uk.org.grant.getkanban.DaysFactory;
 import uk.org.grant.getkanban.State;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class StandardCardTest {
@@ -121,6 +123,19 @@ public class StandardCardTest {
         s1.setBlocker(b);
 
         assertThat(s1.getBlocker(), is(b));
+    }
+
+    @Test
+    public void equalsContract() {
+        EqualsVerifier.forClass(StandardCard.class)
+                .withOnlyTheseFields("name")
+                .verify();
+    }
+
+    @Test
+    public void fixedDateFieldsHaveDefaults() {
+        assertEquals(Cards.getCard("S1").getDueDate(), -1);
+        assertEquals(Cards.getCard("S1").getFineOrPayment(), 0);
     }
 
     private Card createCard() {

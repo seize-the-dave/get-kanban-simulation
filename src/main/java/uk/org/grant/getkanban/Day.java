@@ -3,8 +3,11 @@ package uk.org.grant.getkanban;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.column.Workable;
+import uk.org.grant.getkanban.dice.RandomDice;
 import uk.org.grant.getkanban.instructions.Instruction;
 import uk.org.grant.getkanban.policies.DiceAssignmentStrategy;
+
+import java.util.Random;
 
 public class Day implements Workable<Context> {
     private static final Logger LOGGER = LoggerFactory.getLogger(Day.class);
@@ -37,15 +40,21 @@ public class Day implements Workable<Context> {
 
     public void standUp(Board board) {
         LOGGER.info("{}: STAND UP", this);
-//        if (ordinal == 14) {
-//            board.getSelected().setLimit(1);
-//            board.getStateColumn(State.ANALYSIS).setLimit(1);
-//            board.getStateColumn(State.DEVELOPMENT).setLimit(2);
-//            board.getStateColumn(State.TEST).setLimit(2);
-//
-//        }
+        removeBlockers(board);
         replenishSelected(board);
         assignDice(board);
+    }
+
+    private void removeBlockers(Board board) {
+        board.getStateColumn(State.DEVELOPMENT).getIncompleteCards().stream()
+                .filter(c -> c.isBlocked())
+                .forEach(c -> {
+                    int roll = new RandomDice(new Random()).roll();
+                    int delta = Math.min(roll, c.getBlocker().getRemainingWork());
+                    int remaining = c.getBlocker().getRemainingWork() - delta;
+                    LOGGER.info("{}: Reducing blocker on {} by {} points.  {} points remaining.", this, c, delta, remaining);
+                    c.getBlocker().doWork(delta);
+                });
     }
 
     private void replenishSelected(Board board) {

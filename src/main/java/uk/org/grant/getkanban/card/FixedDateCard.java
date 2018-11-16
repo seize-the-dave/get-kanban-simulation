@@ -2,6 +2,8 @@ package uk.org.grant.getkanban.card;
 
 import uk.org.grant.getkanban.State;
 
+import java.util.Objects;
+
 public class FixedDateCard extends AbstractCard {
     private final int dueDate;
     private final int fine;
@@ -19,15 +21,20 @@ public class FixedDateCard extends AbstractCard {
 
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (o instanceof FixedDateCard == false) {
             return false;
+        } else {
+            FixedDateCard other = (FixedDateCard) o;
+            return Objects.equals(getName(), other.getName());
         }
-        return this.getName().equals(((FixedDateCard) o).getName());
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
+        if (getName() == null) {
+            return 0;
+        }
         return getName().hashCode();
     }
 

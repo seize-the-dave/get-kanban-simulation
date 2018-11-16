@@ -1,11 +1,7 @@
 package uk.org.grant.getkanban;
 
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.card.ExpediteCard;
 import uk.org.grant.getkanban.card.FixedDateCard;
-import uk.org.grant.getkanban.card.StandardCard;
-import uk.org.grant.getkanban.column.Column;
-import uk.org.grant.getkanban.column.DeployedColumn;
 
 import java.util.concurrent.atomic.AtomicIntegerArray;
 

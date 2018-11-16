@@ -22,6 +22,7 @@ public class StateColumn extends LimitedColumn {
     private AtomicBoolean rolled = new AtomicBoolean();
     private DiceGroup[] groups = new DiceGroup[0];
     private Comparator<Card> comparator;
+    private Set<ColumnListener> listeners = new HashSet<>();
 
     public StateColumn(State state, int limit, Column upstream) {
         super(limit);
@@ -45,6 +46,7 @@ public class StateColumn extends LimitedColumn {
         if (card.getRemainingWork(this.state) == 0) {
             done.add(card);
         } else {
+            listeners.forEach(l -> l.cardAdded(card));
             todo.add(card);
         }
     }
@@ -95,15 +97,12 @@ public class StateColumn extends LimitedColumn {
                     continue;
                 }
                 logger.info("{}: {} leftover points to spend", context.getDay(), group.getLeftoverPoints());
-                for (Iterator<Card> iter = todo.iterator(); iter.hasNext() && group.getLeftoverPoints() > 0; ) {
-                    Card card = iter.next();
-                    group.spendLeftoverPoints(state, card);
-                    if (card.getRemainingWork(this.state) == 0) {
-                        iter.remove();
-                        done.add(card);
-                        logger.info("{} -> {} -> {}:DONE", state, card.getName(), state);
-                    }
-                }
+                todo.stream().filter(c -> c.isBlocked() == false).forEach(c -> group.spendLeftoverPoints(state, c));
+                todo.stream().filter(c -> c.getRemainingWork(state) == 0).forEach(c -> {
+                    done.add(c);
+                    logger.info("{} -> {} -> {}:DONE", state, c.getName(), state);
+                });
+                todo.removeIf(c -> c.getRemainingWork(state) == 0);
             }
         }
         if (getCards().size() == this.getLimit()) {
@@ -143,5 +142,9 @@ public class StateColumn extends LimitedColumn {
 
         todo.setComparator(comparator);
         done.setComparator(comparator);
+    }
+
+    public void addListener(ColumnListener columnListener) {
+        listeners.add(columnListener);
     }
 }

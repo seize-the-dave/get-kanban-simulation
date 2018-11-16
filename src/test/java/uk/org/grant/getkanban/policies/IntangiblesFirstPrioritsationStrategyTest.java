@@ -20,9 +20,11 @@ public class IntangiblesFirstPrioritsationStrategyTest {
         queue.add(Cards.getCard("S1"));
         queue.add(Cards.getCard("S2"));
         queue.add(Cards.getCard("I1"));
+        queue.add(Cards.getCard("I2"));
         queue.add(Cards.getCard("S3"));
         queue.add(Cards.getCard("S4"));
 
+        assertThat(queue.poll(), is(instanceOf(IntangibleCard.class)));
         assertThat(queue.poll(), is(instanceOf(IntangibleCard.class)));
         assertThat(queue.poll(), is(instanceOf(StandardCard.class)));
     }

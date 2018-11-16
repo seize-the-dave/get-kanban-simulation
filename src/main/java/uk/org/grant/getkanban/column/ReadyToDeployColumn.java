@@ -60,6 +60,11 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
     }
 
     public void setDeploymentFrequency(int deploymentFrequency) {
+        LOGGER.info("Now deploying every {} day(s)", deploymentFrequency);
         this.deploymentFrequency = deploymentFrequency;
+    }
+
+    public int getDeploymentFrequency() {
+        return this.deploymentFrequency;
     }
 }

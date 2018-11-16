@@ -122,4 +122,17 @@ public class StateColumnTest {
 
         assertThat(deployed.getCards().peek().getName(), is("S10"));
     }
+
+    @Test
+    public void triggersListenerWhenCardAdded() {
+        StateColumn column = new StateColumn(State.TEST, 2, new NullColumn());
+        column.addListener(c -> c.doWork(State.TEST, 2));
+
+        Card s8 = Cards.getCard("S8");
+        assertThat(s8.getRemainingWork(State.TEST), is(9));
+
+        column.addCard(s8);
+
+        assertThat(s8.getRemainingWork(State.TEST), is(7));
+    }
 }

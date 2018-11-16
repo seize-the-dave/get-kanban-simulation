@@ -35,6 +35,6 @@ public class TammyHiredTest {
         Day d = daysFactory.getDay(18);
         d.endOfDay(b);
 
-        assertThat(b.getDice(State.TEST).size(), is(1));
+        assertThat(b.getDice(State.TEST).size(), is(0));
     }
 }
