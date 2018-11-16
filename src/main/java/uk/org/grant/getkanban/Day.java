@@ -60,20 +60,23 @@ public class Day implements Workable<Context> {
     private void replenishSelected(Board board) {
         LOGGER.info("{}: Replenish Selected Column", this);
         board.getSelected().doTheWork(new Context(board, this));
+//        LOGGER.info("{}: Pull where possible", this);
+        board.getReadyToDeploy().doTheWork(new Context(board, this));
     }
 
     private void assignDice(Board board) {
-        LOGGER.info("{}: Assigning Dice to Tickets", this);
+        LOGGER.info("{}: Assigning dice to cards", this);
         diceAssignmentStrategy.assignDice(board);
     }
 
     public void doTheWork(Context context) {
         LOGGER.info("{}: DO THE WORK", this);
+        // This should pull from upstream
         context.getBoard().getDeployed().doTheWork(context);
-        context.getBoard().getReadyToDeploy().doTheWork(context);
-        context.getBoard().getStateColumn(State.TEST).doTheWork(context);
-        context.getBoard().getStateColumn(State.DEVELOPMENT).doTheWork(context);
-        context.getBoard().getStateColumn(State.ANALYSIS).doTheWork(context);
+//        context.getBoard().getReadyToDeploy().doTheWork(context);
+//        context.getBoard().getStateColumn(State.TEST).doTheWork(context);
+//        context.getBoard().getStateColumn(State.DEVELOPMENT).doTheWork(context);
+//        context.getBoard().getStateColumn(State.ANALYSIS).doTheWork(context);
     }
 
     public int getOrdinal() {
@@ -88,6 +91,10 @@ public class Day implements Workable<Context> {
         for (Instruction instruction : instructions) {
             instruction.execute(b);
         }
+        LOGGER.info("{}: Scrub out remaining points", this);
+        b.getStateColumn(State.TEST).assignDice();
+        b.getStateColumn(State.DEVELOPMENT).assignDice();
+        b.getStateColumn(State.ANALYSIS).assignDice();
     }
 
     @Override

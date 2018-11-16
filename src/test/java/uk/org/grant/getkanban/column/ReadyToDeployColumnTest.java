@@ -39,13 +39,13 @@ public class ReadyToDeployColumnTest {
         b.getBacklog().addCard(i1);
 
         DaysFactory df = new DaysFactory(true);
-        for (int i = 4; i < 8; i++) {
+        for (int i = 4; i < 7; i++) {
             Day d = df.getDay(i);
             d.standUp(b);
             d.doTheWork(new Context(b, d));
             d.endOfDay(b);
         }
 
-        Assert.assertThat(i1.getDayDeployed(), is(7));
+        Assert.assertThat(i1.getDayDeployed(), is(6));
     }
 }

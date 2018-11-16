@@ -21,7 +21,7 @@ public class DiceGroup {
         this.die = die;
         this.logger = LoggerFactory.getLogger(DiceGroup.class.toString() + "[" + card.getName() + "]");
 
-        logger.info("Allocated {} to {}", die, card);
+        logger.info("Assigned {} to {}", die, card);
     }
 
     public void rollFor(State state) {

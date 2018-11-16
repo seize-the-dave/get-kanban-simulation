@@ -3,6 +3,7 @@ package uk.org.grant.getkanban.column;
 import org.junit.Test;
 import uk.org.grant.getkanban.Board;
 import uk.org.grant.getkanban.Context;
+import uk.org.grant.getkanban.card.Blocker;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.card.Cards;
@@ -42,14 +43,34 @@ public class StateColumnTest {
         Card s12 = Cards.getCard("S12");
         b.getStateColumn(State.ANALYSIS).addCard(s8);
         b.getStateColumn(State.ANALYSIS).addCard(s12);
-        b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
-        b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(6)));
+        b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(5)));
+        b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(5)));
 
         d.standUp(b);
         d.doTheWork(new Context(b, d));
 
         assertThat(s8.getRemainingWork(State.ANALYSIS), is(0));
         assertThat(s12.getRemainingWork(State.ANALYSIS), is(0));
+    }
+
+    @Test
+    public void doNotSpendLeftoverWorkOnBlockedItems() {
+        Board b = new Board();
+        Day d = new Day(10);
+
+        Card s8 = Cards.getCard("S8");
+        Card s12 = Cards.getCard("S12");
+        s12.setBlocker(new Blocker());
+        b.getStateColumn(State.ANALYSIS).addCard(s8);
+        b.getStateColumn(State.ANALYSIS).addCard(s12);
+        b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(5)));
+        b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(5)));
+
+        d.standUp(b);
+        d.doTheWork(new Context(b, d));
+
+        assertThat(s8.getRemainingWork(State.ANALYSIS), is(0));
+        assertThat(s12.getRemainingWork(State.ANALYSIS), is(5));
     }
 
     @Test

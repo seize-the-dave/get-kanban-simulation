@@ -48,7 +48,6 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
                 addCard(optionalCard.get());
                 LOGGER.info("{}: {} -> {} -> {}", context.getDay(), upstream, optionalCard.get().getName(), this);
             } else {
-                LOGGER.warn("{}: {} has nothing available to pull", context.getDay(), upstream);
                 break;
             }
         }

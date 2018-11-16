@@ -37,19 +37,26 @@ public class DiceAssignmentStrategy {
      * @param board
      */
     public void assignDice(Board board) {
-        List<StateDice> unallocatedDice = new ArrayList<>();
+        List<StateDice> unassignedDice = new ArrayList<>();
 
         for (State state : new State[]{State.TEST, State.DEVELOPMENT, State.ANALYSIS}) {
             StateColumn column = board.getStateColumn(state);
-
             List<StateDice> dice = board.getDice(state);
-            if (!unallocatedDice.isEmpty()) {
-                LOGGER.info("Adding left over dice {} to {}", unallocatedDice, dice);
-                dice.addAll(unallocatedDice);
-                unallocatedDice.clear();
+
+            // No cards to allocate to
+            if (column.getIncompleteCards().stream().filter(c -> !c.isBlocked()).count() == 0) {
+                LOGGER.info("{} is unassigned in {}", dice, state);
+                unassignedDice.addAll(dice);
+                continue;
             }
 
-            LOGGER.info("Ready to allocate {} to {}", dice, column);
+            if (!unassignedDice.isEmpty()) {
+                LOGGER.info("Adding left over dice {} to {}", unassignedDice, dice);
+                dice.addAll(unassignedDice);
+                unassignedDice.clear();
+            }
+
+            LOGGER.info("Assigning {} to cards in {}", dice, column);
             List<DiceGroup> groups = new ArrayList<DiceGroup>();
             column.getIncompleteCards().stream().filter(c -> c.isBlocked() == false).forEach(c -> {
                 if (dice.size() > 0) {
@@ -63,9 +70,12 @@ public class DiceAssignmentStrategy {
             column.assignDice(groups.toArray(new DiceGroup[0]));
 
             if (!dice.isEmpty()) {
-                LOGGER.info("{} left over", dice);
-                unallocatedDice = dice;
+                LOGGER.info("{} is unassigned in {}", dice, state);
+                unassignedDice.addAll(dice);
             }
+        }
+        if (unassignedDice.size() > 0) {
+            LOGGER.error("Unused dice: {}", unassignedDice);
         }
     }
 }

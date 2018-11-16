@@ -20,7 +20,7 @@ public class StateColumn extends LimitedColumn {
     private final MutablePriorityQueue<Card> todo;
     private final MutablePriorityQueue<Card> done;
     private AtomicBoolean rolled = new AtomicBoolean();
-    private DiceGroup[] groups = new DiceGroup[0];
+    private List<DiceGroup> groups = new ArrayList<>();
     private Comparator<Card> comparator;
     private Set<ColumnListener> listeners = new HashSet<>();
 
@@ -70,50 +70,54 @@ public class StateColumn extends LimitedColumn {
     }
 
     public void doTheWork(Context context) {
-        logger.info("{}: Doing work in {} ", context.getDay(), this);
         reduceWorkOnAssignedTickets();
         spendLeftoverPoints(context);
     }
 
     private void spendLeftoverPoints(Context context) {
-        logger.info("{}: Spending leftover points on {}", context.getDay(), this);
+        // Pull from upstream until we reach our limit, or upstream has nothing left to give
         while (getCards().size() < this.getLimit()) {
             Optional<Card> optionalCard = upstream.pull(context);
             if (optionalCard.isPresent()) {
                 addCard(optionalCard.get());
                 logger.info("{}: {} -> {} -> {}", context.getDay(), upstream, optionalCard.get().getName(), this);
             } else {
-                logger.warn("{} has nothing available to pull", upstream);
-            }
-            // Do Work
-            if (todo.isEmpty()) {
                 break;
             }
-            if (Arrays.stream(groups).noneMatch(g -> g.getLeftoverPoints() > 0)) {
-                break;
-            }
-            for (DiceGroup group : groups) {
-                if (group.getLeftoverPoints() == 0) {
-                    continue;
-                }
-                logger.info("{}: {} leftover points to spend", context.getDay(), group.getLeftoverPoints());
-                todo.stream().filter(c -> c.isBlocked() == false).forEach(c -> group.spendLeftoverPoints(state, c));
-                todo.stream().filter(c -> c.getRemainingWork(state) == 0).forEach(c -> {
-                    done.add(c);
-                    logger.info("{} -> {} -> {}:DONE", state, c.getName(), state);
-                });
-                todo.removeIf(c -> c.getRemainingWork(state) == 0);
-            }
         }
-        if (getCards().size() == this.getLimit()) {
-            logger.info("{}: {} is full", context.getDay(), this);
+        // No dice, so no point in continuing
+        if (groups.size() == 0) {
+            return;
         }
+        // No cards we can work on, so no point in continuing
+        if (todo.stream().filter(c -> c.isBlocked() == false).count() == 0) {
+            return;
+        }
+        logger.info("{}: Spending leftover points on {}", context.getDay(), this);
+        for (DiceGroup group : groups) {
+            logger.info("{}: {} leftover points to spend", context.getDay(), group.getLeftoverPoints());
+            // Do as much work as possible on unblocked tickets
+            todo.stream().filter(c -> c.isBlocked() == false).forEach(c -> group.spendLeftoverPoints(state, c));
+            // Add all the completed tickets to done
+            todo.stream().filter(c -> c.getRemainingWork(state) == 0).forEach(c -> {
+                done.add(c);
+                logger.info("{} -> {} -> {}:DONE", state, c.getName(), state);
+            });
+            // Remove the completed tickets
+            todo.removeIf(c -> c.getRemainingWork(state) == 0);
+        }
+        // Remove spent groups
+        groups.removeIf(g -> g.getLeftoverPoints() == 0);
     }
 
     private void reduceWorkOnAssignedTickets() {
         if (rolled.getAndSet(true)) {
             return;
         }
+        if (groups.size() == 0) {
+            return;
+        }
+        logger.info("Reducing work on cards with assigned dice");
         for (DiceGroup group : groups) {
             group.rollFor(state);
             Optional<Card> card = todo.stream().filter(c -> c.getRemainingWork(this.state) == 0).findFirst();
@@ -123,6 +127,7 @@ public class StateColumn extends LimitedColumn {
                 done.add(card.get());
             }
         }
+        groups.removeIf(g -> g.getLeftoverPoints() == 0);
     }
 
     @Override
@@ -132,7 +137,7 @@ public class StateColumn extends LimitedColumn {
     }
 
     public void assignDice(DiceGroup... groups) {
-        this.groups = groups;
+        this.groups = new LinkedList<>(Arrays.asList(groups));
         this.rolled.set(false);
     }
 
