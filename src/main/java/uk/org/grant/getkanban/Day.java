@@ -3,8 +3,10 @@ package uk.org.grant.getkanban;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.column.Workable;
+import uk.org.grant.getkanban.dice.Dice;
 import uk.org.grant.getkanban.dice.RandomDice;
 import uk.org.grant.getkanban.instructions.Instruction;
+import uk.org.grant.getkanban.policies.ComplexDiceAssignmentStrategy;
 import uk.org.grant.getkanban.policies.DiceAssignmentStrategy;
 
 import java.util.Random;
@@ -13,7 +15,7 @@ public class Day implements Workable<Context> {
     private static final Logger LOGGER = LoggerFactory.getLogger(Day.class);
     private final int ordinal;
     private final Instruction[] instructions;
-    private final DiceAssignmentStrategy diceAssignmentStrategy = new DiceAssignmentStrategy();
+    private final DiceAssignmentStrategy diceAssignmentStrategy;
 
     // 9 Billing
     // 10 Add Blocker to S10.  Pink Pete Dice (7 Work)
@@ -33,9 +35,19 @@ public class Day implements Workable<Context> {
 
     }
 
-    public Day(int ordinal, Instruction... instructions) {
+    public Day(int ordinal, DiceAssignmentStrategy diceAssignmentStrategy) {
+        this(ordinal, diceAssignmentStrategy, new Instruction[0]);
+
+    }
+
+    public Day(int ordinal, DiceAssignmentStrategy diceAssignmentStrategy, Instruction... instructions) {
         this.ordinal = ordinal;
+        this.diceAssignmentStrategy = diceAssignmentStrategy;
         this.instructions = instructions;
+    }
+
+    public Day(int ordinal, Instruction... instructions) {
+        this(ordinal,  new ComplexDiceAssignmentStrategy(), instructions);
     }
 
     public void standUp(Board board) {

@@ -23,7 +23,7 @@ public class DiceAssignmentStrategyTest {
         b.addDice(new StateDice(State.TEST, new LoadedDice(6)));
         Card s10 = Cards.getCard("S10");
         b.getStateColumn(State.TEST).addCard(s10);
-        DiceAssignmentStrategy s = new DiceAssignmentStrategy();
+        ComplexDiceAssignmentStrategy s = new ComplexDiceAssignmentStrategy();
 
         assertThat(s10.getRemainingWork(State.TEST), is(9));
 
@@ -40,7 +40,7 @@ public class DiceAssignmentStrategyTest {
         Card s10 = Cards.getCard("S10");
         s10.setBlocker(new Blocker());
         b.getStateColumn(State.TEST).addCard(s10);
-        DiceAssignmentStrategy s = new DiceAssignmentStrategy();
+        ComplexDiceAssignmentStrategy s = new ComplexDiceAssignmentStrategy();
 
         assertThat(s10.getRemainingWork(State.TEST), is(9));
 
@@ -56,7 +56,7 @@ public class DiceAssignmentStrategyTest {
         b.addDice(new StateDice(State.TEST, new LoadedDice(6)));
         Card s10 = Cards.getCard("S10");
         b.getStateColumn(State.DEVELOPMENT).addCard(s10);
-        DiceAssignmentStrategy s = new DiceAssignmentStrategy();
+        ComplexDiceAssignmentStrategy s = new ComplexDiceAssignmentStrategy();
 
         assertThat(s10.getRemainingWork(State.DEVELOPMENT), is(6));
 
@@ -64,6 +64,22 @@ public class DiceAssignmentStrategyTest {
         b.getStateColumn(State.TEST).doTheWork(new Context(b, new Day(1)));
 
         assertThat(s10.getRemainingWork(State.DEVELOPMENT), is(3));
+    }
+
+    @Test
+    public void unusedDevelopmentDiceAreUsedByTest() {
+        Board b = new Board();
+        b.addDice(new StateDice(State.DEVELOPMENT, new LoadedDice(6)));
+        Card s10 = Cards.getCard("S10");
+        b.getStateColumn(State.TEST).addCard(s10);
+        ComplexDiceAssignmentStrategy s = new ComplexDiceAssignmentStrategy();
+
+        assertThat(s10.getRemainingWork(State.TEST), is(9));
+
+        s.assignDice(b);
+        b.getStateColumn(State.TEST).doTheWork(new Context(b, new Day(1)));
+
+        assertThat(s10.getRemainingWork(State.TEST), is(6));
     }
 
     @Test
@@ -77,7 +93,7 @@ public class DiceAssignmentStrategyTest {
         b.addDice(new StateDice(State.TEST, new LoadedDice(3)));
         Card s12 = Cards.getCard("S12");
         b.getStateColumn(State.TEST).addCard(s12);
-        DiceAssignmentStrategy s = new DiceAssignmentStrategy(new BigDecimal(3.5), maxDice);
+        ComplexDiceAssignmentStrategy s = new ComplexDiceAssignmentStrategy(new BigDecimal(3.5), maxDice);
         assertThat(s12.getRemainingWork(State.TEST), is(10));
 
         // S12 has 10 points remaining.  We should use three dice, but we're only going to use one.
@@ -98,7 +114,7 @@ public class DiceAssignmentStrategyTest {
         b.addDice(new StateDice(State.TEST, new LoadedDice(1)));
         Card s3 = Cards.getCard("S3");
         b.getStateColumn(State.TEST).addCard(s3);
-        DiceAssignmentStrategy s = new DiceAssignmentStrategy(expectedRoll);
+        ComplexDiceAssignmentStrategy s = new ComplexDiceAssignmentStrategy(expectedRoll);
         assertThat(s3.getRemainingWork(State.TEST), is(6));
 
         // Only one dice will be assigned because one 6 is enough to finish S3

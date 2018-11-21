@@ -7,6 +7,7 @@ import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.column.*;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.LoadedDice;
+import uk.org.grant.getkanban.policies.NoCrossSkillingDiceAssignmentStrategy;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -42,7 +43,7 @@ public class DayTest {
         Board b = new Board();
         assertThat(b.getStateColumn(State.ANALYSIS).getLimit(), is(2));
 
-        Day d = new Day(1, board -> board.getStateColumn(State.ANALYSIS).setLimit(1));
+        Day d = new Day(1, new NoCrossSkillingDiceAssignmentStrategy(), board -> board.getStateColumn(State.ANALYSIS).setLimit(1));
         d.endOfDay(b);
         assertThat(b.getStateColumn(State.ANALYSIS).getLimit(), is(1));
     }

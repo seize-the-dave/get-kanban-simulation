@@ -7,6 +7,7 @@ import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.RandomDice;
 import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
 import uk.org.grant.getkanban.policies.IntangiblesFirstPrioritisationStrategy;
+import uk.org.grant.getkanban.policies.NoCrossSkillingDiceAssignmentStrategy;
 import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
 
 import java.util.*;
@@ -81,7 +82,7 @@ public class BoardRunner {
                 b.getBacklog().addCard(Cards.getCard("I2"));
                 b.getBacklog().addCard(Cards.getCard("I3"));
 
-                DaysFactory daysFactory = new DaysFactory(true);
+                DaysFactory daysFactory = new DaysFactory(true, new NoCrossSkillingDiceAssignmentStrategy());
                 for (int i = 10; i < 22; i++) {
                     Day d = daysFactory.getDay(i);
 
