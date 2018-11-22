@@ -4,7 +4,6 @@ import org.junit.Test;
 import uk.org.grant.getkanban.Board;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
@@ -16,7 +15,7 @@ public class SelectedColumnTest {
     @Test
     public void marksSelectedDayOnPull() {
         Card card = Cards.getCard("S10");
-        BacklogColumn backlog = new BacklogColumn();
+        Options backlog = new Options();
         backlog.addCard(card);
 
         Column selected = new SelectedColumn(1, backlog);
@@ -42,7 +41,7 @@ public class SelectedColumnTest {
 
     @Test
     public void willNotPullBeyondWipLimit() {
-        Column backlog = new BacklogColumn();
+        Column backlog = new Options();
         SelectedColumn selected = new SelectedColumn(1, backlog);
 
         backlog.addCard(Cards.getCard("S1"));

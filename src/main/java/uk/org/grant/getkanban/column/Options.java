@@ -7,12 +7,12 @@ import uk.org.grant.getkanban.policies.IntangiblesFirstPrioritisationStrategy;
 
 import java.util.*;
 
-public class BacklogColumn extends UnbufferedColumn {
-    public BacklogColumn() {
+public class Options extends UnbufferedColumn {
+    public Options() {
         this(new IntangiblesFirstPrioritisationStrategy().thenComparing(new BusinessValuePrioritisationStrategy()));
     }
 
-    public BacklogColumn(Comparator<Card> comparator) {
+    public Options(Comparator<Card> comparator) {
         super(new NullColumn(), comparator);
     }
 

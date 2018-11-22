@@ -3,8 +3,6 @@ package uk.org.grant.getkanban;
 import org.junit.Test;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
-import uk.org.grant.getkanban.column.NullColumn;
-import uk.org.grant.getkanban.column.StateColumn;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.RandomDice;
 
@@ -43,7 +41,7 @@ public class BoardTest {
         assertThat(b.getCards(), empty());
         Card e1 = Cards.getCard("E1");
 
-        b.getBacklog().addCard(e1);
+        b.getOptions().addCard(e1);
 
         assertThat(b.getCards(), contains(e1));
     }

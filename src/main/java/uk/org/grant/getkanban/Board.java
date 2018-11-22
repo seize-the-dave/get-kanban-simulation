@@ -13,7 +13,7 @@ public class Board {
     private final List<StateDice> dice = new ArrayList<>();
 
     // Selected (3), Analysis (2), Development (4), Test (3)
-    private final BacklogColumn backlog = new BacklogColumn(new IntangiblesFirstPrioritisationStrategy().thenComparing(new BusinessValuePrioritisationStrategy()));
+    private final Options backlog = new Options(new IntangiblesFirstPrioritisationStrategy().thenComparing(new BusinessValuePrioritisationStrategy()));
     private final SelectedColumn selected = new SelectedColumn(3, backlog);
     private final EnumMap<State, StateColumn> columns = new EnumMap<>(State.class);
     {
@@ -44,7 +44,7 @@ public class Board {
         return columns.get(type);
     }
 
-    public BacklogColumn getBacklog() {
+    public Options getOptions() {
         return this.backlog;
     }
 

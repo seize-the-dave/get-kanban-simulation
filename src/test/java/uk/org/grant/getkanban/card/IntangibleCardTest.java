@@ -23,7 +23,7 @@ public class IntangibleCardTest {
 
         i3.onDeployed(new Context(b, new Day(2)));
 
-        assertThat(b.getBacklog().getCards().poll(), is(Cards.getCard("S29")));
+        assertThat(b.getOptions().getCards().poll(), is(Cards.getCard("S29")));
     }
 
     @Test

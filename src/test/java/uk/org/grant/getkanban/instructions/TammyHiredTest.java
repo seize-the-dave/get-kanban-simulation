@@ -5,9 +5,6 @@ import uk.org.grant.getkanban.Board;
 import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.DaysFactory;
 import uk.org.grant.getkanban.State;
-import uk.org.grant.getkanban.column.BacklogColumn;
-import uk.org.grant.getkanban.column.NullColumn;
-import uk.org.grant.getkanban.column.StateColumn;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

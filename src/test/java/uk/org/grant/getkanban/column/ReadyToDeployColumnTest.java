@@ -36,7 +36,7 @@ public class ReadyToDeployColumnTest {
         b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(1)));
         b.addDice(new StateDice(State.DEVELOPMENT, new LoadedDice(4)));
         b.addDice(new StateDice(State.TEST, new LoadedDice(2)));
-        b.getBacklog().addCard(i1);
+        b.getOptions().addCard(i1);
 
         DaysFactory df = new DaysFactory(true);
         for (int i = 4; i < 7; i++) {

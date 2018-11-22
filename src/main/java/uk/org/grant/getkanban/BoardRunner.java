@@ -34,7 +34,7 @@ public class BoardRunner {
                 b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
                 b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
 
-                b.getBacklog().orderBy(
+                b.getOptions().orderBy(
                         new IntangiblesFirstPrioritisationStrategy()
                         .thenComparing(new BusinessValuePrioritisationStrategy()));
                 b.getSelected().orderBy(
@@ -66,21 +66,21 @@ public class BoardRunner {
 
                 b.getSelected().addCard(Cards.getCard("S13"));
 
-                b.getBacklog().addCard(Cards.getCard("S11"));
-                b.getBacklog().addCard(Cards.getCard("S12"));
-                b.getBacklog().addCard(Cards.getCard("S13"));
-                b.getBacklog().addCard(Cards.getCard("S14"));
-                b.getBacklog().addCard(Cards.getCard("S15"));
-                b.getBacklog().addCard(Cards.getCard("S16"));
-                b.getBacklog().addCard(Cards.getCard("S17"));
-                b.getBacklog().addCard(Cards.getCard("S18"));
+                b.getOptions().addCard(Cards.getCard("S11"));
+                b.getOptions().addCard(Cards.getCard("S12"));
+                b.getOptions().addCard(Cards.getCard("S13"));
+                b.getOptions().addCard(Cards.getCard("S14"));
+                b.getOptions().addCard(Cards.getCard("S15"));
+                b.getOptions().addCard(Cards.getCard("S16"));
+                b.getOptions().addCard(Cards.getCard("S17"));
+                b.getOptions().addCard(Cards.getCard("S18"));
 
-                b.getBacklog().addCard(Cards.getCard("F1"));
-                b.getBacklog().addCard(Cards.getCard("F2"));
+                b.getOptions().addCard(Cards.getCard("F1"));
+                b.getOptions().addCard(Cards.getCard("F2"));
 
-                b.getBacklog().addCard(Cards.getCard("I1"));
-                b.getBacklog().addCard(Cards.getCard("I2"));
-                b.getBacklog().addCard(Cards.getCard("I3"));
+                b.getOptions().addCard(Cards.getCard("I1"));
+                b.getOptions().addCard(Cards.getCard("I2"));
+                b.getOptions().addCard(Cards.getCard("I3"));
 
                 DaysFactory daysFactory = new DaysFactory(true, new NoCrossSkillingDiceAssignmentStrategy());
                 for (int i = 10; i < 22; i++) {

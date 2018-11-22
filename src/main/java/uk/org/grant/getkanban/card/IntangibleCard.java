@@ -26,7 +26,7 @@ public class IntangibleCard extends AbstractCard {
 
         if (getName().equals("I3")) {
             LOGGER.info("{}: Upgrade database version", context.getDay());
-            Column backlog = context.getBoard().getBacklog();
+            Column backlog = context.getBoard().getOptions();
             for (String name : new String[] {"S29", "S30", "S31", "S32", "S33"}) {
                 Card card = Cards.getCard(name);
                 LOGGER.info("{} -> {}", card, backlog);

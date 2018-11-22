@@ -2,9 +2,7 @@ package uk.org.grant.getkanban.instructions;
 
 import org.junit.Test;
 import uk.org.grant.getkanban.Board;
-import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.card.Cards;
-import uk.org.grant.getkanban.column.BacklogColumn;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
@@ -17,10 +15,10 @@ public class GraduateGlenExpediteTest {
 
         Board b = new Board();
 
-        assertThat(b.getBacklog().getCards(), empty());
+        assertThat(b.getOptions().getCards(), empty());
 
         bigCorp.execute(b);
 
-        assertThat(b.getBacklog().getCards(), contains(Cards.getCard("E2")));
+        assertThat(b.getOptions().getCards(), contains(Cards.getCard("E2")));
     }
 }

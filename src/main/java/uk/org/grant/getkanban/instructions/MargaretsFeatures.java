@@ -12,7 +12,7 @@ public class MargaretsFeatures implements Instruction {
     @Override
     public void execute(Board b) {
         LOGGER.info("Margaret from marketing has suggested some more features");
-        Column backlog = b.getBacklog();
+        Column backlog = b.getOptions();
         for (String name : new String[] {"S19", "S20", "S21", "S22", "S23", "S24", "S25", "S26", "S27", "S28"}) {
             Card card = Cards.getCard(name);
             LOGGER.info("{} -> {}", card, backlog);

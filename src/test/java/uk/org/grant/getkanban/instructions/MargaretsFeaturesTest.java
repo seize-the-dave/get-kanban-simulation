@@ -2,7 +2,6 @@ package uk.org.grant.getkanban.instructions;
 
 import org.junit.Test;
 import uk.org.grant.getkanban.*;
-import uk.org.grant.getkanban.column.BacklogColumn;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -17,6 +16,6 @@ public class MargaretsFeaturesTest {
 
         day.endOfDay(b);
 
-        assertThat(b.getBacklog().getCards().size(), is(10));
+        assertThat(b.getOptions().getCards().size(), is(10));
     }
 }
