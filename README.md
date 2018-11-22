@@ -8,6 +8,7 @@ Most decisions are captured by policies.  For example:
 - Which cards to expedite
 - How to assign dice to cards
 - The order in which to pull cards from the backlog
+- Optional events (such as sending Ted on training)
 
 The `BoardRunner` class is the starting point for changing policies.
 
