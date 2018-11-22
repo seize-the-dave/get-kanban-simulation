@@ -40,7 +40,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.25</version>
-            <!--<scope>test</scope>-->
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -125,9 +125,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>
-                                        uk.org.grant.getkanban.BoardRunner
-                                    </mainClass>
+                                    <mainClass>uk.org.grant.getkanban.BoardRunner</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
@@ -137,6 +135,14 @@
                     </execution>
                 </executions>
             </plugin>
-        </plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>uk.org.grant.getkanban.BoardRunner</mainClass>
+                </configuration>
+            </plugin>
+    </plugins>
     </build>
 </project>

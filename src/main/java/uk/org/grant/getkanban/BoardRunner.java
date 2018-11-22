@@ -110,7 +110,7 @@ public class BoardRunner {
         percentile(50, profitsList);
         percentile(70, profitsList);
         percentile(85, profitsList);
-        percentile(90, profitsList);
+        percentile(95, profitsList);
     }
 
     private static void percentile(int percentage, List<FinancialSummary> profitsList) {
