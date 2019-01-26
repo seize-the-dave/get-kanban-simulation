@@ -3,8 +3,8 @@ package uk.org.grant.getkanban.column;
 import org.junit.Test;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
-import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
-import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
+import uk.org.grant.getkanban.policies.prioritisation.BusinessValuePrioritisationStrategy;
+import uk.org.grant.getkanban.policies.prioritisation.WipAgingPrioritisationStrategy;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

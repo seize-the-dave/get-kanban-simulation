@@ -1,10 +1,9 @@
-package uk.org.grant.getkanban.policies;
+package uk.org.grant.getkanban.policies.dice;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.Board;
 import uk.org.grant.getkanban.State;
-import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.column.StateColumn;
 import uk.org.grant.getkanban.dice.DiceGroup;
 import uk.org.grant.getkanban.dice.StateDice;
@@ -16,7 +15,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ComplexDiceAssignmentStrategy implements DiceAssignmentStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComplexDiceAssignmentStrategy.class);

@@ -5,15 +5,13 @@ import uk.org.grant.getkanban.Board;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Blocker;
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.card.StandardCard;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.dice.DiceGroup;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.LoadedDice;
-import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
-import uk.org.grant.getkanban.policies.SizePrioritisationStrategy;
+import uk.org.grant.getkanban.policies.prioritisation.BusinessValuePrioritisationStrategy;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;

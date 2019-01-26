@@ -1,4 +1,4 @@
-package uk.org.grant.getkanban.policies;
+package uk.org.grant.getkanban.policies.dice;
 
 import org.junit.Test;
 import uk.org.grant.getkanban.Board;
@@ -10,6 +10,7 @@ import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.dice.LoadedDice;
 import uk.org.grant.getkanban.dice.StateDice;
+import uk.org.grant.getkanban.policies.dice.ComplexDiceAssignmentStrategy;
 
 import java.math.BigDecimal;
 

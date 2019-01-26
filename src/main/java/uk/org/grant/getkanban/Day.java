@@ -3,11 +3,10 @@ package uk.org.grant.getkanban;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.column.Workable;
-import uk.org.grant.getkanban.dice.Dice;
 import uk.org.grant.getkanban.dice.RandomDice;
 import uk.org.grant.getkanban.instructions.Instruction;
-import uk.org.grant.getkanban.policies.ComplexDiceAssignmentStrategy;
-import uk.org.grant.getkanban.policies.DiceAssignmentStrategy;
+import uk.org.grant.getkanban.policies.dice.ComplexDiceAssignmentStrategy;
+import uk.org.grant.getkanban.policies.dice.DiceAssignmentStrategy;
 
 import java.util.Random;
 

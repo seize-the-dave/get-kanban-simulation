@@ -2,11 +2,9 @@ package uk.org.grant.getkanban.column;
 
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
-import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
+import uk.org.grant.getkanban.policies.prioritisation.WipAgingPrioritisationStrategy;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class UnbufferedColumn extends AbstractColumn {
     protected final Column upstream;

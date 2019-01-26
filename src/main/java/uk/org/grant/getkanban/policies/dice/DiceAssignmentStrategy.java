@@ -1,4 +1,4 @@
-package uk.org.grant.getkanban.policies;
+package uk.org.grant.getkanban.policies.dice;
 
 import uk.org.grant.getkanban.Board;
 

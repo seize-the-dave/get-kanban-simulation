@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.dice.StateDice;
 import uk.org.grant.getkanban.dice.RandomDice;
-import uk.org.grant.getkanban.policies.BusinessValuePrioritisationStrategy;
-import uk.org.grant.getkanban.policies.IntangiblesFirstPrioritisationStrategy;
-import uk.org.grant.getkanban.policies.NoCrossSkillingDiceAssignmentStrategy;
-import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
+import uk.org.grant.getkanban.policies.prioritisation.BusinessValuePrioritisationStrategy;
+import uk.org.grant.getkanban.policies.prioritisation.IntangiblesFirstPrioritisationStrategy;
+import uk.org.grant.getkanban.policies.dice.NoCrossSkillingDiceAssignmentStrategy;
+import uk.org.grant.getkanban.policies.prioritisation.WipAgingPrioritisationStrategy;
 
 import java.util.*;
 import java.util.concurrent.*;

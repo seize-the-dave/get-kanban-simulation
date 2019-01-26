@@ -1,4 +1,4 @@
-package uk.org.grant.getkanban.policies;
+package uk.org.grant.getkanban.policies.prioritisation;
 
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.StandardCard;

@@ -1,8 +1,8 @@
 package uk.org.grant.getkanban;
 
 import uk.org.grant.getkanban.instructions.*;
-import uk.org.grant.getkanban.policies.DiceAssignmentStrategy;
-import uk.org.grant.getkanban.policies.NoCrossSkillingDiceAssignmentStrategy;
+import uk.org.grant.getkanban.policies.dice.DiceAssignmentStrategy;
+import uk.org.grant.getkanban.policies.dice.NoCrossSkillingDiceAssignmentStrategy;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

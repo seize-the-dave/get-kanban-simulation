@@ -1,4 +1,4 @@
-package uk.org.grant.getkanban.policies;
+package uk.org.grant.getkanban.policies.dice;
 
 import uk.org.grant.getkanban.Board;
 import uk.org.grant.getkanban.State;
@@ -6,6 +6,7 @@ import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.column.StateColumn;
 import uk.org.grant.getkanban.dice.DiceGroup;
 import uk.org.grant.getkanban.dice.StateDice;
+import uk.org.grant.getkanban.policies.dice.DiceAssignmentStrategy;
 
 import java.util.List;
 import java.util.Optional;
