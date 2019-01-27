@@ -36,4 +36,41 @@ public class ExpediteManagerTest {
         ExpediteManager manager = new ExpediteManager();
         assertTrue(manager.expedite(Cards.getCard("F1"), new DaysFactory(true).getDay(14)));
     }
+
+    @Test
+    public void unexpeditedCardIsNotMarkedAsExpedited() {
+        ExpediteManager manager = new ExpediteManager();
+        manager.expedite(Cards.getCard("F1"), new DaysFactory(true).getDay(12));
+        assertFalse(manager.isExpedited(Cards.getCard("F1")));
+    }
+
+    @Test
+    public void expeditedCardIsMarkedAsExpedited() {
+        ExpediteManager manager = new ExpediteManager();
+        manager.expedite(Cards.getCard("F1"), new DaysFactory(true).getDay(14));
+        assertTrue(manager.isExpedited(Cards.getCard("F1")));
+    }
+
+    @Test
+    public void canExpediteSingleItem() {
+        ExpediteManager manager = new ExpediteManager();
+        assertTrue(manager.expedite(Cards.getCard("E1"), new DaysFactory(true).getDay(14)));
+        assertFalse(manager.expedite(Cards.getCard("E2"), new DaysFactory(true).getDay(17)));
+    }
+
+    @Test
+    public void canExpediteUpToWipLimit() {
+        ExpediteManager manager = new ExpediteManager();
+        assertTrue(manager.expedite(Cards.getCard("E1"), new DaysFactory(true).getDay(14)));
+        manager.setWipLimit(2);
+        assertTrue(manager.expedite(Cards.getCard("E2"), new DaysFactory(true).getDay(17)));
+    }
+
+    @Test
+    public void canRemoveCompletedItem() {
+        ExpediteManager manager = new ExpediteManager();
+        assertTrue(manager.expedite(Cards.getCard("E1"), new DaysFactory(true).getDay(14)));
+        manager.remove(Cards.getCard("E1"));
+        assertFalse(manager.isExpedited(Cards.getCard("E1")));
+    }
 }
