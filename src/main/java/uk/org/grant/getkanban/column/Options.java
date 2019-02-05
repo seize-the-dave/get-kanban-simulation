@@ -41,7 +41,7 @@ public class Options extends UnbufferedColumn {
     public Optional<Card> pull(Context context, ClassOfService cos) {
         if (cos == ClassOfService.EXPEDITE) {
             Card topOfBacklog = cards.peek();
-            if (topOfBacklog.isExpeditable(context.getDay())) {
+            if (topOfBacklog != null && topOfBacklog.isExpeditable(context.getDay())) {
                 return Optional.ofNullable(cards.poll());
             } else {
                 return Optional.empty();

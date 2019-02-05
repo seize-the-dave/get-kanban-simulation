@@ -173,7 +173,7 @@ public class ComplexDiceAssignmentStrategy implements DiceAssignmentStrategy {
 
                 // Remove the dice we just used in this column
                 allWorkers.removeAll(allocatedDice);
-                
+
                 // Remove the dice from the board dice
                 diceToAllocate.removeAll(allocatedDice);
             }
