@@ -2,6 +2,7 @@ package uk.org.grant.getkanban.column;
 
 import org.junit.Test;
 import uk.org.grant.getkanban.Board;
+import uk.org.grant.getkanban.ClassOfService;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
@@ -16,12 +17,12 @@ public class DeployedColumnTest {
     public void marksDeployedDayOnPull() {
         Card card = Cards.getCard("S10");
         Column backlog = new Options();
-        backlog.addCard(card);
+        backlog.addCard(card, ClassOfService.STANDARD);
 
         Column selected = new SelectedColumn(1, backlog);
         selected.doTheWork(new Context(new Board(), new Day(1)));
 
-        Column deployed = new DeployedColumn(selected);
+        Column deployed = new DeployedColumn(selected, new NullColumn());
         deployed.doTheWork(new Context(new Board(), new Day(2)));
 
         assertThat(card.getDayDeployed(), is(2));
@@ -29,9 +30,9 @@ public class DeployedColumnTest {
 
     @Test
     public void canChangePriority() {
-        Column deployed = new DeployedColumn(new NullColumn());
-        deployed.addCard(Cards.getCard("S10"));
-        deployed.addCard(Cards.getCard("S5"));
+        Column deployed = new DeployedColumn(new NullColumn(), new NullColumn());
+        deployed.addCard(Cards.getCard("S10"), ClassOfService.STANDARD);
+        deployed.addCard(Cards.getCard("S5"), ClassOfService.STANDARD);
 
         assertThat(deployed.getCards().peek().getName(), is("S5"));
 

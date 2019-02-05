@@ -1,5 +1,6 @@
 package uk.org.grant.getkanban.card;
 
+import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.State;
 
 import java.util.Objects;
@@ -67,5 +68,10 @@ public class FixedDateCard extends AbstractCard {
     @Override
     public int getDueDate() {
         return this.dueDate;
+    }
+
+    @Override
+    public boolean isExpeditable(Day d) {
+        return this.dueDate - d.getOrdinal() < 3;
     }
 }

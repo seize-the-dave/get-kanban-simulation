@@ -2,7 +2,9 @@ package uk.org.grant.getkanban.card;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.org.grant.getkanban.ClassOfService;
 import uk.org.grant.getkanban.Context;
+import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.column.Column;
 import uk.org.grant.getkanban.column.ReadyToDeployColumn;
@@ -30,7 +32,7 @@ public class IntangibleCard extends AbstractCard {
             for (String name : new String[] {"S29", "S30", "S31", "S32", "S33"}) {
                 Card card = Cards.getCard(name);
                 LOGGER.info("{} -> {}", card, backlog);
-                backlog.addCard(card);
+                backlog.addCard(card, ClassOfService.STANDARD);
             }
         }
     }

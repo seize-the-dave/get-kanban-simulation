@@ -1,10 +1,7 @@
 package uk.org.grant.getkanban.policies;
 
 import org.junit.Test;
-import uk.org.grant.getkanban.Board;
-import uk.org.grant.getkanban.Context;
-import uk.org.grant.getkanban.Day;
-import uk.org.grant.getkanban.State;
+import uk.org.grant.getkanban.*;
 import uk.org.grant.getkanban.card.Blocker;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
@@ -22,7 +19,7 @@ public class DiceAssignmentStrategyTest {
         Board b = new Board();
         b.addDice(new StateDice(State.TEST, new LoadedDice(6)));
         Card s10 = Cards.getCard("S10");
-        b.getStateColumn(State.TEST).addCard(s10);
+        b.getStateColumn(State.TEST).addCard(s10, ClassOfService.STANDARD);
         ComplexDiceAssignmentStrategy s = new ComplexDiceAssignmentStrategy();
 
         assertThat(s10.getRemainingWork(State.TEST), is(9));
@@ -39,7 +36,7 @@ public class DiceAssignmentStrategyTest {
         b.addDice(new StateDice(State.TEST, new LoadedDice(6)));
         Card s10 = Cards.getCard("S10");
         s10.setBlocker(new Blocker());
-        b.getStateColumn(State.TEST).addCard(s10);
+        b.getStateColumn(State.TEST).addCard(s10, ClassOfService.STANDARD);
         ComplexDiceAssignmentStrategy s = new ComplexDiceAssignmentStrategy();
 
         assertThat(s10.getRemainingWork(State.TEST), is(9));
@@ -55,7 +52,7 @@ public class DiceAssignmentStrategyTest {
         Board b = new Board();
         b.addDice(new StateDice(State.TEST, new LoadedDice(6)));
         Card s10 = Cards.getCard("S10");
-        b.getStateColumn(State.DEVELOPMENT).addCard(s10);
+        b.getStateColumn(State.DEVELOPMENT).addCard(s10, ClassOfService.STANDARD);
         ComplexDiceAssignmentStrategy s = new ComplexDiceAssignmentStrategy();
 
         assertThat(s10.getRemainingWork(State.DEVELOPMENT), is(6));
@@ -71,7 +68,7 @@ public class DiceAssignmentStrategyTest {
         Board b = new Board();
         b.addDice(new StateDice(State.DEVELOPMENT, new LoadedDice(6)));
         Card s10 = Cards.getCard("S10");
-        b.getStateColumn(State.TEST).addCard(s10);
+        b.getStateColumn(State.TEST).addCard(s10, ClassOfService.STANDARD);
         ComplexDiceAssignmentStrategy s = new ComplexDiceAssignmentStrategy();
 
         assertThat(s10.getRemainingWork(State.TEST), is(9));
@@ -92,7 +89,7 @@ public class DiceAssignmentStrategyTest {
         b.addDice(new StateDice(State.TEST, new LoadedDice(3)));
         b.addDice(new StateDice(State.TEST, new LoadedDice(3)));
         Card s12 = Cards.getCard("S12");
-        b.getStateColumn(State.TEST).addCard(s12);
+        b.getStateColumn(State.TEST).addCard(s12, ClassOfService.STANDARD);
         ComplexDiceAssignmentStrategy s = new ComplexDiceAssignmentStrategy(new BigDecimal(3.5), maxDice);
         assertThat(s12.getRemainingWork(State.TEST), is(10));
 
@@ -113,7 +110,7 @@ public class DiceAssignmentStrategyTest {
         b.addDice(new StateDice(State.TEST, new LoadedDice(1)));
         b.addDice(new StateDice(State.TEST, new LoadedDice(1)));
         Card s3 = Cards.getCard("S3");
-        b.getStateColumn(State.TEST).addCard(s3);
+        b.getStateColumn(State.TEST).addCard(s3, ClassOfService.STANDARD);
         ComplexDiceAssignmentStrategy s = new ComplexDiceAssignmentStrategy(expectedRoll);
         assertThat(s3.getRemainingWork(State.TEST), is(6));
 

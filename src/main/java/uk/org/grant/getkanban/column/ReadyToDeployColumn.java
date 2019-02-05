@@ -2,6 +2,7 @@ package uk.org.grant.getkanban.column;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.org.grant.getkanban.ClassOfService;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
@@ -19,7 +20,10 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
 
 
     @Override
-    public void addCard(Card card) {
+    public void addCard(Card card, ClassOfService cos) {
+        if (cos == ClassOfService.EXPEDITE) {
+            throw new IllegalArgumentException("Expedite is not applicable for ready to deploy");
+        }
         cards.add(card);
     }
 
@@ -29,7 +33,10 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
     }
 
     @Override
-    public Optional<Card> pull(Context context) {
+    public Optional<Card> pull(Context context, ClassOfService cos) {
+        if (cos == ClassOfService.EXPEDITE) {
+            throw new IllegalArgumentException("Shouldn't pull from ready to deploy with expedite class of service");
+        }
         doTheWork(context);
         if (context.getDay().getOrdinal() % deploymentFrequency == 0) {
             return Optional.ofNullable(cards.poll());
@@ -42,11 +49,11 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
     @Override
     public void doTheWork(Context context) {
         while (true) {
-            Optional<Card> optionalCard = upstream.pull(context);
+            Optional<Card> optionalCard = standard.pull(context, ClassOfService.STANDARD);
             if (optionalCard.isPresent()) {
                 optionalCard.get().onReadyToDeploy(context);
-                addCard(optionalCard.get());
-                LOGGER.info("{}: {} -> {} -> {}", context.getDay(), upstream, optionalCard.get().getName(), this);
+                addCard(optionalCard.get(), ClassOfService.STANDARD);
+                LOGGER.info("{}: {} -> {} -> {}", context.getDay(), standard, optionalCard.get().getName(), this);
             } else {
                 break;
             }

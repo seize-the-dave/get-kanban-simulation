@@ -53,14 +53,14 @@ public class FinancialSummaryTest {
 
         Board b = new Board();
         DeployedColumn deployed = b.getDeployed();
-        deployed.addCard(s1);
-        deployed.addCard(s2);
-        deployed.addCard(s3);
-        deployed.addCard(s4);
-        deployed.addCard(s5);
-        deployed.addCard(e1);
-        deployed.addCard(f2);
-        deployed.addCard(Cards.getCard("F1"));
+        deployed.addCard(s1, ClassOfService.STANDARD);
+        deployed.addCard(s2, ClassOfService.STANDARD);
+        deployed.addCard(s3, ClassOfService.STANDARD);
+        deployed.addCard(s4, ClassOfService.STANDARD);
+        deployed.addCard(s5, ClassOfService.STANDARD);
+        deployed.addCard(e1, ClassOfService.STANDARD);
+        deployed.addCard(f2, ClassOfService.STANDARD);
+        deployed.addCard(Cards.getCard("F1"), ClassOfService.STANDARD);
 
         return b;
     }
@@ -92,7 +92,7 @@ public class FinancialSummaryTest {
 
         Board b = new Board();
         DeployedColumn deployed = b.getDeployed();
-        deployed.addCard(f1);
+        deployed.addCard(f1, ClassOfService.STANDARD);
 
         FinancialSummary summary = new FinancialSummary(b);
         assertThat(summary.getFinesOrPayments(15), is(0));
@@ -106,7 +106,7 @@ public class FinancialSummaryTest {
 
         Board b = new Board();
         DeployedColumn deployed = b.getDeployed();
-        deployed.addCard(f1);
+        deployed.addCard(f1, ClassOfService.STANDARD);
 
         FinancialSummary summary = new FinancialSummary(b);
         assertThat(summary.getFinesOrPayments(15), is(-1500));
@@ -120,7 +120,7 @@ public class FinancialSummaryTest {
 
         Board b = new Board();
         DeployedColumn deployed = b.getDeployed();
-        deployed.addCard(e1);
+        deployed.addCard(e1, ClassOfService.STANDARD);
 
         FinancialSummary summary = new FinancialSummary(b);
         assertThat(summary.getFinesOrPayments(18), is(0));

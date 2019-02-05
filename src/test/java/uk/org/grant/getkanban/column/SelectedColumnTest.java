@@ -2,6 +2,7 @@ package uk.org.grant.getkanban.column;
 
 import org.junit.Test;
 import uk.org.grant.getkanban.Board;
+import uk.org.grant.getkanban.ClassOfService;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
@@ -16,7 +17,7 @@ public class SelectedColumnTest {
     public void marksSelectedDayOnPull() {
         Card card = Cards.getCard("S10");
         Options backlog = new Options();
-        backlog.addCard(card);
+        backlog.addCard(card, ClassOfService.STANDARD);
 
         Column selected = new SelectedColumn(1, backlog);
         selected.doTheWork(new Context(new Board(), new Day(1)));
@@ -35,8 +36,8 @@ public class SelectedColumnTest {
     public void cannotExceedWipLimit() {
         SelectedColumn column = new SelectedColumn(1, new NullColumn());
 
-        column.addCard(Cards.getCard("S1"));
-        column.addCard(Cards.getCard("S2"));
+        column.addCard(Cards.getCard("S1"), ClassOfService.STANDARD);
+        column.addCard(Cards.getCard("S2"), ClassOfService.STANDARD);
     }
 
     @Test
@@ -44,8 +45,8 @@ public class SelectedColumnTest {
         Column backlog = new Options();
         SelectedColumn selected = new SelectedColumn(1, backlog);
 
-        backlog.addCard(Cards.getCard("S1"));
-        selected.addCard(Cards.getCard("S2"));
+        backlog.addCard(Cards.getCard("S1"), ClassOfService.STANDARD);
+        selected.addCard(Cards.getCard("S2"), ClassOfService.STANDARD);
 
         selected.doTheWork(new Context(new Board(), new Day(1)));
         assertThat(selected.getCards().size(), is(1));
@@ -54,8 +55,8 @@ public class SelectedColumnTest {
     @Test
     public void canChangePriority() {
         Column deployed = new SelectedColumn(2, new NullColumn());
-        deployed.addCard(Cards.getCard("S10"));
-        deployed.addCard(Cards.getCard("S5"));
+        deployed.addCard(Cards.getCard("S10"), ClassOfService.STANDARD);
+        deployed.addCard(Cards.getCard("S5"), ClassOfService.STANDARD);
 
         assertThat(deployed.getCards().peek().getName(), is("S5"));
 

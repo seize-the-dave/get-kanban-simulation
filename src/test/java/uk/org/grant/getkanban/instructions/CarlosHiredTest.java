@@ -15,7 +15,7 @@ public class CarlosHiredTest {
     @Test
     public void wipOnTestRemoved() {
         Board b = new Board();
-        Column c = new StateColumn(State.TEST, 3, new NullColumn());
+        Column c = new StateColumn(State.TEST, 3, new NullColumn(), new NullColumn());
 
         assertThat(b.getStateColumn(State.TEST).getLimit(), is(3));
 

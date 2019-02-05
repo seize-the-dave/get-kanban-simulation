@@ -54,7 +54,14 @@ public class Day implements Workable<Context> {
         LOGGER.info("{}: STAND UP", this);
         removeBlockers(board);
         replenishSelected(board);
+        expediteTickets(board);
         assignDice(board);
+    }
+
+    private void expediteTickets(Board board) {
+        board.getStateColumn(State.ANALYSIS).expediteTickets(this);
+        board.getStateColumn(State.DEVELOPMENT).expediteTickets(this);
+        board.getStateColumn(State.TEST).expediteTickets(this);
     }
 
     private void removeBlockers(Board board) {
@@ -71,8 +78,9 @@ public class Day implements Workable<Context> {
 
     private void replenishSelected(Board board) {
         LOGGER.info("{}: Replenish Selected Column", this);
+        board.getStateColumn(State.ANALYSIS).doTheWork(new Context(board, this));
         board.getSelected().doTheWork(new Context(board, this));
-//        LOGGER.info("{}: Pull where possible", this);
+        // Make sure all columns are pulled to capacity
         board.getReadyToDeploy().doTheWork(new Context(board, this));
     }
 
@@ -83,12 +91,8 @@ public class Day implements Workable<Context> {
 
     public void doTheWork(Context context) {
         LOGGER.info("{}: DO THE WORK", this);
-        // This should pull from upstream
+        // This should pull from standard
         context.getBoard().getDeployed().doTheWork(context);
-//        context.getBoard().getReadyToDeploy().doTheWork(context);
-//        context.getBoard().getStateColumn(State.TEST).doTheWork(context);
-//        context.getBoard().getStateColumn(State.DEVELOPMENT).doTheWork(context);
-//        context.getBoard().getStateColumn(State.ANALYSIS).doTheWork(context);
     }
 
     public int getOrdinal() {

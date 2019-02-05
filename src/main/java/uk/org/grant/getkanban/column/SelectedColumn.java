@@ -2,6 +2,7 @@ package uk.org.grant.getkanban.column;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.org.grant.getkanban.ClassOfService;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
@@ -20,7 +21,10 @@ public class SelectedColumn extends LimitedColumn {
     }
 
     @Override
-    public void addCard(Card card) {
+    public void addCard(Card card, ClassOfService cos) {
+        if (cos == ClassOfService.EXPEDITE) {
+            throw new IllegalArgumentException("Expedite is not applicable for selected");
+        }
         if (cards.size() == getLimit()) {
             throw new IllegalStateException();
         }
@@ -33,19 +37,26 @@ public class SelectedColumn extends LimitedColumn {
     }
 
     @Override
-    public Optional<Card> pull(Context context) {
-        // Only pull once a day!
+    public Optional<Card> pull(Context context, ClassOfService cos) {
+        if (cos == ClassOfService.EXPEDITE) {
+            throw new IllegalArgumentException("Shouldn't pull for expedite from selected");
+        }
         return Optional.ofNullable(cards.poll());
     }
 
+    /**
+     * This is called during the daily stand up (we're only allowed to pull once per day)
+     *
+     * @param context
+     */
     @Override
     public void doTheWork(Context context) {
         while (getCards().size() < getLimit()) {
-            Optional<Card> optionalCard = upstream.pull(context);
+            Optional<Card> optionalCard = upstream.pull(context, ClassOfService.STANDARD);
             if (optionalCard.isPresent()) {
                 optionalCard.get().onSelected(context);
-                addCard(optionalCard.get());
-                LOGGER.info("{}: {} -> {} -> {}", context.getDay(), upstream, optionalCard.get().getName(), this);
+                addCard(optionalCard.get(), ClassOfService.STANDARD);
+                LOGGER.info("{}: {} -> {} -> {} ({})", context.getDay(), upstream, optionalCard.get().getName(), this, ClassOfService.STANDARD);
             } else {
                 LOGGER.warn("{}: Nothing to pull.", context.getDay());
                 break;

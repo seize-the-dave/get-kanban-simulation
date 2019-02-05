@@ -1,6 +1,7 @@
 package uk.org.grant.getkanban.card;
 
 import uk.org.grant.getkanban.Context;
+import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.State;
 
 import java.util.EnumMap;
@@ -93,7 +94,7 @@ public abstract class AbstractCard implements Card {
 
     @Override
     public void onDeployed(Context context) {
-        if (this.daySelected == 0) {
+        if (this.daySelected == 0 && getName().startsWith("E") == false) {
             throw new IllegalStateException("Cannot deploy unselected card " + getName());
         }
         if (context.getDay().getOrdinal() < this.daySelected) {
@@ -125,6 +126,11 @@ public abstract class AbstractCard implements Card {
     @Override
     public boolean isBlocked() {
         return blocker != null && blocker.getRemainingWork() > 0;
+    }
+
+    @Override
+    public boolean isExpeditable(Day d) {
+        return false;
     }
 
     @Override

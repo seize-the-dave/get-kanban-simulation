@@ -16,8 +16,8 @@ public class DayTest {
     @Test
     public void daysCompleteCardsDuringWork() {
         Card card = Cards.getCard("S1");
-        StateColumn analysis = new StateColumn(State.ANALYSIS, new NullColumn());
-        analysis.addCard(card);
+        StateColumn analysis = new StateColumn(State.ANALYSIS, new NullColumn(), new NullColumn());
+        analysis.addCard(card, ClassOfService.STANDARD);
 
         StateDice dice = new StateDice(State.ANALYSIS, new LoadedDice(6));
         Board b = new Board();

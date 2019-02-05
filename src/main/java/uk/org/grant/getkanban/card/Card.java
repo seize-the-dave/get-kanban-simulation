@@ -1,6 +1,7 @@
 package uk.org.grant.getkanban.card;
 
 import uk.org.grant.getkanban.Context;
+import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.State;
 
 public interface Card {
@@ -21,6 +22,7 @@ public interface Card {
     void setBlocker(Blocker b);
     Blocker getBlocker();
     boolean isBlocked();
+    boolean isExpeditable(Day d);
 
     enum Size {
         VERY_HIGH, HIGH, MEDIUM, LOW, NONE

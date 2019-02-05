@@ -17,12 +17,12 @@ public class Board {
     private final SelectedColumn selected = new SelectedColumn(3, backlog);
     private final EnumMap<State, StateColumn> columns = new EnumMap<>(State.class);
     {
-        columns.put(State.ANALYSIS, new StateColumn(State.ANALYSIS, 2, selected));
-        columns.put(State.DEVELOPMENT, new StateColumn(State.DEVELOPMENT, 4, columns.get(State.ANALYSIS)));
-        columns.put(State.TEST, new StateColumn(State.TEST, 3, columns.get(State.DEVELOPMENT)));
+        columns.put(State.ANALYSIS, new StateColumn(State.ANALYSIS, 2, selected, backlog));
+        columns.put(State.DEVELOPMENT, new StateColumn(State.DEVELOPMENT, 4, columns.get(State.ANALYSIS), columns.get(State.ANALYSIS)));
+        columns.put(State.TEST, new StateColumn(State.TEST, 3, columns.get(State.DEVELOPMENT), columns.get(State.DEVELOPMENT)));
     }
     private final ReadyToDeployColumn readyToDeploy = new ReadyToDeployColumn(columns.get(State.TEST));
-    private final DeployedColumn deployed = new DeployedColumn(readyToDeploy);
+    private final DeployedColumn deployed = new DeployedColumn(readyToDeploy, columns.get(State.TEST));
 
     public List<StateDice> getDice() {
         return dice;
@@ -58,6 +58,10 @@ public class Board {
 
     public DeployedColumn getDeployed() {
         return this.deployed;
+    }
+
+    public void expediteTickets(Day d) {
+
     }
 
     public Collection<Card> getCards() {

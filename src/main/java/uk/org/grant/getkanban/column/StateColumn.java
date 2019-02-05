@@ -1,8 +1,11 @@
 package uk.org.grant.getkanban.column;
 
+import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.org.grant.getkanban.ClassOfService;
 import uk.org.grant.getkanban.Context;
+import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.State;
@@ -16,71 +19,141 @@ import java.util.stream.Stream;
 public class StateColumn extends LimitedColumn {
     private final Logger logger;
     private final State state;
-    private final Column upstream;
-    private final MutablePriorityQueue<Card> todo;
-    private final MutablePriorityQueue<Card> done;
+    private final Column standard;
+    private final Column expedite;
+    private final MutablePriorityQueue<Card> stdTodo;
+    private final MutablePriorityQueue<Card> stdDone;
+    private final MutablePriorityQueue<Card> expTodo;
+    private final MutablePriorityQueue<Card> expDone;
     private AtomicBoolean rolled = new AtomicBoolean();
     private List<DiceGroup> groups = new ArrayList<>();
     private Comparator<Card> comparator;
     private Set<ColumnListener> listeners = new HashSet<>();
 
-    public StateColumn(State state, int limit, Column upstream) {
+    public StateColumn(State state, int limit, Column standard, Column expedite) {
         super(limit);
         this.state = state;
-        this.upstream = upstream;
-        this.todo = new MutablePriorityQueue<>(new WipAgingPrioritisationStrategy());
-        this.done = new MutablePriorityQueue<>(new WipAgingPrioritisationStrategy());
+        this.standard = standard;
+        this.expedite = expedite;
+        this.stdTodo = new MutablePriorityQueue<>(new WipAgingPrioritisationStrategy());
+        this.stdDone = new MutablePriorityQueue<>(new WipAgingPrioritisationStrategy());
+        this.expTodo = new MutablePriorityQueue<>(new WipAgingPrioritisationStrategy());
+        this.expDone = new MutablePriorityQueue<>(new WipAgingPrioritisationStrategy());
         this.comparator = new WipAgingPrioritisationStrategy();
         this.logger = LoggerFactory.getLogger(StateColumn.class.getName() + "[" + state + "]");
     }
 
-    public StateColumn(State state, Column upstream) {
-        this(state, Integer.MAX_VALUE, upstream);
+    public StateColumn(State state, Column standard, Column expedite) {
+        this(state, Integer.MAX_VALUE, standard, expedite);
     }
 
     @Override
-    public void addCard(Card card) {
-        if (getCards().size() == getLimit()) {
+    public void addCard(Card card, ClassOfService cos) {
+        if (getCards(cos).size() == getLimit()) {
             throw new IllegalStateException();
         }
         if (card.getRemainingWork(this.state) == 0) {
-            done.add(card);
+            done(cos).add(card);
         } else {
             listeners.forEach(l -> l.cardAdded(card));
-            todo.add(card);
+            todo(cos).add(card);
         }
     }
 
     @Override
     public Queue<Card> getCards() {
         Queue<Card> queue = new PriorityQueue<>(comparator);
-        queue.addAll(Stream.concat(this.todo.stream(), this.done.stream()).collect(Collectors.toList()));
+        queue.addAll(Stream.concat(
+                this.todo(ClassOfService.STANDARD).stream(),
+                    Stream.concat(this.done(ClassOfService.STANDARD).stream(),
+                        Stream.concat(this.todo(ClassOfService.EXPEDITE).stream(),
+                            this.done(ClassOfService.EXPEDITE).stream()))
+        ).collect(Collectors.toList()));
 
         return queue;
     }
 
-    public Collection<Card> getIncompleteCards() {
-        return todo;
+    public Queue<Card> getCards(ClassOfService cos) {
+        Queue<Card> queue = new PriorityQueue<>(comparator);
+        queue.addAll(Stream.concat(this.todo(cos).stream(), this.done(cos).stream()).collect(Collectors.toList()));
+
+        return queue;
     }
 
+    /**
+     * Called during the stand up
+     */
+    public void assignDice(DiceGroup... groups) {
+        this.groups = new LinkedList<>(Arrays.asList(groups));
+        this.rolled.set(false);
+    }
+
+    /**
+     * Find all the incomplete cards.
+     *
+     * Used for allocating dice (and blocking the first incomplete card)
+     */
+    public Collection<Card> getIncompleteCards() {
+        Queue<Card> queue = new PriorityQueue<>(comparator);
+        queue.addAll(Stream.concat(this.todo(ClassOfService.EXPEDITE).stream(), this.todo(ClassOfService.STANDARD).stream()).collect(Collectors.toList()));
+
+        return queue;
+    }
+
+    // Mostly called during the doTheWork phase
+
     @Override
-    public Optional<Card> pull(Context context) {
+    public Optional<Card> pull(Context context, ClassOfService cos) {
         doTheWork(context);
-        return Optional.ofNullable(done.poll());
+        return Optional.ofNullable(done(cos).poll());
     }
 
     public void doTheWork(Context context) {
         reduceWorkOnAssignedTickets();
-        spendLeftoverPoints(context);
+        spendLeftoverPoints(context, ClassOfService.EXPEDITE);
+        spendLeftoverPoints(context, ClassOfService.STANDARD);
     }
 
-    private void spendLeftoverPoints(Context context) {
-        // Pull from upstream until we reach our limit, or upstream has nothing left to give
-        while (getCards().size() < this.getLimit()) {
-            Optional<Card> optionalCard = upstream.pull(context);
+    private Queue<Card> todo(ClassOfService cos) {
+        if (cos == ClassOfService.STANDARD) {
+            return stdTodo;
+        } else {
+            return expTodo;
+        }
+    }
+
+    private Queue<Card> done(ClassOfService cos) {
+        if (cos == ClassOfService.STANDARD) {
+            return stdDone;
+        } else {
+            return expDone;
+        }
+    }
+
+    private Column upstream(ClassOfService cos) {
+        if (cos == ClassOfService.STANDARD) {
+            return standard;
+        } else {
+            return expedite;
+        }
+    }
+
+    private int getLimit(ClassOfService cos) {
+        if (cos == ClassOfService.EXPEDITE) {
+            // No column limits for expedite!
+            return Integer.MAX_VALUE;
+        } else {
+            return getLimit();
+        }
+    }
+
+    private void spendLeftoverPoints(Context context, ClassOfService cos) {
+        // Pull from standard until we reach our limit, or standard has nothing left to give
+        while (getCards(cos).size() < this.getLimit(cos)) {
+            Optional<Card> optionalCard = upstream(cos).pull(context, cos);
             if (optionalCard.isPresent()) {
-                addCard(optionalCard.get());
-                logger.info("{}: {} -> {} -> {}", context.getDay(), upstream, optionalCard.get().getName(), this);
+                addCard(optionalCard.get(), cos);
+                logger.info("{}: {} -> {} -> {} ({})", context.getDay(), upstream(cos), optionalCard.get().getName(), this, cos);
             } else {
                 break;
             }
@@ -90,21 +163,21 @@ public class StateColumn extends LimitedColumn {
             return;
         }
         // No cards we can work on, so no point in continuing
-        if (todo.stream().filter(c -> c.isBlocked() == false).count() == 0) {
+        if (todo(cos).stream().filter(c -> c.isBlocked() == false).count() == 0) {
             return;
         }
-        logger.info("{}: Spending leftover points on {}", context.getDay(), this);
+        logger.info("{}: Spending leftover points on {} ({})", context.getDay(), this, cos);
         for (DiceGroup group : groups) {
-            logger.info("{}: {} leftover points to spend", context.getDay(), group.getLeftoverPoints());
+            logger.info("{}: {} leftover points to spend ({})", context.getDay(), group.getLeftoverPoints(), cos);
             // Do as much work as possible on unblocked tickets
-            todo.stream().filter(c -> c.isBlocked() == false).forEach(c -> group.spendLeftoverPoints(state, c));
-            // Add all the completed tickets to done
-            todo.stream().filter(c -> c.getRemainingWork(state) == 0).forEach(c -> {
-                done.add(c);
-                logger.info("{} -> {} -> {}:DONE", state, c.getName(), state);
+            todo(cos).stream().filter(c -> c.isBlocked() == false).forEach(c -> group.spendLeftoverPoints(state, c));
+            // Add all the completed tickets to stdDone
+            todo(cos).stream().filter(c -> c.getRemainingWork(state) == 0).forEach(c -> {
+                done(cos).add(c);
+                logger.info("{} -> {} -> {}:DONE ({})", state, c.getName(), state, cos);
             });
             // Remove the completed tickets
-            todo.removeIf(c -> c.getRemainingWork(state) == 0);
+            todo(cos).removeIf(c -> c.getRemainingWork(state) == 0);
         }
         // Remove spent groups
         groups.removeIf(g -> g.getLeftoverPoints() == 0);
@@ -117,14 +190,21 @@ public class StateColumn extends LimitedColumn {
         if (groups.size() == 0) {
             return;
         }
+        // TODO: need to get this working with expedite.
         logger.info("Reducing work on cards with assigned dice");
         for (DiceGroup group : groups) {
             group.rollFor(state);
-            Optional<Card> card = todo.stream().filter(c -> c.getRemainingWork(this.state) == 0).findFirst();
+            Optional<Card> card = todo(ClassOfService.STANDARD).stream().filter(c -> c.getRemainingWork(this.state) == 0).findFirst();
             if (card.isPresent()) {
                 logger.info("{} -> {} -> {}:DONE", state, card.get().getName(), state);
-                todo.remove(card.get());
-                done.add(card.get());
+                todo(ClassOfService.STANDARD).remove(card.get());
+                done(ClassOfService.STANDARD).add(card.get());
+            }
+            card = todo(ClassOfService.EXPEDITE).stream().filter(c -> c.getRemainingWork(this.state) == 0).findFirst();
+            if (card.isPresent()) {
+                logger.info("{} -> {} -> {}:DONE", state, card.get().getName(), state);
+                todo(ClassOfService.EXPEDITE).remove(card.get());
+                done(ClassOfService.EXPEDITE).add(card.get());
             }
         }
         groups.removeIf(g -> g.getLeftoverPoints() == 0);
@@ -133,23 +213,28 @@ public class StateColumn extends LimitedColumn {
     @Override
     public String toString() {
         String wip = getLimit() == Integer.MAX_VALUE ? "∞" : Integer.toString(getLimit());
-        return "[" + this.state + " (" + todo.size() + "/" + done.size() + "/" + wip+ ")]";
-    }
-
-    public void assignDice(DiceGroup... groups) {
-        this.groups = new LinkedList<>(Arrays.asList(groups));
-        this.rolled.set(false);
+        return "[" + this.state + " (" + stdTodo.size() + "/" + stdDone.size() + "/" + wip+ ")]";
     }
 
     @Override
     public void orderBy(Comparator<Card> comparator) {
         this.comparator = comparator;
 
-        todo.setComparator(comparator);
-        done.setComparator(comparator);
+        stdTodo.setComparator(comparator);
+        stdDone.setComparator(comparator);
     }
 
     public void addListener(ColumnListener columnListener) {
         listeners.add(columnListener);
+    }
+
+    public void expediteTickets(Day day) {
+        List<Card> expeditables = todo(ClassOfService.STANDARD).stream().filter(c -> c.isExpeditable(day)).collect(Collectors.toList());
+        todo(ClassOfService.STANDARD).removeAll(expeditables);
+        todo(ClassOfService.EXPEDITE).addAll(expeditables);
+
+        if (expeditables.size() > 0) {
+            logger.info("Expedited {}", expeditables);
+        }
     }
 }

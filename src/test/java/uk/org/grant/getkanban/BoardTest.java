@@ -41,7 +41,7 @@ public class BoardTest {
         assertThat(b.getCards(), empty());
         Card e1 = Cards.getCard("E1");
 
-        b.getOptions().addCard(e1);
+        b.getOptions().addCard(e1, ClassOfService.STANDARD);
 
         assertThat(b.getCards(), contains(e1));
     }

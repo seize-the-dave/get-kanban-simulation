@@ -5,20 +5,22 @@ import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.card.Card;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DiceGroup {
     private Logger logger;
     private final AtomicBoolean rolled = new AtomicBoolean();
-    private final StateDice[] die;
+    private List<StateDice> die;
     private final Card card;
     private final AtomicInteger dots = new AtomicInteger(0);
     private State originalState;
 
     public DiceGroup(Card card, StateDice... die) {
         this.card = card;
-        this.die = die;
+        this.die = Arrays.asList(die);
         this.logger = LoggerFactory.getLogger(DiceGroup.class.toString() + "[" + card.getName() + "]");
 
         logger.info("Assigned {} to {}", die, card);
@@ -35,7 +37,7 @@ public class DiceGroup {
         logger.info("Rolled {} from {} for {}", dots, die, state);
         spendPoints(state, card);
         // If more than two dice are assigned to a single ticket, any leftover points must be disregarded
-        if (die.length > 2) {
+        if (die.size() > 2) {
             logger.warn("More than 2 dice used.  Throwing away {} points", dots);
             dots.set(0);
         }
@@ -59,5 +61,17 @@ public class DiceGroup {
         dots.getAndAdd(-delta);
 
         logger.info("Removing {} {} points from {}. {} unspent points remaining.", delta, state, card, dots);
+    }
+
+    public List<StateDice> getDice() {
+        return die;
+    }
+
+    public String toString() {
+        return "[" + card + ":" + die + "]";
+    }
+
+    public void setDice(List<StateDice> allocatedDice) {
+        this.die = allocatedDice;
     }
 }

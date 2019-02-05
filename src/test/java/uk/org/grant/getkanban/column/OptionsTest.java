@@ -2,6 +2,7 @@ package uk.org.grant.getkanban.column;
 
 import org.junit.Test;
 import uk.org.grant.getkanban.Board;
+import uk.org.grant.getkanban.ClassOfService;
 import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.DaysFactory;
 import uk.org.grant.getkanban.card.Card;
@@ -18,8 +19,8 @@ public class OptionsTest {
         Card card = Cards.getCard("S1");
         Column backlog = new Options();
 
-        backlog.addCard(card);
-        Optional<Card> actual = backlog.pull(new Context(null, null));
+        backlog.addCard(card, ClassOfService.STANDARD);
+        Optional<Card> actual = backlog.pull(new Context(null, null), ClassOfService.STANDARD);
 
         assertThat(actual.get(), is(card));
     }

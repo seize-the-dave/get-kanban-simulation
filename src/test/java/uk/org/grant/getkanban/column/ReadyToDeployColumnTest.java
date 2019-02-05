@@ -14,18 +14,18 @@ public class ReadyToDeployColumnTest {
     @Test
     public void testIsOnlyPullableOnBillingDays() {
         Column selected = new SelectedColumn(1, new NullColumn());
-        selected.addCard(Cards.getCard("S1"));
+        selected.addCard(Cards.getCard("S1"), ClassOfService.STANDARD);
 
         Context context = new Context(new Board(), new Day(1));
 
         Column readyToDeploy = new ReadyToDeployColumn(selected);
         readyToDeploy.doTheWork(context);
-        Assert.assertThat(readyToDeploy.pull(context).isPresent(), is(false));
+        Assert.assertThat(readyToDeploy.pull(context, ClassOfService.STANDARD).isPresent(), is(false));
 
         context = new Context(new Board(), new Day(3));
 
         readyToDeploy.doTheWork(context);
-        Assert.assertThat(readyToDeploy.pull(context).isPresent(), is(true));
+        Assert.assertThat(readyToDeploy.pull(context, ClassOfService.STANDARD).isPresent(), is(true));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class ReadyToDeployColumnTest {
         b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(1)));
         b.addDice(new StateDice(State.DEVELOPMENT, new LoadedDice(4)));
         b.addDice(new StateDice(State.TEST, new LoadedDice(2)));
-        b.getOptions().addCard(i1);
+        b.getOptions().addCard(i1, ClassOfService.STANDARD);
 
         DaysFactory df = new DaysFactory(true);
         for (int i = 4; i < 7; i++) {

@@ -1,10 +1,7 @@
 package uk.org.grant.getkanban.card;
 
 import org.junit.Test;
-import uk.org.grant.getkanban.Board;
-import uk.org.grant.getkanban.Context;
-import uk.org.grant.getkanban.Day;
-import uk.org.grant.getkanban.State;
+import uk.org.grant.getkanban.*;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -45,12 +42,12 @@ public class IntangibleCardTest {
         Card s3 = Cards.getCard("S3");
         Card s5 = Cards.getCard("S5");
         i2.onSelected(new Context(b, new Day(1)));
-        b.getStateColumn(State.TEST).addCard(s3);
+        b.getStateColumn(State.TEST).addCard(s3, ClassOfService.STANDARD);
         assertThat(s3.getRemainingWork(State.TEST), is(6));
         assertThat(s5.getRemainingWork(State.TEST), is(9));
 
         i2.onReadyToDeploy(new Context(b, new Day(2)));
-        b.getStateColumn(State.TEST).addCard(s5);
+        b.getStateColumn(State.TEST).addCard(s5, ClassOfService.STANDARD);
 
         assertThat(s3.getRemainingWork(State.TEST), is(4));
         assertThat(s5.getRemainingWork(State.TEST), is(7));

@@ -1,10 +1,7 @@
 package uk.org.grant.getkanban.policies;
 
 import org.junit.Test;
-import uk.org.grant.getkanban.Board;
-import uk.org.grant.getkanban.Context;
-import uk.org.grant.getkanban.Day;
-import uk.org.grant.getkanban.State;
+import uk.org.grant.getkanban.*;
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.Cards;
 import uk.org.grant.getkanban.dice.LoadedDice;
@@ -22,8 +19,8 @@ public class NoCrossSkillingDiceAssignmentStrategyTest {
         Card s10 = Cards.getCard("S10");
         Card s11 = Cards.getCard("S11");
 
-        b.getStateColumn(State.TEST).addCard(s10);
-        b.getStateColumn(State.TEST).addCard(s11);
+        b.getStateColumn(State.TEST).addCard(s10, ClassOfService.STANDARD);
+        b.getStateColumn(State.TEST).addCard(s11, ClassOfService.STANDARD);
 
         b.addDice(new StateDice(State.TEST, new LoadedDice(6)));
         b.addDice(new StateDice(State.TEST, new LoadedDice(6)));
