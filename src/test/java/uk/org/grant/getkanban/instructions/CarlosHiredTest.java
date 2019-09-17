@@ -19,7 +19,7 @@ public class CarlosHiredTest {
 
         assertThat(b.getStateColumn(State.TEST).getLimit(), is(3));
 
-        Day d = new Day(1, new CarlosHired(new AtomicInteger()));
+        Day d = new Day(1, new CarlosHired());
         d.endOfDay(b);
 
         assertThat(b.getStateColumn(State.TEST).getLimit(), is(Integer.MAX_VALUE));

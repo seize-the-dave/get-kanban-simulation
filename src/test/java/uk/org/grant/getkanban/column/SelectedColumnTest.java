@@ -58,10 +58,10 @@ public class SelectedColumnTest {
         deployed.addCard(Cards.getCard("S10"), ClassOfService.STANDARD);
         deployed.addCard(Cards.getCard("S5"), ClassOfService.STANDARD);
 
-        assertThat(deployed.getCards().peek().getName(), is("S5"));
+        assertThat(deployed.getCards().get(0).getName(), is("S5"));
 
         deployed.orderBy(new BusinessValuePrioritisationStrategy());
 
-        assertThat(deployed.getCards().peek().getName(), is("S10"));
+        assertThat(deployed.getCards().get(0).getName(), is("S10"));
     }
 }

@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 public class StateDiceTest {
     @Test
     public void alwaysRollsBetweenOneAndSixForOwnActivity() {
-        StateDice dice = new StateDice(State.DEVELOPMENT, new RandomDice(new Random()));
+        StateDice dice = new StateDice(State.DEVELOPMENT, new RandomDice());
         for (int i = 0; i < 10000; i++) {
             assertThat(dice.rollFor(State.DEVELOPMENT), allOf(greaterThan(0), lessThan(7)));
         }
@@ -21,7 +21,7 @@ public class StateDiceTest {
 
     @Test
     public void alwaysRollsBetweenOneAndThreeForDifferentActivity() {
-        StateDice dice = new StateDice(State.ANALYSIS, new RandomDice(new Random()));
+        StateDice dice = new StateDice(State.ANALYSIS, new RandomDice());
         for (int i = 0; i < 10000; i++) {
             assertThat(dice.rollFor(State.TEST), allOf(greaterThan(0), lessThan(4)));
         }

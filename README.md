@@ -72,3 +72,5 @@ Fines or Payments          0       0   -1500       0       0
 Cycle Gross Profit       200     420    -380    1550    2310
 Gross Profit To Date     200     620     240    1790    4100
 ```
+
+https://twitter.com/marcelolopezjr/status/740302387819208704

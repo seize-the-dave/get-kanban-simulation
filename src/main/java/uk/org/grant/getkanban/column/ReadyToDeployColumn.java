@@ -8,10 +8,11 @@ import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
 import uk.org.grant.getkanban.card.Card;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ReadyToDeployColumn extends UnbufferedColumn {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReadyToDeployColumn.class);
-    private final Queue<Card> cards = new PriorityQueue<>(new WipAgingPrioritisationStrategy());
+    private final MutablePriorityQueue<Card> cards = new MutablePriorityQueue<>(new WipAgingPrioritisationStrategy());
     private int deploymentFrequency = 3;
 
     public ReadyToDeployColumn(Column upstream) {
@@ -28,8 +29,8 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
     }
 
     @Override
-    public Queue<Card> getCards() {
-        return cards;
+    public List<Card> getCards() {
+        return cards.stream().sorted(cards.getComparator()).collect(Collectors.toList());
     }
 
     @Override

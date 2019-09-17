@@ -1,6 +1,5 @@
 package uk.org.grant.getkanban.column;
 
-import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.ClassOfService;
@@ -29,6 +28,7 @@ public class StateColumn extends LimitedColumn {
     private List<DiceGroup> groups = new ArrayList<>();
     private Comparator<Card> comparator;
     private Set<ColumnListener> listeners = new HashSet<>();
+    private boolean secondaryWorkers = true;
 
     public StateColumn(State state, int limit, Column standard, Column expedite) {
         super(limit);
@@ -49,8 +49,8 @@ public class StateColumn extends LimitedColumn {
 
     @Override
     public void addCard(Card card, ClassOfService cos) {
-        if (getCards(cos).size() == getLimit()) {
-            throw new IllegalStateException();
+        if (getCards(cos).size() == getLimit(cos)) {
+            throw new IllegalStateException("Too many cards in " + cos);
         }
         if (card.getRemainingWork(this.state) == 0) {
             done(cos).add(card);
@@ -61,21 +61,27 @@ public class StateColumn extends LimitedColumn {
     }
 
     @Override
-    public Queue<Card> getCards() {
-        Queue<Card> queue = new PriorityQueue<>(comparator);
-        queue.addAll(Stream.concat(
+    public List<Card> getCards() {
+        return Stream.concat(
                 this.todo(ClassOfService.STANDARD).stream(),
-                    Stream.concat(this.done(ClassOfService.STANDARD).stream(),
-                        Stream.concat(this.todo(ClassOfService.EXPEDITE).stream(),
-                            this.done(ClassOfService.EXPEDITE).stream()))
-        ).collect(Collectors.toList()));
-
-        return queue;
+                Stream.concat(
+                        this.done(ClassOfService.STANDARD).stream(),
+                        Stream.concat(
+                                this.todo(ClassOfService.EXPEDITE).stream(),
+                                this.done(ClassOfService.EXPEDITE).stream()
+                        )
+                )
+        ).sorted(comparator).collect(Collectors.toList());
     }
 
     public Queue<Card> getCards(ClassOfService cos) {
         Queue<Card> queue = new PriorityQueue<>(comparator);
-        queue.addAll(Stream.concat(this.todo(cos).stream(), this.done(cos).stream()).collect(Collectors.toList()));
+        queue.addAll(
+                Stream.concat(
+                        this.todo(cos).stream(),
+                        this.done(cos).stream()
+                ).collect(Collectors.toList())
+        );
 
         return queue;
     }
@@ -95,7 +101,12 @@ public class StateColumn extends LimitedColumn {
      */
     public Collection<Card> getIncompleteCards() {
         Queue<Card> queue = new PriorityQueue<>(comparator);
-        queue.addAll(Stream.concat(this.todo(ClassOfService.EXPEDITE).stream(), this.todo(ClassOfService.STANDARD).stream()).collect(Collectors.toList()));
+        queue.addAll(
+                Stream.concat(
+                        this.todo(ClassOfService.EXPEDITE).stream(),
+                        this.todo(ClassOfService.STANDARD).stream()
+                ).collect(Collectors.toList())
+        );
 
         return queue;
     }
@@ -147,6 +158,9 @@ public class StateColumn extends LimitedColumn {
         }
     }
 
+    /**
+     * TODO: What if we have a load of leftover points?  Shouldn't we keep pulling?
+     */
     private void spendLeftoverPoints(Context context, ClassOfService cos) {
         // Pull from standard until we reach our limit, or standard has nothing left to give
         while (getCards(cos).size() < this.getLimit(cos)) {
@@ -155,6 +169,7 @@ public class StateColumn extends LimitedColumn {
                 addCard(optionalCard.get(), cos);
                 logger.info("{}: {} -> {} -> {} ({})", context.getDay(), upstream(cos), optionalCard.get().getName(), this, cos);
             } else {
+                logger.error("STARVATION: {} has nothing to pull in {} swimlane.", upstream(cos), cos);
                 break;
             }
         }
@@ -181,6 +196,11 @@ public class StateColumn extends LimitedColumn {
         }
         // Remove spent groups
         groups.removeIf(g -> g.getLeftoverPoints() == 0);
+        int leftovers = 0;
+        for (DiceGroup group : groups) {
+            leftovers += group.getLeftoverPoints();
+        }
+        logger.info("{} has {} leftover points", this, leftovers);
     }
 
     private void reduceWorkOnAssignedTickets() {
@@ -190,21 +210,16 @@ public class StateColumn extends LimitedColumn {
         if (groups.size() == 0) {
             return;
         }
-        // TODO: need to get this working with expedite.
         logger.info("Reducing work on cards with assigned dice");
         for (DiceGroup group : groups) {
             group.rollFor(state);
-            Optional<Card> card = todo(ClassOfService.STANDARD).stream().filter(c -> c.getRemainingWork(this.state) == 0).findFirst();
-            if (card.isPresent()) {
-                logger.info("{} -> {} -> {}:DONE", state, card.get().getName(), state);
-                todo(ClassOfService.STANDARD).remove(card.get());
-                done(ClassOfService.STANDARD).add(card.get());
-            }
-            card = todo(ClassOfService.EXPEDITE).stream().filter(c -> c.getRemainingWork(this.state) == 0).findFirst();
-            if (card.isPresent()) {
-                logger.info("{} -> {} -> {}:DONE", state, card.get().getName(), state);
-                todo(ClassOfService.EXPEDITE).remove(card.get());
-                done(ClassOfService.EXPEDITE).add(card.get());
+            Card groupCard = group.getCard();
+            logger.info("{} has {} points left", groupCard, groupCard.getRemainingWork(this.state));
+            for (ClassOfService cos : ClassOfService.values()) {
+                if (groupCard.getRemainingWork(state) == 0 && todo(cos).contains(groupCard)) {
+                    todo(cos).remove(groupCard);
+                    done(cos).add(groupCard);
+                }
             }
         }
         groups.removeIf(g -> g.getLeftoverPoints() == 0);
@@ -236,5 +251,17 @@ public class StateColumn extends LimitedColumn {
         if (expeditables.size() > 0) {
             logger.info("Expedited {}", expeditables);
         }
+    }
+
+    public boolean canAssignSecondaryWorkers() {
+        return secondaryWorkers;
+    }
+
+    public void disableSecondaryWorkers() {
+        this.secondaryWorkers = false;
+    }
+
+    public void enableSecondaryWorkers() {
+        this.secondaryWorkers = true;
     }
 }

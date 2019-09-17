@@ -4,6 +4,7 @@ import org.junit.Test;
 import uk.org.grant.getkanban.*;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isIn;
 import static org.junit.Assert.assertThat;
 
 public class IntangibleCardTest {
@@ -17,10 +18,9 @@ public class IntangibleCardTest {
         Board b = new Board();
         Card i3 = Cards.getCard("I3");
         i3.onSelected(new Context(b, new Day(1)));
-
         i3.onDeployed(new Context(b, new Day(2)));
 
-        assertThat(b.getOptions().getCards().poll(), is(Cards.getCard("S29")));
+        assertThat(Cards.getCard("S29"), isIn(b.getOptions().getCards()));
     }
 
     @Test

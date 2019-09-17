@@ -14,8 +14,8 @@ public class NullColumn extends AbstractColumn {
     }
 
     @Override
-    public Queue<Card> getCards() {
-        return new PriorityQueue<>();
+    public List<Card> getCards() {
+        return Collections.EMPTY_LIST;
     }
 
     @Override

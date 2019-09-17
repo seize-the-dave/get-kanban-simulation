@@ -32,8 +32,8 @@ public class SelectedColumn extends LimitedColumn {
     }
 
     @Override
-    public Queue<Card> getCards() {
-        return cards;
+    public List<Card> getCards() {
+        return cards.stream().sorted(cards.getComparator()).collect(Collectors.toList());
     }
 
     @Override

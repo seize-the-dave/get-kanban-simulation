@@ -11,7 +11,7 @@ public class FixedDateCardsPrioritisationStrategy implements Comparator<Card> {
     public int compare(Card c1, Card c2) {
         if (c1 instanceof FixedDateCard) {
             if (c2 instanceof FixedDateCard) {
-                return 0;
+                return Integer.compare(c1.getDueDate(), c2.getDueDate());
             } else {
                 return -1;
             }

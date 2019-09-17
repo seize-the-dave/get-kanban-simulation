@@ -21,7 +21,7 @@ public class StateColumnTest {
         column.addCard(card, ClassOfService.STANDARD);
 
         StateDice dice = new StateDice(State.ANALYSIS, new LoadedDice(6));
-        DiceGroup group = new DiceGroup(column.getCards().peek(), dice);
+        DiceGroup group = new DiceGroup(column.getCards().get(0), dice);
         column.assignDice(group);
 
         column.doTheWork(new Context(new Board(), new Day(1)));
@@ -75,7 +75,7 @@ public class StateColumnTest {
         column.addCard(Cards.getCard("S1"), ClassOfService.STANDARD);
 
         StateDice dice = new StateDice(State.ANALYSIS, new LoadedDice(6));
-        column.assignDice(new DiceGroup(column.getCards().peek(), dice));
+        column.assignDice(new DiceGroup(column.getCards().get(0), dice));
 
         column.doTheWork(context);
 
@@ -91,7 +91,7 @@ public class StateColumnTest {
         assertThat(development.getIncompleteCards(), empty());
 
         StateDice dice = new StateDice(State.ANALYSIS, new LoadedDice(6));
-        analysis.assignDice(new DiceGroup(analysis.getCards().peek(), dice));
+        analysis.assignDice(new DiceGroup(analysis.getCards().get(0), dice));
         analysis.doTheWork(new Context(new Board(), new Day(1)));
         development.doTheWork(new Context(new Board(), new Day(1)));
 
@@ -132,11 +132,11 @@ public class StateColumnTest {
         deployed.addCard(Cards.getCard("S10"), ClassOfService.STANDARD);
         deployed.addCard(Cards.getCard("S5"), ClassOfService.STANDARD);
 
-        assertThat(deployed.getCards().peek().getName(), is("S5"));
+        assertThat(deployed.getCards().get(0).getName(), is("S5"));
 
         deployed.orderBy(new BusinessValuePrioritisationStrategy());
 
-        assertThat(deployed.getCards().peek().getName(), is("S10"));
+        assertThat(deployed.getCards().get(0).getName(), is("S10"));
     }
 
     @Test

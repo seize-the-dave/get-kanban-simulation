@@ -14,7 +14,7 @@ import static org.junit.Assert.assertThat;
 public class RandomDiceTest {
     @Test
     public void alwaysRollsBetweenOneAndSix() {
-        Dice dice = new RandomDice(new Random());
+        Dice dice = new RandomDice();
         for (int i = 0; i < 10000; i++) {
             assertThat(dice.roll(), allOf(greaterThan(0), lessThan(7)));
         }

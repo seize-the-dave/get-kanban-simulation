@@ -4,6 +4,8 @@ import uk.org.grant.getkanban.Context;
 import uk.org.grant.getkanban.Day;
 import uk.org.grant.getkanban.State;
 
+import java.math.BigDecimal;
+
 public interface Card {
     String getName();
     StandardCard.Size getSize();
@@ -23,8 +25,23 @@ public interface Card {
     Blocker getBlocker();
     boolean isBlocked();
     boolean isExpeditable(Day d);
+    int getCostOfDelay(Day d);
 
     enum Size {
-        VERY_HIGH, HIGH, MEDIUM, LOW, NONE
+        VERY_HIGH(new BigDecimal(40)),
+        HIGH(new BigDecimal(20)),
+        MEDIUM(new BigDecimal(10)),
+        LOW(new BigDecimal(5)),
+        NONE(new BigDecimal(1));
+
+        private final BigDecimal value;
+
+        public BigDecimal getValue() {
+            return value;
+        }
+
+        Size(BigDecimal value) {
+            this.value = value;
+        }
     }
 }

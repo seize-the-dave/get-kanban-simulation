@@ -12,7 +12,7 @@ public class ExpeditesPrioritisationStrategy implements Comparator<Card> {
     public int compare(Card c1, Card c2) {
         if (c1 instanceof ExpediteCard) {
             if (c2 instanceof ExpediteCard) {
-                return 0;
+                return c1.getName().compareTo(c2.getName());
             } else {
                 return -1;
             }

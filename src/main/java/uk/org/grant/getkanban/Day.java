@@ -52,10 +52,15 @@ public class Day implements Workable<Context> {
 
     public void standUp(Board board) {
         LOGGER.info("{}: STAND UP", this);
+        adjustWipLimits(board);
         removeBlockers(board);
         replenishSelected(board);
         expediteTickets(board);
         assignDice(board);
+    }
+
+    private void adjustWipLimits(Board board) {
+        board.adjustLimits(this.ordinal);
     }
 
     private void expediteTickets(Board board) {
@@ -68,7 +73,7 @@ public class Day implements Workable<Context> {
         board.getStateColumn(State.DEVELOPMENT).getIncompleteCards().stream()
                 .filter(c -> c.isBlocked())
                 .forEach(c -> {
-                    int roll = new RandomDice(new Random()).roll();
+                    int roll = new RandomDice().roll();
                     int delta = Math.min(roll, c.getBlocker().getRemainingWork());
                     int remaining = c.getBlocker().getRemainingWork() - delta;
                     LOGGER.info("{}: Reducing blocker on {} by {} points.  {} points remaining.", this, c, delta, remaining);
@@ -82,6 +87,7 @@ public class Day implements Workable<Context> {
         board.getSelected().doTheWork(new Context(board, this));
         // Make sure all columns are pulled to capacity
         board.getReadyToDeploy().doTheWork(new Context(board, this));
+        board.getSelected().doTheWork(new Context(board, this));
     }
 
     private void assignDice(Board board) {

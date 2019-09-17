@@ -21,9 +21,13 @@ public class FinancialSummary implements Comparable<FinancialSummary> {
                 newSubscribers.getAndAdd(card.getDueDate(), card.getSubscribers());
                 finesAndPayments.getAndAdd(card.getDueDate(), card.getFineOrPayment());
             } else if (card.getDayDeployed() > 0) {
-                newSubscribers.getAndAdd((card.getDayDeployed() + 2) / 3 * 3, card.getSubscribers());
+                newSubscribers.getAndAdd(getBillingDay(card.getDayDeployed()), card.getSubscribers());
             }
         }
+    }
+
+    public static int getBillingDay(int dayDeployed) {
+        return (dayDeployed + 2) / 3 * 3;
     }
 
     public int getNewSubscribers(int billingCycle) {
@@ -38,8 +42,12 @@ public class FinancialSummary implements Comparable<FinancialSummary> {
         }
     }
 
+    public static int getRevenueMultiplier(int billingCycle) {
+        return 10 + ((billingCycle - 9) / 3) * 5;
+    }
+
     public int getBillingCycleRevenue(int billingCycle) {
-        int multiplier = 10 + ((billingCycle - 9) / 3) * 5;
+        int multiplier = getRevenueMultiplier(billingCycle);
         return getTotalSubscribersToDate(billingCycle) * multiplier;
     }
 

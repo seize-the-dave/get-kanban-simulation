@@ -26,11 +26,11 @@ public class DaysFactory {
             case 10:
                 return new Day(day, diceAssignmentStrategy, new PeteFromPlatformTeam());
             case 11:
-                return new Day(day, diceAssignmentStrategy, new CarlosHired(testWipStore));
+                return new Day(day, diceAssignmentStrategy, new CarlosHired());
             case 12:
                 return new Day(day, diceAssignmentStrategy, new MargaretsFeatures());
             case 14:
-                return new Day(day, diceAssignmentStrategy, new CarlosFired(testWipStore));
+                return new Day(day, diceAssignmentStrategy, new CarlosFired());
             case 15:
                 return new Day(day, diceAssignmentStrategy, new BigCorpExpedite());
             case 17:

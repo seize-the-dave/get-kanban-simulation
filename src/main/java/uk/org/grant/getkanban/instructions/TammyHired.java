@@ -22,10 +22,10 @@ public class TammyHired implements Instruction {
         if (training) {
             LOGGER.info("Ted has returned from his training course");
             // Ted is Back
-            b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
+            b.addDice(new StateDice(State.TEST, new RandomDice()));
             // Tammy Joins
             LOGGER.info("Tammy has joined the test team");
-            b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
+            b.addDice(new StateDice(State.TEST, new RandomDice()));
         }
     }
 }
