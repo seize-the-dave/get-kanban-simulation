@@ -73,4 +73,8 @@ public class SelectedColumn extends LimitedColumn {
     public String toString() {
         return "[SELECTED (" + cards.size() + "/" + getLimit() + ")]";
     }
+
+    public void clear() {
+        cards.clear();
+    }
 }

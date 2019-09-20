@@ -7,7 +7,7 @@ import uk.org.grant.getkanban.dice.Dice;
 import uk.org.grant.getkanban.dice.LoadedDice;
 import uk.org.grant.getkanban.dice.StateDice;
 
-import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.Assert.assertThat;
 
@@ -20,18 +20,18 @@ public class TedsTrainingOpportunityTest {
 
         ted.execute(b);
 
-        assertThat(b.getDice(State.TEST), empty());
+        assertThat(b.getDice(State.TEST), hasSize(2));
     }
 
     @Test
     public void shouldKeepTesterDiceIfTedStaysHome() {
         StateDice dice = new StateDice(State.TEST, new LoadedDice(6));
         Instruction ted = new TedsTrainingOpportunity(false);
+
         Board b = new Board();
         b.addDice(dice);
-
         ted.execute(b);
 
-        assertThat(b.getDice(State.TEST), contains(dice));
+        assertThat(b.getDice(State.TEST), hasItem(dice));
     }
 }

@@ -32,17 +32,21 @@ public class StateColumnTest {
     @Test
     public void testSpendLeftoverWork() {
         Board b = new Board();
-        Day d = new Day(10);
+        b.clear();
+
+        Day d = new DaysFactory(false).getDay(10);
 
         Card s8 = Cards.getCard("S8");
         Card s12 = Cards.getCard("S12");
-        b.getStateColumn(State.ANALYSIS).addCard(s8, ClassOfService.STANDARD);
-        b.getStateColumn(State.ANALYSIS).addCard(s12, ClassOfService.STANDARD);
         b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(5)));
         b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(5)));
 
+        b.getStateColumn(State.ANALYSIS).addCard(s8, ClassOfService.STANDARD);
+        b.getStateColumn(State.ANALYSIS).addCard(s12, ClassOfService.STANDARD);
+
         d.standUp(b);
         d.doTheWork(new Context(b, d));
+        d.endOfDay(b);
 
         assertThat(s8.getRemainingWork(State.ANALYSIS), is(0));
         assertThat(s12.getRemainingWork(State.ANALYSIS), is(0));
@@ -51,7 +55,9 @@ public class StateColumnTest {
     @Test
     public void doNotSpendLeftoverWorkOnBlockedItems() {
         Board b = new Board();
-        Day d = new Day(10);
+        b.clear();
+
+        Day d = new DaysFactory(false).getDay(10);
 
         Card s8 = Cards.getCard("S8");
         Card s12 = Cards.getCard("S12");
@@ -63,6 +69,7 @@ public class StateColumnTest {
 
         d.standUp(b);
         d.doTheWork(new Context(b, d));
+        d.endOfDay(b);
 
         assertThat(s8.getRemainingWork(State.ANALYSIS), is(0));
         assertThat(s12.getRemainingWork(State.ANALYSIS), is(5));

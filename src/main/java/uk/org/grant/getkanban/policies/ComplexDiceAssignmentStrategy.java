@@ -47,9 +47,9 @@ public class ComplexDiceAssignmentStrategy implements DiceAssignmentStrategy {
         List<StateDice> diceToAllocate = new LinkedList<>(board.getDice());
         Map<Card, DiceGroup> assignedCards = new HashMap<>();
         Multimap<State, DiceGroup> stateGroups = ArrayListMultimap.create();
-        int maxDice = this.maxDice;
+        int maxDice = Math.min(this.maxDice, board.getDice().size());
 
-        for (int i = maxDice; i < board.getDice().size(); i++) {
+        for (int i = maxDice; i <= board.getDice().size(); i++) {
             // Accidentally allocating four dice (over two groups) to E1
             for (State state : new State[]{State.TEST, State.DEVELOPMENT, State.ANALYSIS, State.TEST, State.DEVELOPMENT, State.ANALYSIS}) {
                 if (diceToAllocate.isEmpty()) {

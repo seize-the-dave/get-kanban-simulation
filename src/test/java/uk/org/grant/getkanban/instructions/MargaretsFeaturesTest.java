@@ -10,6 +10,7 @@ public class MargaretsFeaturesTest {
     @Test
     public void shouldIntroduceSet2() {
         Board b = new Board();
+        b.clear();
 
         DaysFactory days = new DaysFactory(true);
         Day day = days.getDay(12);

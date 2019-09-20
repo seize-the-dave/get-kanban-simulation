@@ -14,6 +14,8 @@ public class BigCorpExpediteTest {
         Instruction bigCorp = new BigCorpExpedite();
 
         Board b = new Board();
+        b.clear();
+
         assertThat(b.getOptions().getCards(), empty());
 
         bigCorp.execute(b);

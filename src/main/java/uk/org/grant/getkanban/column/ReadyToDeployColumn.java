@@ -74,4 +74,8 @@ public class ReadyToDeployColumn extends UnbufferedColumn {
     public int getDeploymentFrequency() {
         return this.deploymentFrequency;
     }
+
+    public void clear() {
+        cards.clear();
+    }
 }

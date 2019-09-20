@@ -13,4 +13,5 @@ public interface Column extends Workable<Context> {
     List<Card> getCards();
     Optional<Card> pull(Context context, ClassOfService cos);
     void orderBy(Comparator<Card> comparator);
+    void clear();
 }

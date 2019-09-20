@@ -10,7 +10,6 @@ import uk.org.grant.getkanban.policies.IntangiblesFirstPrioritisationStrategy;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Board {
     private final List<StateDice> dice = new ArrayList<>();
@@ -136,10 +135,65 @@ public class Board {
             columns.get(State.TEST).setLimit(adjustment.getTest());
         }
     }
+
+    /**
+     * Remove all the cards from the board
+     */
+    public void clear() {
+        clearDice();
+        clearCardsFromColumns();
+    }
+
+    private void clearCardsFromColumns() {
+        backlog.clear();
+        selected.clear();
+        columns.get(State.ANALYSIS).clear();
+        columns.get(State.DEVELOPMENT).clear();
+        columns.get(State.TEST).clear();
+        readyToDeploy.clear();
+        deployed.clear();
+    }
+
+    private void clearDice() {
+        dice.clear();
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder("\n");
+        sb.append("Backlog\n");
+        sb.append("-------\n");
         for (Card card : backlog.getCards()) {
-            sb.append(card.getName() + "\n");
+            sb.append("-" + card + "\n");
+        }
+        sb.append("Options\n");
+        sb.append("-------\n");
+        for (Card card : selected.getCards()) {
+            sb.append("-" + card + "\n");
+        }
+        sb.append("Analysis\n");
+        sb.append("--------\n");
+        for (Card card : columns.get(State.ANALYSIS).getCards()) {
+            sb.append("-" + card + "\n");
+        }
+        sb.append("Development\n");
+        sb.append("-----------\n");
+        for (Card card : columns.get(State.DEVELOPMENT).getCards()) {
+            sb.append("-" + card + "\n");
+        }
+        sb.append("Test\n");
+        sb.append("----\n");
+        for (Card card : columns.get(State.TEST).getCards()) {
+            sb.append("-" + card + "\n");
+        }
+        sb.append("Ready to Deploy\n");
+        sb.append("---------------\n");
+        for (Card card : readyToDeploy.getCards()) {
+            sb.append("-" + card + "\n");
+        }
+        sb.append("Deployed\n");
+        sb.append("--------\n");
+        for (Card card : deployed.getCards()) {
+            sb.append("-" + card + "\n");
         }
         return sb.toString();
     }

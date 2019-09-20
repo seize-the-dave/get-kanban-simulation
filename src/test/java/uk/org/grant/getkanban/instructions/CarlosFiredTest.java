@@ -32,6 +32,7 @@ public class CarlosFiredTest {
     @Test
     public void anotherTesterShouldBeHired() {
         Board b = new Board();
+        b.clear();
 
         assertThat(b.getDice(State.TEST).size(), is(0));
 

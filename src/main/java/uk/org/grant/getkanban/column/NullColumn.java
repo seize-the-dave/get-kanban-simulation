@@ -22,4 +22,6 @@ public class NullColumn extends AbstractColumn {
     public Optional<Card> pull(Context context, ClassOfService cos) {
         return Optional.empty();
     }
+
+    public void clear() {}
 }

@@ -16,6 +16,7 @@ public class NoCrossSkillingDiceAssignmentStrategyTest {
         DiceAssignmentStrategy s = new NoCrossSkillingDiceAssignmentStrategy();
 
         Board b = new Board();
+        b.clear();
         Card s10 = Cards.getCard("S10");
         Card s11 = Cards.getCard("S11");
 

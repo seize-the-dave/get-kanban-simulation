@@ -42,4 +42,8 @@ public class DeployedColumn extends FifoColumn {
     public String toString() {
         return "[DEPLOYED (" + getCards().size() + "/∞)";
     }
+
+    public void clear() {
+        cards.clear();
+    }
 }

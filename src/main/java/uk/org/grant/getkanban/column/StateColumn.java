@@ -253,6 +253,16 @@ public class StateColumn extends LimitedColumn {
         }
     }
 
+    /**
+     * Removes all the cards from this column
+     */
+    public void clear() {
+        this.todo(ClassOfService.EXPEDITE).clear();
+        this.todo(ClassOfService.STANDARD).clear();
+        this.done(ClassOfService.EXPEDITE).clear();
+        this.done(ClassOfService.STANDARD).clear();
+    }
+
     public boolean canAssignSecondaryWorkers() {
         return secondaryWorkers;
     }

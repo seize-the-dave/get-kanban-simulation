@@ -64,4 +64,8 @@ public class Options extends UnbufferedColumn {
     public String toString() {
         return "[BACKLOG (" + cards.size() + "/∞)]";
     }
+
+    public void clear() {
+        cards.clear();
+    }
 }
