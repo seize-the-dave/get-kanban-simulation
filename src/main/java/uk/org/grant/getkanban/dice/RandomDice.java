@@ -3,13 +3,9 @@ package uk.org.grant.getkanban.dice;
 import java.util.Random;
 
 public class RandomDice implements Dice {
-    private final Random random;
-
-    public RandomDice(Random random) {
-        this.random = random;
-    }
+    private static Random RANDOM = new Random();
 
     public int roll() {
-        return 1 + random.nextInt(6);
+        return 1 + RANDOM.nextInt(6);
     }
 }

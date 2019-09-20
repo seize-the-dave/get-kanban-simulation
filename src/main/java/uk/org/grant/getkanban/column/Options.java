@@ -9,6 +9,7 @@ import uk.org.grant.getkanban.policies.IntangiblesFirstPrioritisationStrategy;
 
 import javax.swing.text.html.Option;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Options extends UnbufferedColumn {
     protected final MutablePriorityQueue<Card> cards;
@@ -33,21 +34,24 @@ public class Options extends UnbufferedColumn {
     }
 
     @Override
-    public Queue<Card> getCards() {
-        return cards;
+    public List<Card> getCards() {
+        return cards.stream().sorted(cards.getComparator()).collect(Collectors.toList());
     }
 
     @Override
     public Optional<Card> pull(Context context, ClassOfService cos) {
         if (cos == ClassOfService.EXPEDITE) {
-            Card topOfBacklog = cards.peek();
-            if (topOfBacklog != null && topOfBacklog.isExpeditable(context.getDay())) {
-                return Optional.ofNullable(cards.poll());
-            } else {
-                return Optional.empty();
+            Optional<Card> expeditable = cards.stream().filter(c -> c.isExpeditable(context.getDay())).filter(c -> c.getName() != "E2").findFirst();
+            if (expeditable.isPresent()) {
+                cards.remove(expeditable.get());
             }
+            return expeditable;
         } else {
-            return Optional.ofNullable(cards.poll());
+            Optional<Card> card = cards.stream().filter(c -> c instanceof ExpediteCard == false).findFirst();
+            if (card.isPresent()) {
+                cards.remove(card.get());
+            }
+            return card;
         }
     }
 
@@ -59,5 +63,9 @@ public class Options extends UnbufferedColumn {
     @Override
     public String toString() {
         return "[BACKLOG (" + cards.size() + "/∞)]";
+    }
+
+    public void clear() {
+        cards.clear();
     }
 }

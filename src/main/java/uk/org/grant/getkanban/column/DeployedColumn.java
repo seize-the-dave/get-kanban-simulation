@@ -8,7 +8,7 @@ import uk.org.grant.getkanban.card.Card;
 
 import java.util.*;
 
-public class DeployedColumn extends UnbufferedColumn {
+public class DeployedColumn extends FifoColumn {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeployedColumn.class);
     private Column expedite;
 
@@ -41,5 +41,9 @@ public class DeployedColumn extends UnbufferedColumn {
     @Override
     public String toString() {
         return "[DEPLOYED (" + getCards().size() + "/∞)";
+    }
+
+    public void clear() {
+        cards.clear();
     }
 }

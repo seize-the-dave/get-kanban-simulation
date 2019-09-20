@@ -14,24 +14,25 @@ public class TammyHiredTest {
     public void tammyShouldBeHiredAndTedShouldBeBack() {
         Board b = new Board();
 
-        assertThat(b.getDice(State.TEST).size(), is(0));
+        assertThat(b.getDice(State.TEST).size(), is(2));
 
         DaysFactory daysFactory = new DaysFactory(true);
         Day d = daysFactory.getDay(18);
         d.endOfDay(b);
 
-        assertThat(b.getDice(State.TEST).size(), is(2));
+        assertThat(b.getDice(State.TEST).size(), is(4));
     }
 
     @Test
     public void tammyNotHiredAndTedShouldBeBack() {
         Board b = new Board();
-        assertThat(b.getDice(State.TEST).size(), is(0));
+
+        assertThat(b.getDice(State.TEST).size(), is(2));
 
         DaysFactory daysFactory = new DaysFactory(false);
         Day d = daysFactory.getDay(18);
         d.endOfDay(b);
 
-        assertThat(b.getDice(State.TEST).size(), is(0));
+        assertThat(b.getDice(State.TEST).size(), is(2));
     }
 }

@@ -79,7 +79,7 @@ public abstract class AbstractCard implements Card {
         if (getDaySelected() == 0 || getDayDeployed() == 0) {
             throw new IllegalStateException();
         }
-        return getDayDeployed() - getDaySelected();
+        return Math.max(1, getDayDeployed() - getDaySelected());
     }
 
     @Override
@@ -94,7 +94,7 @@ public abstract class AbstractCard implements Card {
 
     @Override
     public void onDeployed(Context context) {
-        if (this.daySelected == 0 && getName().startsWith("E") == false) {
+        if (this.daySelected == 0 && this instanceof FixedDateCard == false) {
             throw new IllegalStateException("Cannot deploy unselected card " + getName());
         }
         if (context.getDay().getOrdinal() < this.daySelected) {

@@ -33,6 +33,8 @@ public class ReadyToDeployColumnTest {
         Card i1 = Cards.getCard("I1");
 
         Board b = new Board();
+        b.clear();
+
         b.addDice(new StateDice(State.ANALYSIS, new LoadedDice(1)));
         b.addDice(new StateDice(State.DEVELOPMENT, new LoadedDice(4)));
         b.addDice(new StateDice(State.TEST, new LoadedDice(2)));

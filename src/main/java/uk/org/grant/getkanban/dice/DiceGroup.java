@@ -74,4 +74,8 @@ public class DiceGroup {
     public void setDice(List<StateDice> allocatedDice) {
         this.die = allocatedDice;
     }
+
+    public Card getCard() {
+        return card;
+    }
 }

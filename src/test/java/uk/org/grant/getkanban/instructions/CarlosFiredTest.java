@@ -14,18 +14,16 @@ import static org.junit.Assert.assertThat;
 public class CarlosFiredTest {
     @Test
     public void wipLimitsShouldBeRestored() {
-        AtomicInteger wipStore = new AtomicInteger();
-
         Board b = new Board();
 
         assertThat(b.getStateColumn(State.TEST).getLimit(), is(3));
 
-        Day day1 = new Day(1, new CarlosHired(wipStore));
+        Day day1 = new Day(1, new CarlosHired());
         day1.endOfDay(b);
 
         assertThat(b.getStateColumn(State.TEST).getLimit(), is(Integer.MAX_VALUE));
 
-        Day day2 = new Day(2, new CarlosFired(wipStore));
+        Day day2 = new Day(2, new CarlosFired());
         day2.endOfDay(b);
 
         assertThat(b.getStateColumn(State.TEST).getLimit(), is(3));
@@ -34,10 +32,11 @@ public class CarlosFiredTest {
     @Test
     public void anotherTesterShouldBeHired() {
         Board b = new Board();
+        b.clear();
 
         assertThat(b.getDice(State.TEST).size(), is(0));
 
-        Day d = new Day(1, new CarlosFired(new AtomicInteger()));
+        Day d = new Day(1, new CarlosFired());
         d.endOfDay(b);
 
         assertThat(b.getDice(State.TEST).size(), is(1));

@@ -13,11 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class CarlosFired implements Instruction {
     private static final Logger LOGGER = LoggerFactory.getLogger(CarlosFired.class);
-    private final AtomicInteger store;
-
-    public CarlosFired(AtomicInteger store) {
-        this.store = store;
-    }
 
     @Override
     public void execute(Board b) {
@@ -28,13 +23,14 @@ public class CarlosFired implements Instruction {
     }
 
     private void hireAnotherTester(Board b) {
-        b.addDice(new StateDice(State.TEST, new RandomDice(new Random())));
+        b.addDice(new StateDice(State.TEST, new RandomDice()));
         LOGGER.info("Another tester has been hired");
     }
 
     private void restoreWipLimitsToTest(Board b) {
         StateColumn c = b.getStateColumn(State.TEST);
-        c.setLimit(store.get());
+        c.enableLimits();
+        c.enableSecondaryWorkers();
         LOGGER.info("The original WIP limit on test has been restored");
     }
 }

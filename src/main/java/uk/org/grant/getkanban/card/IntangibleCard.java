@@ -64,4 +64,17 @@ public class IntangibleCard extends AbstractCard {
     public int getSubscribers() {
         return 0;
     }
+
+    @Override
+    public int getCostOfDelay(Day d) {
+        switch (getName()) {
+            case "I1":
+                return 800;
+            case "I2":
+                return 800;
+            case "I3":
+                return 700;
+        }
+        return 0;
+    }
 }

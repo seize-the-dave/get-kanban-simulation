@@ -14,6 +14,7 @@ public class GraduateGlenExpediteTest {
         Instruction bigCorp = new GraduateGlenExpedite();
 
         Board b = new Board();
+        b.clear();
 
         assertThat(b.getOptions().getCards(), empty());
 

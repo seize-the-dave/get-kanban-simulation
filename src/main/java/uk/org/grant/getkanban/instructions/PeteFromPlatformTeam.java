@@ -17,7 +17,11 @@ public class PeteFromPlatformTeam implements Instruction {
         LOGGER.info("Pete from the Platform Team needs to update a back-end systems");
 
         Optional<Card> s10 = b.getCards().stream().filter(c -> c.getName().equals("S10")).findFirst();
-        s10.get().setBlocker(new Blocker());
-        LOGGER.info("Blocker added to {}", s10.get());
+        if (s10.isPresent()) {
+            s10.get().setBlocker(new Blocker());
+            LOGGER.info("Blocker added to {}", s10.get());
+        } else {
+            LOGGER.error("Couldn't find issue S10");
+        }
     }
 }

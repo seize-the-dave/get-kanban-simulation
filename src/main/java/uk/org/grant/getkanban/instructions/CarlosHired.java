@@ -9,19 +9,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class CarlosHired implements Instruction {
     private static final Logger LOGGER = LoggerFactory.getLogger(CarlosHired.class);
-    private final AtomicInteger store;
-
-    public CarlosHired(AtomicInteger store) {
-        this.store = store;
-    }
 
     @Override
     public void execute(Board b) {
         LOGGER.info("Carlos has been hired as Test Manager.");
 
         StateColumn c = b.getStateColumn(State.TEST);
-        store.set(c.getLimit());
-        c.setLimit(Integer.MAX_VALUE);
+        c.disableLimits();
+        c.disableSecondaryWorkers();
         LOGGER.info("Carlos has removed the WIP limit on test");
     }
 }

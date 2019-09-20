@@ -32,8 +32,8 @@ public class SelectedColumn extends LimitedColumn {
     }
 
     @Override
-    public Queue<Card> getCards() {
-        return cards;
+    public List<Card> getCards() {
+        return cards.stream().sorted(cards.getComparator()).collect(Collectors.toList());
     }
 
     @Override
@@ -72,5 +72,9 @@ public class SelectedColumn extends LimitedColumn {
     @Override
     public String toString() {
         return "[SELECTED (" + cards.size() + "/" + getLimit() + ")]";
+    }
+
+    public void clear() {
+        cards.clear();
     }
 }

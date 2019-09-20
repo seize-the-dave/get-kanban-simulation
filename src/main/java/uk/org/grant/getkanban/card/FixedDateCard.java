@@ -74,4 +74,13 @@ public class FixedDateCard extends AbstractCard {
     public boolean isExpeditable(Day d) {
         return this.dueDate - d.getOrdinal() < 3;
     }
+
+    @Override
+    public int getCostOfDelay(Day d) {
+        if (this.dueDate - d.getOrdinal() > 3) {
+            return 0;
+        } else {
+            return Math.max(Math.abs(fine), payment);
+        }
+    }
 }

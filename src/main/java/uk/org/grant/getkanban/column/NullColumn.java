@@ -14,12 +14,14 @@ public class NullColumn extends AbstractColumn {
     }
 
     @Override
-    public Queue<Card> getCards() {
-        return new PriorityQueue<>();
+    public List<Card> getCards() {
+        return Collections.EMPTY_LIST;
     }
 
     @Override
     public Optional<Card> pull(Context context, ClassOfService cos) {
         return Optional.empty();
     }
+
+    public void clear() {}
 }
