@@ -141,6 +141,10 @@
                 <version>1.2.1</version>
                 <configuration>
                     <mainClass>uk.org.grant.getkanban.BoardRunner</mainClass>
+                    <classpathScope>test</classpathScope>
+                    <arguments>
+                         <argument>1</argument>
+                    </arguments>
                 </configuration>
             </plugin>
     </plugins>
