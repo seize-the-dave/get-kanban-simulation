@@ -2,8 +2,6 @@ package uk.org.grant.getkanban.policies;
 
 import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.card.ExpediteCard;
-import uk.org.grant.getkanban.card.FixedDateCard;
-import uk.org.grant.getkanban.card.IntangibleCard;
 
 import java.util.Comparator;
 

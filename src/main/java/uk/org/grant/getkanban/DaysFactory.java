@@ -4,11 +4,8 @@ import uk.org.grant.getkanban.instructions.*;
 import uk.org.grant.getkanban.policies.DiceAssignmentStrategy;
 import uk.org.grant.getkanban.policies.NoCrossSkillingDiceAssignmentStrategy;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class DaysFactory {
     private final boolean training;
-    private final AtomicInteger testWipStore;
     private final DiceAssignmentStrategy diceAssignmentStrategy;
 
     public DaysFactory(boolean training) {
@@ -17,7 +14,6 @@ public class DaysFactory {
 
     public DaysFactory(boolean training, DiceAssignmentStrategy diceAssignmentStrategy) {
         this.training = training;
-        testWipStore = new AtomicInteger();
         this.diceAssignmentStrategy = diceAssignmentStrategy;
     }
 

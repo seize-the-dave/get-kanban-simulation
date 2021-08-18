@@ -4,7 +4,6 @@ import uk.org.grant.getkanban.card.Card;
 import uk.org.grant.getkanban.policies.DiceAssignmentStrategy;
 
 import java.util.Comparator;
-import java.util.List;
 
 public class RunConfiguration {
     private final Comparator<Card> backlogComparator;

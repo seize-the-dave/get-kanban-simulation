@@ -1,6 +1,5 @@
 package uk.org.grant.getkanban.card;
 
-import uk.org.grant.getkanban.FixedSubscriberProfile;
 import uk.org.grant.getkanban.VariableSubscriberProfile;
 
 import java.util.HashMap;

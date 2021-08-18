@@ -1,7 +1,6 @@
 package uk.org.grant.getkanban.policies;
 
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.card.StandardCard;
 
 import java.util.Comparator;
 

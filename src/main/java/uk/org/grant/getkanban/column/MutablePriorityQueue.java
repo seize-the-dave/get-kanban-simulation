@@ -1,7 +1,6 @@
 package uk.org.grant.getkanban.column;
 
 import com.google.common.collect.ForwardingQueue;
-import uk.org.grant.getkanban.policies.WipAgingPrioritisationStrategy;
 
 import java.util.Comparator;
 import java.util.List;

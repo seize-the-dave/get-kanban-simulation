@@ -13,3 +13,8 @@ buildNumber.properties
 
 # Ignore IntelliJ
 .idea
+
+# VS Code
+.classpath
+.project
+.settings

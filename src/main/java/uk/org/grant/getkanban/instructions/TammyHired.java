@@ -7,8 +7,6 @@ import uk.org.grant.getkanban.State;
 import uk.org.grant.getkanban.dice.RandomDice;
 import uk.org.grant.getkanban.dice.StateDice;
 
-import java.util.Random;
-
 public class TammyHired implements Instruction {
     private static final Logger LOGGER = LoggerFactory.getLogger(TammyHired.class);
     private final boolean training;

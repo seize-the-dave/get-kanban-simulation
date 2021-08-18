@@ -6,7 +6,6 @@ import uk.org.grant.getkanban.card.Card;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Queue;
 
 public interface Column extends Workable<Context> {
     void addCard(Card card, ClassOfService cos);

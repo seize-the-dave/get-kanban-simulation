@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.*;
 import uk.org.grant.getkanban.column.StateColumn;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class CarlosHired implements Instruction {
     private static final Logger LOGGER = LoggerFactory.getLogger(CarlosHired.class);
 

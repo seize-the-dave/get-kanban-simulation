@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import uk.org.grant.getkanban.Board;
 import uk.org.grant.getkanban.card.Blocker;
 import uk.org.grant.getkanban.card.Card;
-import uk.org.grant.getkanban.card.Cards;
 
 import java.util.Optional;
 
